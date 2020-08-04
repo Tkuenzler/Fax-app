@@ -1,0 +1,139 @@
+01/27/2020 12:55:24
+IOException
+platform.ringcentral.com:443 failed to respond01/27/2020 12:56:52
+IOException
+platform.ringcentral.com:443 failed to respond01/27/2020 12:57:54
+IOException
+platform.ringcentral.com:443 failed to respond01/29/2020 10:46:10
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect01/30/2020 19:09:38
+IOException
+platform.ringcentral.com01/31/2020 09:22:02
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Read timed out02/17/2020 11:02:24
+IOException
+Read timed out02/25/2020 12:18:28
+IOException
+platform.ringcentral.com02/25/2020 15:53:08
+IOException
+platform.ringcentral.com03/09/2020 09:36:00
+Exception
+For input string: "CIHSCARE"03/25/2020 12:31:46
+FileNotFoundException
+C:\Users\jm734\Desktop\Fax Scripts\Topical\Topical.pdf (The system cannot find the file specified)03/25/2020 12:32:00
+FileNotFoundException
+C:\Users\jm734\Desktop\Fax Scripts\Topical\Topical.pdf (The system cannot find the file specified)03/25/2020 12:32:06
+FileNotFoundException
+C:\Users\jm734\Desktop\Fax Scripts\Topical\Topical.pdf (The system cannot find the file specified)03/25/2020 12:32:20
+FileNotFoundException
+C:\Users\jm734\Desktop\Fax Scripts\Topical\Topical.pdf (The system cannot find the file specified)03/25/2020 12:32:20
+FileNotFoundException
+C:\Users\jm734\Desktop\Fax Scripts\Topical\Topical.pdf (The system cannot find the file specified)03/25/2020 12:32:20
+FileNotFoundException
+C:\Users\jm734\Desktop\Fax Scripts\Topical\Topical.pdf (The system cannot find the file specified)04/14/2020 15:21:27
+FileNotFoundException
+C:\Users\jm734\Desktop\Fax Scripts\DR_CHASE.pdf (The system cannot find the file specified)04/14/2020 18:04:05
+FileNotFoundException
+C:\Users\jm734\Desktop\Fax Scripts\DR_CHASE.pdf (The system cannot find the file specified)04/20/2020 15:27:59
+IOException
+platform.devtest.ringcentral.com:443 failed to respond05/06/2020 10:37:18
+Script Exception
+Illegal Argument05/06/2020 10:40:00
+Script Exception
+Illegal Argument05/06/2020 10:46:08
+Script Exception
+Illegal Argument05/07/2020 16:51:50
+IOException
+COSStream has been closed and cannot be read. Perhaps its enclosing PDDocument has been closed?05/07/2020 16:51:50
+IOException
+COSStream has been closed and cannot be read. Perhaps its enclosing PDDocument has been closed?05/07/2020 16:51:50
+IOException
+COSStream has been closed and cannot be read. Perhaps its enclosing PDDocument has been closed?05/07/2020 16:51:51
+IOException
+COSStream has been closed and cannot be read. Perhaps its enclosing PDDocument has been closed?05/07/2020 16:51:51
+IOException
+COSStream has been closed and cannot be read. Perhaps its enclosing PDDocument has been closed?05/07/2020 16:51:51
+IOException
+COSStream has been closed and cannot be read. Perhaps its enclosing PDDocument has been closed?05/07/2020 16:51:52
+IOException
+COSStream has been closed and cannot be read. Perhaps its enclosing PDDocument has been closed?05/11/2020 16:41:21
+Script Exception
+NO BRACE LISTED05/11/2020 17:04:13
+Script Exception
+NO BRACE LISTED05/12/2020 22:13:32
+Exception
+For input string: "CIHSCARE"06/17/2020 00:36:26
+Exception
+For input string: "CIHSCARE"06/24/2020 22:05:57
+Exception
+For input string: "CIHSCARE"06/24/2020 22:07:37
+Exception
+For input string: "CIHSCARE"06/24/2020 22:07:46
+Exception
+For input string: "CIHSCARE"06/24/2020 22:07:46
+Exception
+For input string: "CIHSCARE"06/24/2020 22:07:56
+Exception
+For input string: "CIHSCARE"06/24/2020 22:07:56
+Exception
+For input string: "CIHSCARE"07/02/2020 10:18:56
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect07/02/2020 11:56:27
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect07/02/2020 13:34:51
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect07/02/2020 14:19:31
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect07/02/2020 18:26:17
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect07/02/2020 20:28:08
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect07/02/2020 20:28:53
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect07/09/2020 10:46:35
+IOException
+No route to host: connect07/13/2020 21:48:33
+Exception
+For input string: "CIHSCARE"07/13/2020 22:39:26
+Exception
+For input string: "CIHSCARE"07/13/2020 22:39:26
+Exception
+For input string: "CIHSCARE"07/13/2020 22:49:33
+Exception
+For input string: "CIHSCARE"07/13/2020 22:54:09
+Exception
+For input string: "CIHSCARE"07/14/2020 10:06:52
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect07/15/2020 08:52:20
+IOException
+platform.ringcentral.com07/15/2020 17:00:52
+Exception
+For input string: "CIHSCARE"07/15/2020 22:37:55
+Exception
+For input string: "CIHSCARE"07/15/2020 22:37:55
+Exception
+For input string: "CIHSCARE"07/15/2020 22:40:35
+Exception
+For input string: "CIHSCARE"07/15/2020 22:45:39
+Exception
+For input string: "CIHSCARE"07/16/2020 11:46:26
+Exception
+For input string: "CIHSCARE"07/16/2020 11:46:27
+Exception
+For input string: "CIHSCARE"07/16/2020 11:46:31
+Exception
+For input string: "CIHSCARE"07/16/2020 11:46:31
+Exception
+For input string: "CIHSCARE"07/16/2020 21:23:05
+Exception
+For input string: "CIHSCARE"07/16/2020 23:14:32
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect07/27/2020 22:34:52
+Exception
+For input string: "CIHSCARE"07/27/2020 23:43:29
+Exception
+07/28/2020 22:11:37
+Exception
+For input string: "CIHSCARE"08/02/2020 21:51:19
+Exception
+For input string: "CIHSCARE"

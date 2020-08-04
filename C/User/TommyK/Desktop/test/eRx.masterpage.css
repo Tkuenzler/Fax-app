@@ -1,0 +1,311 @@
+?/* ++++++++++++++++++++++++++++++++++++++ */
+/* +++++++++ eRx Network Styles +++++++++ */
+/* ++++++++++++++++++++++++++++++++++++++ */
+
+/* -------------------------------------- */
+/* --- Start Layout --------------------- */
+div#masterpagewrapper
+{
+	width: 100%;
+    height: 100%;
+	padding: 0px;
+	margin: 0 auto 0;
+}
+
+#masterpagewrappertable
+{
+	color: black;
+	/*border-left: solid 1px #528ca6;
+	border-right: solid 1px #528ca6;
+	border-bottom: solid 1px #528ca6;
+	border-top: solid 0px #528ca6;*/
+	/*background-color: #528ca6;  #108579;*/
+	width: 100%;
+    height: 100%;
+	margin-top: 0px;
+}
+/* --- End Layout ----------------------- */
+
+
+/* -------------------------------------- */
+/* --- Start Content -------------------- */
+#masterpagecontent
+{
+	height: 100%;
+	width: 100%;
+	background: white;
+	text-align: left;
+	vertical-align: top;
+	padding-left: 20px;
+    padding-right: 20px;
+}
+/* --- End Content ---------------------- */
+
+
+/* -------------------------------------- */
+/* --- Start Scroller Box --------------- */
+#scroller_container
+{
+	width: 180px;
+	height: 200px;
+	overflow: hidden;
+	border-top: solid 1px #9e9c58;
+	border-bottom: solid 1px #9e9c58;
+}
+#scroller_container /* CSS Safari Hack*/
+{
+	overflow: auto;
+}
+/* --- End Scroller Box ----------------- */
+
+/* -------------------------------------- */
+
+.ValidationSummary
+{
+	background-color: #999999;
+	color: #f9f8ef;
+	text-decoration: none;
+	font-weight: bold;
+	padding: 3px;
+	text-align: left;
+	white-space: nowrap;
+	font-size: 10px;
+	margin-top:5px;
+}
+.ValidationSummary UL
+{
+	margin-top:2px;
+	margin-bottom:2px;
+}
+
+#LogonBannerAd
+{
+	margin-top:20px;
+}
+
+/** fix issue with appearance of menu on the footer **/
+#cFooter div ul li {
+    float: left;
+}
+#cFooter div ul li a {
+    float: left;
+}
+#cFooter div ul li img {
+    float: left;
+}
+/*********************************
+    Rebranding
+*********************************/
+#cWrapper {
+    min-height:100%;
+	position: relative;
+    background: white;
+    color: black;
+}
+#cHeader {
+    position: fixed;
+    right: 0;
+    left: 0;
+    top: 0;
+    height: 80px;
+    z-index: 1000;
+}
+#cBanner #welcome {
+    text-align: right;
+}
+#cContent {
+    position: relative;
+    width: 100%;
+    margin-top: 80px;
+    padding-top: 10px;
+    padding-bottom:70px; 
+}
+#cFooter {
+    width:100%;
+	height:60px;
+    max-height: 60px;
+	position:fixed;
+	bottom:0;
+    z-index: 1000;
+    font-weight: bold;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 20px;
+    padding-right: 0;
+}
+#footerCopyRightAndVersion {
+    float: left;
+    width: 99%;
+    border:0;
+}
+
+/****
+    Displays Demo, Beta, Staging, QA, Dev near logo.
+****/
+#environment {
+    color: #E42526;
+    text-align:left;
+    padding-left: 150px;
+    padding-top: 39px;
+    position: relative;
+    font-size: large;
+    float: left;  
+}
+/******************************
+    company1 is eRx Network
+*******************************/
+/*.company1 {
+}*/
+/*Note the GT (>) symbol allows css to dive into child elements*/
+.company1 > #cHeader {
+    background-color: #0B4C88; /* For browsers that do not support gradients */
+    background: #0B4C88; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left, #0B4C88, #89c1f5); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #0B4C88, #89c1f5); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right,#0B4C88, #89c1f5); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #0B4C88, #89c1f5); /* Standard syntax */
+    color: white;
+    border-bottom: 3px solid #E42526;
+}
+.company1 > #cHeader a {
+    color: white;    
+}
+.company1 > #cHeader > #cBanner {
+    background: url("../../Images/eRx-Network-Banner.png") no-repeat;
+    min-height: 80px;
+    position: relative;
+    top: 20px;
+    left: 20px;
+    padding-right: 40px;
+}
+.company1 > #cHeader > #cBanner > #welcome{
+    top: 5px;
+    right: 20px;
+    position: fixed;
+}
+
+.company1 > #cContent {
+    background: white;
+}
+.company1 > #cFooter {
+	background:#55575A;
+    color: white;
+    border-top: 3px solid #E42526;
+    border-bottom: 3px solid #0B4C88;}
+.company1 > #cFooter a{
+	background:#55575A;
+    color: white;
+}
+.company1 > #cFooter a:visited{
+	background:#55575A;
+    color: white;
+}
+/*********************************
+    company 2 is abdc
+**********************************/
+/*.company2 {
+}*/
+/*Note the GT (>) symbol allows css to dive into child elements*/
+.company2 > #cHeader {
+	background:#0B4C88;
+    background-color: #0B4C88; /* For browsers that do not support gradients */
+    background: #0B4C88; /* For browsers that do not support gradients */
+    background: -webkit-linear-gradient(left, #89c1f5, #0B4C88); /* For Safari 5.1 to 6.0 */
+    background: -o-linear-gradient(right, #89c1f5, #0B4C88); /* For Opera 11.1 to 12.0 */
+    background: -moz-linear-gradient(right, #89c1f5,#0B4C88); /* For Firefox 3.6 to 15 */
+    background: linear-gradient(to right, #89c1f5, #0B4C88); /* Standard syntax */
+    color: white;
+    border-bottom: 3px solid #E42526;
+}
+.company2 > #cHeader a {
+    color: white;
+}
+.company2 > #cHeader > #cBanner {
+    background: url("../../Images/WebBanner_ABDC.png") no-repeat;
+    min-height: 80px;
+    top: 20px;
+    left: 20px;
+    padding-right: 40px;
+}
+.company2 > #cHeader > #cBanner > #welcome{
+    top: 5px;
+    right: 20px;
+    position: fixed;
+}
+.company2 > #cContent {
+    background: white;
+}
+.company2 > #cFooter {
+	background:#55575A;
+    color: white;
+	/*width:100%;
+	height:50px;
+	position:fixed;
+    bottom:0;*/
+	border-top: 3px solid #E42526;
+    border-bottom: 3px solid #0B4C88;
+}
+.company2 > #cFooter a{
+	background:#55575A;
+    color: white;
+}
+.company2 > #cFooter a:visited{
+	background:#55575A;
+    color: white;
+}
+
+/*Modifications to Moderno*/
+.dxtcLite_Moderno > .dxtc-stripContainer .dxtc-tabHover,
+.dxtcLite_Moderno > .dxtc-stripContainer .dxtc-tabHover .dxtc-link {
+    background: gray;
+    color: white;
+}
+.dxbButtonHover_Moderno {
+    background: gray;
+    color: white;
+}
+.dxgvDataRowAlt_Moderno {
+    background-color: lightgray;
+    color: black;
+}
+a:active.dxeHyperlink_Moderno {
+    color: black;
+    text-decoration: underline;
+}    
+a:visited.dxeHyperlink_Moderno {
+    color: black;
+    text-decoration: underline;
+}
+a:focus.dxeHyperlink_Moderno {
+    color: black;
+    text-decoration: underline;
+}
+a:link.dxeHyperlink_Moderno {
+    color: black;
+    text-decoration: underline;
+}
+a:hover.dxeHyperlink_Moderno {
+    color: gray;
+    text-decoration: underline;
+}
+div span.dxeBase_Moderno {
+    color: silver;
+    margin-right: 8px;
+}
+.text-left {
+  text-align: left;
+}
+.text-right {
+  text-align: right;
+}
+.text-center {
+  text-align: center;
+}
+.red-slash {
+    background: url(../../images/slash-red.png);
+    background-repeat: no-repeat;
+    background-size: 32px 32px;
+    background-position-y: center;
+    padding-left: 40px;
+    display: inline;
+}

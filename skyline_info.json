@@ -1,0 +1,57 @@
+{
+	"APP_NAME": "SKY_LINE_MARKETING",
+	"FAX_NUMBERS": 
+	[ 
+		{
+			"name": "Skyline MD Topicals",
+			"number": "18882293643",
+			"password": "Kimo!1019",
+			"ext": "101",
+			"SECRET": "jn1niJz-RzmVPY1rQ2wvhQ07qf6XiySGSIr-x2Y0VU6A",
+			"KEY": "vjQoYJ7ESTuoJLgfko-vGw"
+		},
+		{
+			"name": "Skyline JK Pharm",
+			"number": "18882814854",
+			"password": "Kimo!1019",
+			"ext": "102",
+			"SECRET": "jn1niJz-RzmVPY1rQ2wvhQ07qf6XiySGSIr-x2Y0VU6A",
+			"KEY": "vjQoYJ7ESTuoJLgfko-vGw"
+		},
+                {
+			"name": "Skyline Medcore",
+			"number": "18883078905",
+			"password": "Kimo!1019",
+			"ext": "103",
+			"SECRET": "jn1niJz-RzmVPY1rQ2wvhQ07qf6XiySGSIr-x2Y0VU6A",
+			"KEY": "vjQoYJ7ESTuoJLgfko-vGw"
+		}
+	],
+	"DATABASE_LOGIN":
+	{
+		"USER_NAME": "sky_line",
+		"PASSWORD": "kimo1019",
+		"PORT": 3306,
+		"LOCAL_HOST": "ltf5469.tam.us.siteprotect.com"
+	},
+	"HUB_LOGIN":
+	{
+		"USER_NAME": "",
+		"PASSWORD": ""
+	},
+	"CASCADE_LOGIN":
+	{
+		"USER_ID": "946649c3-2e7d-4a4f-ad58-e0edb2da6fb0",
+		"CLIENT": "2D3C665B-A2B1-4BFD-B51D-48D9E4FBFA8E",
+		"SECRET": "55127057-F437-4FA7-9E3D-FA8718DCDB2E"
+	},
+	"MEDCORE":
+	{
+		"VendorName": "SKY",
+		"VendorCode": 5386,
+		"VendorCampaign": "SKY",
+		"VendorKey": "8E3A716BDBDA40CA8B69FBF093F0E2C9",
+		"AutoShip": 1,
+		"AutoRefill": 1
+	}
+}

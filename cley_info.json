@@ -1,0 +1,114 @@
+{
+	"APP_NAME": "CLN_MARKETING",
+	"FAX_NUMBERS": 
+	[ 
+		{
+			"name": "MEDCORE",
+			"number": "15612820037",
+			"password": "Cali22413",
+			"ext": "101",
+			"SECRET": "Jy2cOSsBS0G7f9ZBFtQ8qw3DCrqgT7S4uzBX2Ove8Grg",
+			"KEY": "dKSJx_zXTBG49a_88OayZg"
+		},
+		{
+			"name": "MD TOPICAL",
+			"number": "15612882666",
+			"password": "Cali22413",
+			"ext": "102",
+			"SECRET": "Jy2cOSsBS0G7f9ZBFtQ8qw3DCrqgT7S4uzBX2Ove8Grg",
+			"KEY": "dKSJx_zXTBG49a_88OayZg"
+		},
+		{
+			"name": "KLEIN PHARMACY",
+			"number": "15614044381",
+			"password": "Cali22413",
+			"ext": "101",
+			"SECRET": "kpCT_DItQb2T6aSnBGnfbQex3fV-XQRnenzRQ2bQ_v1g",
+			"KEY": "1x908_QpRL2aLQ6sQEkXWg"
+		},
+		{
+			"name": "TRISTAR",
+			"number": "15612357803",
+			"password": "Cali22413",
+			"ext": "102",
+			"SECRET": "kpCT_DItQb2T6aSnBGnfbQex3fV-XQRnenzRQ2bQ_v1g",
+			"KEY": "1x908_QpRL2aLQ6sQEkXWg"
+		},
+		{
+			"number": "19544854440",
+			"password": "jt082806#",
+			"ext": "101",
+			"name": "JT Healthcare 1",
+			"SECRET": "ZPNViyhFQQ6Ft3VuboBA9wcwsCGPUpQgCbXJCpo3cVJw",
+			"KEY": "jjLQOhi7RRqcPeMFcYPEYA"
+		},
+		{
+			"number": "19542460052",
+			"password": "jt082806#",
+			"ext": "102",
+			"name": "JT Healthcare 2",
+			"SECRET": "ZPNViyhFQQ6Ft3VuboBA9wcwsCGPUpQgCbXJCpo3cVJw",
+			"KEY": "jjLQOhi7RRqcPeMFcYPEYA"
+		},
+		{
+			"number": "19544406681",
+			"password": "jt082806#",
+			"ext": "103",
+			"name": "JT Lab Pharm 1",
+			"SECRET": "ZPNViyhFQQ6Ft3VuboBA9wcwsCGPUpQgCbXJCpo3cVJw",
+			"KEY": "jjLQOhi7RRqcPeMFcYPEYA"
+		},
+		{
+			"name": "TENNESSEE",
+			"number": "15614095959",
+			"password": "Cali22413",
+			"ext": "103",
+			"SECRET": "kpCT_DItQb2T6aSnBGnfbQex3fV-XQRnenzRQ2bQ_v1g",
+			"KEY": "1x908_QpRL2aLQ6sQEkXWg"
+		},
+		{
+			"name": "BLANK",
+			"number": "15617678223",
+			"password": "Cali22413",
+			"ext": "102",
+			"SECRET": "kpCT_DItQb2T6aSnBGnfbQex3fV-XQRnenzRQ2bQ_v1g",
+			"KEY": "1x908_QpRL2aLQ6sQEkXWg"
+		}
+	],
+	"DATABASE_LOGIN":
+	{
+		"USER_NAME": "CLN",
+		"PASSWORD": "CLN123",
+		"PORT": 3306,
+		"LOCAL_HOST": "ltf5469.tam.us.siteprotect.com"
+	},
+	"CRM_LOGIN":
+	{
+		"CLIENT": "A8497F4A-F04D-4356-962E-AFE5086AC7E1",
+		"SECRET": "0953FE94-FC2B-4881-B485-75F450E60BDD",
+		"LOGIN": "",
+		"PASSWORD": ""
+	},
+	"CASCADE_LOGIN":
+	{
+		"USER_ID": "946649c3-2e7d-4a4f-ad58-e0edb2da6fb0",
+		"CLIENT": "2D3C665B-A2B1-4BFD-B51D-48D9E4FBFA8E",
+		"SECRET": "55127057-F437-4FA7-9E3D-FA8718DCDB2E"
+	},
+	"VICI_CLIENT":
+	
+	{
+		"SERVER": "http://103.44.234.38:8880",
+		"ADMIN": "3001",
+		"PASS": "3001"
+	},
+	"MEDCORE":
+	{
+		"VendorName": "CLN",
+		"VendorCode": 9043,
+		"VendorCampaign": "CLN",
+		"VendorKey": "514FEF25870E4147A55BA2B27E0F73CA",
+		"AutoShip": 1,
+		"AutoRefill": 1
+	}
+}

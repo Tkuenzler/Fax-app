@@ -1,0 +1,44 @@
+{
+	"APP_NAME": "COMAN",
+	"FAX_NUMBERS": 
+	[ 
+		{
+			"number": "19546866708",
+			"password": "Chino143",
+			"ext": "101",
+			"name": "Main Fax Line",
+			"SECRET": "t87-C7YwRce73OIw54wtqAJFWUHagzQuKiitZm9aMrYQ",
+			"KEY": "8fgCFRnxQFaZqlH2_3H08A"
+		},
+		{
+			"number": "16186241367",
+			"password": "Chino143",
+			"ext": "102",
+			"name": "Requalify Line",
+			"SECRET": "t87-C7YwRce73OIw54wtqAJFWUHagzQuKiitZm9aMrYQ",
+			"KEY": "8fgCFRnxQFaZqlH2_3H08A",
+		}
+			
+	],
+	"DATABASE_LOGIN":
+	{
+		"USER_NAME": "Coman",
+		"PASSWORD": "Coman123!",
+		"PORT": 3306,
+		"LOCAL_HOST": "ltf5469.tam.us.siteprotect.com"
+	},
+	"ROAD_MAP":
+	{
+		"NAME": "COMAN_ROADMAP"
+	},
+	"NDC_VERIFY":
+	{
+	
+	},
+	"VICI_CLIENT":
+	{
+		"SERVER": "https://mtkmarketing.vicihost.com",
+		"ADMIN": "6666",
+		"PASS": "tk6847"
+	}
+}

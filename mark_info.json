@@ -1,0 +1,64 @@
+{
+	"APP_NAME": "MARK_CARR",
+	"FAX_NUMBERS": 
+	[ 
+		
+		{
+			"number": "",
+			"password": "Password123",
+			"ext": "101",
+			"name": "",
+			"SECRET": "oD6tOJSxR22C1nx3whED6wsYm3IThKShGC_OZcateS1g",
+			"KEY": "6m86OpuGSIaWz7dWHb0l8w"
+		},
+		{
+			"number": "",
+			"password": "Password123",
+			"ext": "",
+			"name": "",
+			"SECRET": "Pl4AxV16SMiB3B-vyKqf6At3sn2TCwT1-2_rbpD6BkLA",
+			"KEY": "oZj0g8bPSgSiFQQKj1eBcw"
+		},
+		{
+			"number": "",
+			"password": "Password123",
+			"ext": "101",
+			"name": "",
+			"SECRET": "UNxX-OjvRDCiuvmpffvSZAY9_De3omSgi33hmO7_d6AQ",
+			"KEY": "KYjRHkTPQhm_0qFlviTrCQ"
+		},
+		{
+			"number": "",
+			"password": "Password123",
+			"ext": "101",
+			"name": "",
+			"SECRET": "076SDSvbTqKl4g99paPl5wK4yU1c-oSvOJwuTJQlz0Mg",
+			"KEY": "9GWgveUoT0ywX5W-Fof7RA"
+		},
+		{
+			"number": "18883882767",
+			"password": "Password123",
+			"ext": "101",
+			"name": "1-888-388-2767",
+			"SECRET": "L2bwCVJXR8eCANsuKcGZaAsW2EhazkS7WK9wbF0geBTA",
+			"KEY": "TzjnoLO-RN2Mt4wPWY0k_g"
+		},
+		{
+			"number": "18885120321",
+			"password": "Password123",
+			"ext": "",
+			"name": "1-888-512-0321",
+			"SECRET": "MG_Ksw7GRAKU4gicoCHZQw2lUU7FdVRQyWw59jMCNqHw",
+			"KEY": "4-IQ6gnlTsCQwjkAGZxKJw"
+		}
+	],
+	"MEDCORE":
+	{
+		"VendorName": "",
+		"VendorCode": 4422,
+		"VendorCampaign": "",
+		"VendorKey": "",
+		"AutoShip": 1,
+		"AutoRefill": 1
+	}
+}

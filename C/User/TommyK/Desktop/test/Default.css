@@ -1,0 +1,547 @@
+?/* ++++++++++++++++++++++++++++++++++++++ */
+/* +++++++++ eRx Network Styles +++++++++ */
+/* ++++++++++++++++++++++++++++++++++++++ */
+
+/* -------------------------------------- */
+/* --- Start Global Styles -------------- */
+body
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 12px;
+	height: 100%;
+	width: 100%;
+	margin: 0 0 0 0;
+	color: #231F20;
+	text-align: center; 
+	/*background: url("../../Images/bg2Emdeon.png") repeat-x top left ;*/
+}
+body .greenlable
+{
+	color: #003b6f;
+	cursor: pointer;
+}
+body a:Link
+{
+	color: #003b6f;
+	cursor: pointer;	
+}
+body a:Hover
+{
+	color: #108579;
+}
+body a:active
+{
+	color: #108579;
+	cursor: pointer;	
+}
+body a:Visited
+{
+	color: black;
+	cursor: pointer;	
+}
+
+FIELDSET
+{
+	border: 1px solid gray;
+	padding: 2px 5px 2px 5px;
+}
+LEGEND
+{
+	font-family: Verdana, Arial, Helvetica, sans-serif;
+	font-size: 8pt;
+	color: #555555;
+	height: 18px;
+	font-weight: bold;
+}
+blockquote:before, blockquote:after, q:before, q:after
+{
+	content: "";
+}
+blockquote, q
+{
+	quotes: "" "";
+}
+h1
+{
+	font-size: 12px;
+	font-family: Verdana;
+	padding-bottom: 10px;
+}
+h2
+{
+	font-size: 14px;
+	padding-bottom: 10px;
+}
+h3
+{
+	font-size: 12px;
+	padding-bottom: 10px;
+}
+.pageTitle
+{
+	font-size: 12px;
+	font-family: Verdana;
+	padding-bottom: 10px;
+	padding-right: 5px;
+	font-weight: bold;
+	text-align: left;
+}
+/* --- End Global Styles ---------------- */
+
+
+/* -------------------------------------- */
+/* --- Start Skin Styles ---------------- */
+.asptable
+{
+	padding: 0px;
+	margin: 0px;
+	border: solid 1px black;
+}
+.asptableCell
+{
+	font-size: 10pt;
+	color: Black;
+}
+.asptableHeaderRow
+{
+	font-size: 11pt;
+	color: Black;
+	background-color: #E5E5E5;
+}
+.asptableRow
+{
+}
+.asptableFooterRow
+{
+}
+/* --- End Skin Styles ------------------ */
+
+
+/* -------------------------------------- */
+/* --- Start Vertical Splitter ---------- */
+.splitterV
+{
+	background-color: #E8E8E8;
+	background-image: url('Images/spl.gif');
+	background-repeat: no-repeat;
+	width: 6px;
+	height: 49px;
+}
+.splitterH
+{
+	background-color: #E8E8E8;
+	background-image: url(Images/splH.gif);
+	background-repeat: no-repeat;
+	width: 49px;
+	height: 6px;
+	vertical-align: middle;
+	text-align: center;
+}
+.splo
+{
+	background-color: #E8E8E8;
+	cursor: pointer;
+	border-right: solid 1px #9e9c58;
+	border-bottom: solid 1px #9e9c58;
+	border-top: solid 1px #9e9c58;
+}
+.spl
+{
+	border-right: solid 1px #9e9c58;
+	border-bottom: solid 1px #9e9c58;
+	border-top: solid 1px #9e9c58;
+	background-color: #F7F3F7;
+}
+#toggleTD
+{
+	padding-top: 150px;
+	vertical-align: top;
+}
+/* --- End Vertical Splitter ------------ */
+
+
+/* -------------------------------------- */
+/* --- Start Popup ---------------------- */
+#popupButton
+{
+	text-align: center;
+	margin: 10px;
+}
+#backgroundPopup
+{
+	display: none;
+	position: fixed;
+	_position: absolute; /* hack for internet explorer 6*/
+	height: 100%;
+	width: 100%;
+	top: 0;
+	left: 0;
+	background: #000000;
+	border: 1px solid #cecece;
+	z-index: 1;
+}
+#popupContact
+{
+	display: none;
+	position: fixed;
+	_position: absolute; /* hack for internet explorer 6*/
+	height: 384px;
+	overflow-y: auto;
+	overflow-x: hidden;
+	width: 450px;
+	background: #FFFFFF;
+	border: 2px solid #cecece;
+	z-index: 2;
+	padding: 12px;
+	font-size: 13px;
+}
+#HelpTitleDiv
+{
+	text-align: left;
+	color: #6FA5FD;
+	font-size: 18px;
+	font-weight: 700;
+	border-bottom: 1px dotted #D3D3D3;
+	padding-bottom: 2px;
+	margin-bottom: 20px;
+}
+#popupContactClose
+{
+	font-size: 14px;
+	line-height: 14px;
+	right: 6px;
+	top: 4px;
+	position: absolute;
+	padding-right:18px;
+	color: #6fa5fd;
+	font-weight: 700;
+	display: block;
+}
+#HelpContentDiv
+{
+	font-size: 11px;
+	text-align: left;
+	_position: absolute; /* hack for internet explorer 6*/
+	height: 384px;
+	width: 408px;
+}
+/* --- End Popup ------------------------ */
+
+
+/* -------------------------------------- */
+/* --- Start Text ----------------------- */
+.Alerts
+{
+	color: #990000;
+}
+/* --- End Text ------------------------- */
+
+
+/* -------------------------------------- */
+/* --- Start Images --------------------- */
+.helpicon
+{
+	display: block;
+	background: url('Images/info.gif');
+	background-repeat: no-repeat;
+}
+/* --- End Images ----------------------- */
+
+
+/* -------------------------------------- */
+/* --- Start Miscellaneous -------------- */
+br.both
+{
+	clear: both;
+}
+div.hr
+{
+	clear: both;
+	width: 100%;
+	border-bottom: solid 1px #108579;
+}
+div.doubleline
+{
+	clear: both;
+	height: 3px;
+	width: 100%;
+	border-top: solid 1px #108579;
+	border-bottom: solid 1px #108579;
+}
+#ToolboxContent
+{
+	border: 1px solid gray;
+	padding: 10px;
+}
+div.CollapseExpand
+{
+	padding-bottom: 5px;
+}
+div.CollapseExpand a
+{
+	font-size: 10px;
+}
+/* --- End Miscellaneous ---------------- */
+
+
+/* -------------------------------------- */
+/* --- Start Advanced Search ------------ */
+.lh
+{
+	background-color: #EEEEEE;
+	border-bottom: 1px solid #DDDDDD;
+	font-weight: bold;
+}
+.tpi
+{
+	border: 1px solid #7F9DB9;
+}
+/* --- End Advanced Search -------------- */
+
+
+/* -------------------------------------- */
+/* --- Start Sub Nav -------------------- */
+.subNav
+{
+	border-bottom: 1px solid gray; /* width: 90%; width of menu. Uncomment to change to a specific width */
+	margin-bottom: 1em;
+}
+.subNav ul
+{
+	padding-bottom: 3px;
+	margin: 0;
+	font: bold 11px Verdana;
+	list-style-type: none;
+	text-align: left; /*set to left, center, or right to align the menu as desired*/
+}
+.subNav li
+{
+	display: inline;
+	margin: 0 -4px 0 0;
+}
+.subNav li a
+{
+	background-color: #666666;
+	text-decoration: none;
+	padding: 3px 7px;
+	margin-right: 1px;
+	border: 1px solid #778;
+	color: #FFFFFF;
+}
+.subNav li a:visited
+{
+	/*color: #FFFFFF;*/
+	color: #108579;
+}
+.subNav li a:hover
+{
+	text-decoration: none;
+	background-color: #CCCCCC;
+}
+.subNav li.selected
+{
+	position: relative;
+	top: 0px;
+}
+.subNav li.selected a
+{
+	border-bottom-color: white;
+	background-color: #FFF;
+	color: #333333;
+}
+.subNav li.selected a:hover
+{
+	text-decoration: none;
+}
+/* --- End Sub Nav ---------------------- */
+
+/* Sharepoint List Body styles */
+DIV.Alerts
+{
+	background-color:Silver;
+}
+DIV.DIV.Alerts
+{
+	background-color:Blue;
+}
+/* End Sharepoint List Body styles */
+
+/* Drug/Prescriber Detail List Styles */
+td.detailinfoCol
+{
+	vertical-align: top; 
+	border: solid 1px #000000; 
+	border-left: solid 1px #000000;
+	border-right: solid 1px #000000; 
+	width: 33%; 
+	background-color: #c0e0e7;
+}
+/* END Drug List Styles */
+
+/* BEGIN login control styles */
+DIV.loginheader
+{
+	font-size:12px;
+	color: black; background-color: #F0C319; font-weight: bold;
+	padding:2px;
+}
+/* END	login control styles */
+
+/* BEGIN SummaryEmail styles */
+.SummaryEmail_body
+{
+	font-size: 11pt;
+	font-family: Calibri, Verdana, Arial, Sans-Serif;
+	color: #444444; 
+}
+.SummaryEmail_aspGrid
+{
+	border: 0;
+	border-collapse: collapse;
+	padding:0;
+}
+.SummaryEmail_aspGrid table
+{
+	border: 0;
+	border-collapse: collapse;
+	padding:0;
+}
+.SummaryEmail_aspGrid th
+{
+	border: 0;
+	border: solid 1px #7EACB1;
+}
+.SummaryEmail_aspFooter 
+{
+	border:0;
+}
+.SummaryEmail_aspFooter td
+{
+	border:0;
+	border: solid 1px #7EACB1;
+	height: 20px;
+	background-color:#e9f8fa;
+}
+.SummaryEmail_aspItem th
+{
+	border: 0;
+}
+.SummaryEmail_aspItem 
+{
+	border: 0;
+	border: solid 1px #7EACB1;
+}
+.SummaryEmail_aspGrid
+{
+	background-color: transparent;
+	/*border-collapse: separate !important;*/
+	overflow:hidden;
+	font: 10px Verdana;
+	color: Black;
+	padding: 4px 6px 5px 6px;
+}
+.SummaryEmail_aspHeader {
+	cursor:pointer;
+	white-space:nowrap;
+	padding: 4px 6px 5px 6px;
+	border: solid 1px #7EACB1;
+	background-color:#C0DDE0;
+    font-weight: normal;
+    height: 23px;
+}
+/* END SummaryEmail styles */
+
+/* -- Hyperlink -- */
+.dxeHyperlink_Glass
+{
+    font-family: Verdana;
+    font-size: 11px;
+	font-weight: normal;
+    color: #003b6f;    
+}
+a:hover.dxeHyperlink_Glass  
+{
+    color: #108579;    
+}
+a:visited.dxeHyperlink_Glass  
+{
+    color: #108579;     
+}
+
+.dxeTextBox_Glass
+{
+    width:126px;
+}
+Table, TD, DIV, select, input, label, legend, span, caption
+{
+	font-size: 10px;
+	font-family: Verdana;
+}
+
+Table, TD, select, input, label, legend, caption
+{
+	text-align: left;
+}
+a:Link, a:Visited, a:Hover, a:Selected, a:Active
+{
+	font-family: Verdana;
+	font-size: 11px;
+}
+span a:Link,span a:Visited,span a:Hover,span a:Selected,span a:Active
+{
+	font-size: 11px;	
+}
+/*Tabs*/
+.dxtc a:Link,.dxtc a:Visited,.dxtc a:Hover,.dxtc a:Selected,.dxtc a:Active
+{
+	font-family: Verdana;
+	font-size: 12px;
+}
+/*GridView Hyperlinks*/
+.dxgv a:Link,.dxgv a:Visited,.dxgv a:Hover,.dxgv a:Selected,.dxgv a:Active
+{
+	font-family: Verdana;
+	font-size: 10px;
+}
+.pageTitle, .dxeBase_Glass, .dxic input, .dxeListBoxItem_Glass
+{
+	font-family: Verdana;
+}
+.dxeBase_Glass, .dxic input, .dxeListBoxItem_Glass, .dxgv
+{
+	font-size: 10px;
+}
+/*GridView Group Header Instructions*/
+.dxgvGroupPanel_Glass
+{
+	font-size: 10px;
+}
+.dxtc
+{
+	font-size: 12px;
+}
+
+.dxpgColumnFieldValue_Glass
+{
+	background-color: #9AC4C8;
+	border-left-style: solid;
+	border-bottom-style: solid;
+	border-right-style: none;
+	border-top-style: none; 
+}
+
+/* DME Reporting Popup Styles */
+p.ListParagraph, li.ListParagraph, div.ListParagraph
+	{margin-top:0in;
+	margin-right:0in;
+	margin-bottom:0in;
+	margin-left:.5in;
+	margin-bottom:.0001pt;
+	font-size:12.0pt;
+	font-family:"Times New Roman";}
+
+/* ePad DetailsView Styles */
+table.dvErxView td
+{
+	padding:1px;
+}
