@@ -1,71 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/aopalliance-repackaged-2.3.0-b10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/asm-debug-all-5.0.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/extract_gender-0.17.3.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/fontbox-2.0.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/fontbox-2.0.11.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/hk2-api-2.3.0-b10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/hk2-locator-2.3.0-b10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/hk2-utils-2.3.0-b10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/htmlunit-2.21-OSGi.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/htmlunit-2.22-OSGi.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/httpcore-4.4.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/httpcore-ab-4.4.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/httpcore-nio-4.4.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/icepdf-core-6.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/icepdf-core-6.3.2-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/icepdf-viewer-6.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/icepdf-viewer-6.3.2-sources.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/javaee-api-7.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/java-json.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/javassist-3.18.1-GA.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/javax.annotation-api-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/javax.inject-2.3.0-b10.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/javax.servlet-api-3.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/javax.ws.rs-api-2.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/javax.ws.rs-api-2.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jaxb-api-2.2.7.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jboss-annotations-api_1.1_spec-1.0.1.Final.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jdatepicker-1.3.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jersey-client.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jersey-common.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jersey-container-servlet.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jersey-container-servlet-core.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jersey-core-1.9.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jersey-guava-2.13.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jersey-media-multipart-2.13.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jersey-server.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/jxl.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/miglayout-3.5.6.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/mimepull.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/mysql-connector-java-5.1.47.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/org.osgi.core-4.2.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/osgi-resource-locator-1.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/pdfbox-2.0.11.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/persistence-api-1.0.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/resteasy-client-3.0.8.Final.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/activation-1.1.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/commons-codec-1.13.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/commons-collections4-4.4.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/commons-compress-1.19.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/commons-logging-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/commons-math3-3.6.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/jaxb-api-2.3.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/jaxb-core-2.3.0.1.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/jaxb-impl-2.3.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/junit-4.12.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/log4j-1.2.17.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/poi-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/poi-examples-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/poi-excelant-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/poi-ooxml-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/poi-ooxml-schemas-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/poi-scratchpad-4.1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/SparseBitSet-1.2.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/curvesapi-1.06.jar"/>
-	<classpathentry kind="lib" path="C:/Users/jm734/workspace/JARS/xlsx api/xmlbeans-3.1.0.jar"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/aopalliance-repackaged-2.3.0-b10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/asm-debug-all-5.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/extract_gender-0.17.3.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/fontbox-2.0.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/hk2-locator-2.3.0-b10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/hk2-utils-2.3.0-b10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/htmlunit-2.22-OSGi.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/httpcore-4.4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/httpcore-ab-4.4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/httpcore-nio-4.4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/icepdf-core-6.3.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/icepdf-core-6.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/icepdf-viewer-6.3.2-sources.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/javaee-api-7.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/java-json.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/javassist-3.18.1-GA.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/javax.annotation-api-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/javax.inject-2.3.0-b10.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/javax.servlet-api-3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/javax.ws.rs-api-2.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/jboss-annotations-api_1.1_spec-1.0.1.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/jdatepicker-1.3.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/jxl.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/miglayout-3.5.6.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/mimepull.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/mysql-connector-java-5.1.47.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/org.osgi.core-4.2.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/osgi-resource-locator-1.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/pdfbox-2.0.11.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/persistence-api-1.0.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/resteasy-client-3.0.8.Final.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/commons-codec-1.13.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/commons-collections4-4.4.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/commons-compress-1.19.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/commons-logging-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/commons-math3-3.6.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/jaxb-api-2.3.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/jaxb-core-2.3.0.1.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/junit-4.12.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/log4j-1.2.17.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/poi-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/poi-excelant-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/poi-ooxml-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/poi-ooxml-schemas-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/poi-scratchpad-4.1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/SparseBitSet-1.2.jar"/>
+	<classpathentry kind="lib" path="C:/Users/tkuen/eclipse-workspace/JARS/xlsx api/xmlbeans-3.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

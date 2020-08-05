@@ -12,8 +12,6 @@ import javax.swing.JOptionPane;
 
 import org.apache.commons.lang3.text.WordUtils;
 
-import com.sun.xml.internal.ws.util.StringUtils;
-
 import source.CSVFrame;
 import subframes.FileChooser;
 import table.MyTableModel;
@@ -39,7 +37,7 @@ public class Export implements ActionListener {
 						String value = (String)CSVFrame.table.getValueAt(row, column);
 						if(value==null)
 							value = "";
-						value = WordUtils.capitalize(StringUtils.decapitalize(value));
+						value = WordUtils.capitalize(value.trim());
 						if(column<MyTableModel.COLUMN_HEADERS.length-1)
 							bw.write(value+",");
 						else

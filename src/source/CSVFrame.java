@@ -17,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableRowSorter;
 
+import PaidReport.MarkPaidReport;
+import PaidReport.MarkReport;
 import framelisteners.AlternateScripts.LoadAlternateScriptApprovals;
 import framelisteners.AlternateScripts.LoadOldDenials;
 import framelisteners.AlternateScripts.LoadProducts;
@@ -592,6 +594,20 @@ public class CSVFrame extends JFrame  {
 		item.addActionListener(new LoadInvalidInfo());
 		notFound.add(item);
 		bar.add(notFound);
+		
+		JMenu invoiceReports = new JMenu("Invoicing Reports");
+		JMenu report = new JMenu("Reports");
+		item = new JMenuItem("Mark Report");
+		item.addActionListener(new MarkReport());
+		report.add(item);
+		invoiceReports.add(report);
+		
+		JMenu paidReport = new JMenu("Paid Reports");
+		item = new JMenuItem("Mark Paid Report");
+		item.addActionListener(new MarkPaidReport());
+		paidReport.add(item);
+		invoiceReports.add(paidReport);
+		bar.add(invoiceReports);
 		
 		return bar;
 	}

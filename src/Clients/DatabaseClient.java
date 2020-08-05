@@ -15,6 +15,10 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
+
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.Row;
 import org.json.JSONException;
 import com.mysql.jdbc.CommunicationsException;
 import Fax.EmdeonStatus;
@@ -24,6 +28,7 @@ import Fax.TelmedStatus;
 import Info.DatabaseUser;
 import PBM.InsuranceFilter;
 import PBM.InsuranceType;
+import PaidReport.MarkReport.Rows;
 import source.CSVFrame;
 import source.LoadInfo;
 import table.Record;
@@ -2138,6 +2143,146 @@ public class DatabaseClient {
 		} finally {
 			try {
 				if(stmt!=null) stmt.clearBatch();
+			} catch(SQLException ex) {
+				
+			}
+		}
+	}
+	public int AddPaidClaim(Row row,String pharmacy) {
+		String sql = "INSERT INTO `PAID` (`_id`,`pharmacy`,`date`,`rx_number`,`name`,`phone_number`,`medication`,`bin`,`grp`,`pcn`,`ndc`,`profit`,`source`) VALUES "
+				+ "(?,?,?,?,?,?,?,?,?,?,?,?,?)";
+		PreparedStatement stmt = null;
+		try {
+			stmt = connect.prepareStatement(sql);
+			stmt.setString(1, getCellValue(row.getCell(Rows.DATE))+" "+getCellValue(row.getCell(Rows.RX_NUMBER)));
+			stmt.setString(2, pharmacy);
+			stmt.setString(3, getCellValue(row.getCell(Rows.DATE)));
+			stmt.setString(4, getCellValue(row.getCell(Rows.RX_NUMBER)));
+			stmt.setString(5, getCellValue(row.getCell(Rows.NAME)));
+			stmt.setString(6, getCellValue(row.getCell(Rows.PHONE)).replaceAll("[()\\s-]+", ""));
+			stmt.setString(7, getCellValue(row.getCell(Rows.MEDICATION)));
+			stmt.setString(8, getCellValue(row.getCell(Rows.BIN)));
+			stmt.setString(9, getCellValue(row.getCell(Rows.GRP)));
+			stmt.setString(10, getCellValue(row.getCell(Rows.PCN)));
+			stmt.setString(11, getCellValue(row.getCell(Rows.NDC)));
+			stmt.setString(12, getCellValue(row.getCell(Rows.PROFIT_MARGIN)));
+			stmt.setString(13, getSource(row.getCell(Rows.PHONE)));
+			return stmt.executeUpdate();
+		} catch(SQLException ex) {
+			if(!(ex.getErrorCode()==1062));
+				ex.printStackTrace();
+			return ex.getErrorCode();
+		} finally {
+			try {
+				if(stmt!=null) stmt.close();
+			} catch(SQLException ex) {
+				
+			}
+		}
+	}
+	public int DeletePaidClaim(Cell cell) {
+		String sql = "DELETE FROM `Leads` WHERE `phonenumber` = '"+getCellValue(cell).replaceAll("[()\\s-]+", "")+"'";
+		Statement stmt = null;
+		try {
+			stmt = connect.createStatement();
+			return stmt.executeUpdate(sql);
+	} catch(SQLException ex) {
+		if(!(ex.getErrorCode()==1062));
+			ex.printStackTrace();
+		return ex.getErrorCode();
+	} finally {
+		try {
+			if(stmt!=null) stmt.close();
+		} catch(SQLException ex) {
+			
+		}
+	}
+	}
+	private String getSource(Cell cell) {
+		String sql = "SELECT * FROM `Leads` WHERE `phonenumber` = '"+getCellValue(cell).replaceAll("[()\\s-]+", "")+"'";
+		Statement stmt = null;
+		ResultSet set = null;
+		try {
+			stmt = connect.createStatement();
+			set = stmt.executeQuery(sql);
+			if(set.next()) 
+				return set.getString("SOURCE");
+			else {
+				String source = GetTableSource(cell,"Healthcare");
+				if(!source.equalsIgnoreCase(""))
+					return source;
+				else {
+					source = GetTableSource(cell,"TELMED");
+					if(!source.equalsIgnoreCase(""))
+						return source;
+					else
+						return "UNKNOWN";
+				}
+			}
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+			return "ERROR";
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(stmt!=null) stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	private String GetTableSource(Cell cell,String table) {
+		String sql = "SELECT * FROM `"+table+"` WHERE `phonenumber` = '"+getCellValue(cell).replaceAll("[()\\s-]+", "")+"'";
+		Statement stmt = null;
+		ResultSet set = null;
+		try {
+			stmt = connect.createStatement();
+			set = stmt.executeQuery(sql);
+			if(set.next()) {
+				if(table.equalsIgnoreCase("TELMED"))
+					return set.getString("SOURCE");
+				else
+					return table;
+			}
+			else
+				return "";
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+			return "ERROR";
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(stmt!=null) stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+	}
+	private String getCellValue(Cell cell) {
+		if(cell==null)
+			return "";
+		if(cell.getCellType()==CellType.NUMERIC && cell.getRowIndex()==Rows.PROFIT_MARGIN)
+			return ""+cell.getNumericCellValue();
+		else if(cell.getCellType()==CellType.NUMERIC)
+			return ""+(int)cell.getNumericCellValue();
+		else
+			return cell.getStringCellValue().trim();
+	}
+	public int SetClaimStatus(String date,String rxNumber,String column) {
+		System.out.println(column);
+		System.out.println(date+" "+rxNumber);
+		String sql = "UPDATE `PAID` SET `"+column+"` = 1 WHERE `_id` = '"+date+" "+rxNumber+"'";
+		Statement stmt = null;
+		try {
+			stmt = connect.createStatement();
+			return stmt.executeUpdate(sql);
+		} catch(SQLException ex) {
+			return ex.getErrorCode();
+		} finally {
+			try {
+				if(stmt!=null)stmt.close();
 			} catch(SQLException ex) {
 				
 			}
