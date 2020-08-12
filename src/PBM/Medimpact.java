@@ -19,6 +19,7 @@ public class Medimpact {
 			case "GHS30":
 			case "103774":
 			case "10016720":
+			case "CCA01":
 				return InsuranceType.MEDICAID;
 			case "10008217":
 				return InsuranceType.PRIVATE_UNKNOWN;
@@ -95,12 +96,6 @@ public class Medimpact {
 	}
 	private static String Filter015574(Record record) {
 		switch(record.getGrp()) {
-			case "SUM03":
-			case "EHC01":
-				return InsuranceType.MEDICARE_TELMED;
-			case "DHM01":
-			case "GHS06":
-				return InsuranceType.MEDICARE_COMMERCIAL;
 			default:
 				return InsuranceType.MEDICARE_TELMED;
 		}

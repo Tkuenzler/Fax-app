@@ -58,6 +58,8 @@ public enum Drug {
 	Vancomycin("Vancomycin 250 mg Capsule","180 Capsules","Fill basin with warm water add 6 cups into basin, wait 1 hour for capsule.","ANTIFUNGAL",new String[] {}),
 	Gentamicin("Gentamicin 0.1% Cream","1800 Grams","Add 30g to foot bath and soak affected area for 15-20 minutes 1-2 times daily.","ANTIFUNGAL",new String[] {}),
 	
+	//Derm for head
+	CalcipotreneSolution("Calcipotriene Scalp Solution 0.005%","180 ML","Apply 3 drops twice daily to affected area.","PSORIASIS",new String[] {"0115147555"}),
 	//Constipation
 	Lactulose("Lactulose","60 Packets","Dissolve a 10 gram packet in 4 oz of water 2 times daily.","CONSTIPATION",new String[] {"69067001015"}),
 	//Dietary

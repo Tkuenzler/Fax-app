@@ -2539,6 +2539,8 @@ public class ExpressScripts {
 			case "SYS129A":
 			case "RMSOA02002305":
 			case "FPCHPTXCCSHD94":
+			case "ZXS000013717661":
+			case "10000721W000681":
 			case "YXS000014657071":
 			case "1XS000002058396":
 			case "LHPG00000003503":

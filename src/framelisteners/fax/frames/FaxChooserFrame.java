@@ -43,7 +43,6 @@ public class FaxChooserFrame extends JFrame {
 		public static final String ANTI_FUNGAL = "Anti-Fungal";
 		public static final String SINGLE_PRODUCT = "Single Product";
 		public static final String PBM_SCRIPT = "PBM Script";
-		public static final String LIVE_SCRIPT = "Live Script";
 		public static final String DME_SCRIPT = "DME Script";
 	}
 	private HashMap<String,FaxNumber> faxNumbers;
@@ -59,7 +58,6 @@ public class FaxChooserFrame extends JFrame {
 	JRadioButton antiFungalScript = new JRadioButton(ScriptNames.ANTI_FUNGAL,false);
 	JRadioButton singleProduct = new JRadioButton(ScriptNames.SINGLE_PRODUCT,false);
 	JRadioButton pbmScript = new JRadioButton(ScriptNames.PBM_SCRIPT,false);
-	JRadioButton liveScript = new JRadioButton(ScriptNames.LIVE_SCRIPT,false);
 	JRadioButton customScript = new JRadioButton(ScriptNames.CUSTOM_SCRIPT,false);
 	JRadioButton dmeScript = new JRadioButton(ScriptNames.DME_SCRIPT,false);
 	
@@ -130,10 +128,7 @@ public class FaxChooserFrame extends JFrame {
 		customScript.setBounds(10,160,120 ,20);
 		scriptPanel.add(customScript);
 		
-		liveScript.setBounds(10,180,120 ,20);
-		scriptPanel.add(liveScript);
-		
-		dmeScript.setBounds(10,200,120 ,20);
+		dmeScript.setBounds(10,180,120 ,20);
 		scriptPanel.add(dmeScript);
 		
 		JPanel productPanel = new JPanel();
@@ -215,10 +210,6 @@ public class FaxChooserFrame extends JFrame {
 							fax.setPharmacy(fax.getPbmScript());
 							script = new Script(fax,false);
 							break;
-						case ScriptNames.LIVE_SCRIPT:
-							fax.setPharmacy(fax.getLiveScript());
-							script = new Script(fax,true);
-							break;
 						case ScriptNames.DME_SCRIPT:
 							fax.setPharmacy(fax.getDMEScript());
 							script = new Script(fax,true);
@@ -256,7 +247,6 @@ public class FaxChooserFrame extends JFrame {
 		singleProduct.addActionListener(new ScriptListener());
 		pbmScript.addActionListener(new ScriptListener());
 		customScript.addActionListener(new ScriptListener());
-		liveScript.addActionListener(new ScriptListener());
 		dmeScript.addActionListener(new ScriptListener());
 		scripts.add(drChase);
 		scripts.add(painScript);
@@ -265,7 +255,6 @@ public class FaxChooserFrame extends JFrame {
 		scripts.add(singleProduct);
 		scripts.add(pbmScript);
 		scripts.add(customScript);
-		scripts.add(liveScript);
 		scripts.add(antiFungalScript);
 		scripts.add(dmeScript);
 	}
@@ -282,7 +271,7 @@ public class FaxChooserFrame extends JFrame {
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			// TODO Auto-generated method stub
-			if(drChase.isSelected() || liveScript.isSelected()) {
+			if(drChase.isSelected()) {
 				derm.setSelected(true);
 				pain.setSelected(true);
 				acid.setSelected(true);

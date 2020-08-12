@@ -14,7 +14,9 @@ public class PrimeTherapeutics {
 				case "PDPNC":
 				case "PDPNCG":
 					return InsuranceType.PDP;
-				default: return InsuranceType.PRIVATE_VERIFIED;
+				default: 
+					return InsuranceType.PRIVATE_VERIFIED;
+				
 			}
 		}
 		if(record.getBin().equalsIgnoreCase("610455")) {
@@ -30,6 +32,7 @@ public class PrimeTherapeutics {
 				case "CAPPDP":
 				case "CAPPDPG":
 					return InsuranceType.MEDICARE_COMMERCIAL;
+				case "HMHS":
 				default:
 					return InsuranceType.PRIVATE_VERIFIED;
 			}
@@ -84,9 +87,9 @@ public class PrimeTherapeutics {
 				case "FN3204700101":
 				case "FN7815500201":
 				case "FN9880102801":
-					return InsuranceType.PRIVATE_VERIFIED;
+					return InsuranceType.PRIVATE_NO_TELMED;
 				default:
-					return InsuranceType.PRIVATE_UNKNOWN;
+					return InsuranceType.PRIVATE_NO_TELMED;
 			}
 			switch(record.getPcn()) {
 				case "BCTX":
@@ -108,7 +111,6 @@ public class PrimeTherapeutics {
 					return InsuranceType.MEDICARE_COMMERCIAL;
 				case "PDPTX":
 				case "PDPNJ":
-				
 				case "PDPIL": 
 					return InsuranceType.PDP;
 				case "SALUD":

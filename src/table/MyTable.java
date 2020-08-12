@@ -51,6 +51,7 @@ import jxl.write.biff.RowsExceededException;
 import objects.Emdeon;
 import objects.Insurance;
 import objects.InsuranceInfo;
+import objects.PharmacyMap;
 import source.CSVFrame;
 import source.JSONParser;
 import subframes.FileChooser;
@@ -1003,12 +1004,25 @@ public class MyTable extends JTable	{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			int[] rows = getSelectedRows();
+			ArrayList<PharmacyMap> roadMap = new ArrayList<PharmacyMap>();
 			RoadMapClient client = new RoadMapClient();
-			for(int row: rows) {
-				Record record = CSVFrame.model.getRowAt(row);
-				record.setPharmacy(Pharmacy.GetPharmacy(client,record));
+			/*
+			 * Get all pharmacy names
+			 */
+			String[] pharmacies = client.getPharmacies();
+			/*
+			 * Create and populate all pharmacies
+			 */
+			for(String pharmacy: pharmacies) {
+				PharmacyMap map = client.getPharmacy(pharmacy);
+				client.LoadAllStates(map);
+				roadMap.add(map);
 			}
 			client.close();
+			for(int row: rows) {
+				Record record = CSVFrame.model.getRowAt(row);
+				record.setPharmacy(Pharmacy.GetPharmacy(roadMap, record));
+			}
 		}
 	}
 	private class EmdeonRecord implements ActionListener {

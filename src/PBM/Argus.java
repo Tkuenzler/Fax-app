@@ -13,8 +13,9 @@ public class Argus {
 			case "01910000":
 				return InsuranceType.PRIVATE_VERIFIED;
 			case "CIHSCARE":
-			case "CIMCARE":
 				return InsuranceType.MEDICARE_COMMERCIAL;
+			case "CIMCARE":
+				return InsuranceType.MEDICARE_TELMED;
 			case "07630000":
 				return InsuranceType.MEDICARE_COMMERCIAL;
 			case "01420000":

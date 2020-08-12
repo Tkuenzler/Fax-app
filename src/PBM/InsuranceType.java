@@ -1,21 +1,13 @@
 package PBM;
 
 public class InsuranceType {
-	//DESCRIPTIONS
 	public class Type {
-		public static final String PRIVATE = "Private Insurance";
-		public static final String PROVIDED_BY_JOB = "Provided by Job";
-		public static final String MARKETPLACE = "Marketplace";
-		public static final String MEDICARE = "Medicare";
-		public static final String MEDICAID = "Medicaid";
-		public static final String TRICARE = "Tricare";
-		
-		public static final int MEDICAID_INSURANCE = -1;
-		public static final int MEDICARE_INSURANCE = 1;
-		public static final int PRIVATE_INSURANCE = 2;
+			public static final int MEDICAID_INSURANCE = 1;
+			public static final int TRICARE_INSURANCE = 2;
+			public static final int MEDICARE_INSURANCE = 3;
+			public static final int PRIVATE_INSURANCE = 4;
+			public static final int NOT_FOUND_INSRUACE = 5;
 	}
-	
-	
 	public static final String PRIVATE_VERIFIED = "VALIDATED / VERIFIED";
 	public static final String PRIVATE_UNKNOWN = "VALIDATED / UNKNOWN";
 	public static final String PRIVATE_NO_TELMED = "VALIDATED / NO TELMED";

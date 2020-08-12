@@ -23,10 +23,8 @@ public class FaxProperties {
 	private final String SCAR_SCRIPT = "scar_script";
 	private final String ANTI_FUNGAL_SCRIPT = "anti_fungal_script";
 	private final String PBM_SCRIPT = "pbm_script";
-	private final String LIVE_SCRIPT = "live_script";
 	private final String DME_SCRIPT = "dme_script";
 	private final String SAVE_LOCATION = "save";
-	private final String COMPANY = "company";
 	private final String PAIN = "pain";
 	private final String DERM = "derm";
 	private final String PHARMACY = "pharmacy";
@@ -48,11 +46,6 @@ public class FaxProperties {
 			if(!file.exists())
 				file.createNewFile();
 			out = new FileOutputStream(fileName);
-		
-			if(prop.containsKey(LIVE_SCRIPT))
-				prop.setProperty(LIVE_SCRIPT,fax.getLiveScript());
-			else
-				prop.put(LIVE_SCRIPT, fax.getLiveScript());
 			
 			if(prop.containsKey(DR_CHASE_SCRRIPT))
 				prop.setProperty(DR_CHASE_SCRRIPT,fax.getDrChaseScript());
@@ -100,11 +93,6 @@ public class FaxProperties {
 				prop.setProperty(PBM_SCRIPT,fax.getPbmScript());
 			else
 				prop.put(PBM_SCRIPT,fax.getPbmScript());
-			
-			if(prop.containsKey(COMPANY))
-				prop.setProperty(COMPANY, fax.getCompany());
-			else
-				prop.put(COMPANY, fax.getCompany());
 			
 			if(prop.containsKey(SAVE_LOCATION))
 				prop.setProperty(SAVE_LOCATION,fax.getSaveLocation());
@@ -161,8 +149,6 @@ public class FaxProperties {
 			fax.setSaveLocation(prop.getProperty(SAVE_LOCATION));
 			fax.setSingleProductScript(prop.getProperty(SINGLE_PRODUCT_SCRIPT));
 			fax.setPbmScript(prop.getProperty(PBM_SCRIPT));
-			fax.setLiveScript(prop.getProperty(LIVE_SCRIPT));
-			fax.setCompany(prop.getProperty(COMPANY));
 			fax.setPain(Boolean.parseBoolean(prop.getProperty(PAIN)));
 			fax.setDerm(Boolean.parseBoolean(prop.getProperty(DERM)));
 			fax.setPharmacy((prop.getProperty(PHARMACY)));

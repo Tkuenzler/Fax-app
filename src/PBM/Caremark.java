@@ -24,17 +24,17 @@ public class Caremark {
 			}
 			case "MEDDADV":
 			{
-				System.out.println("MEDDADV");
 				if(record.getGrp().equalsIgnoreCase("RXCVSD"))
 					return InsuranceType.PDP;
 				else if(record.getGrp().equalsIgnoreCase("788257"))
 					return InsuranceType.MEDICARE_COMMERCIAL;
 				switch(record.getGrp()) {
+					case "RX6270":
+						return InsuranceType.MEDICARE_TELMED;
 					case "RX8915":
 					case "RX8905":
 					case "RX8122":
 					case "RX8121":
-					case "RX6270":
 					case "RX5060":
 					case "RX5045":
 					case "RX5055":

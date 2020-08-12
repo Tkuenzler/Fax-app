@@ -15,6 +15,7 @@ import javax.swing.JOptionPane;
 import org.json.JSONException;
 import Info.RoadMap;
 import PBM.InsuranceType;
+import objects.PharmacyMap;
 import source.LoadInfo;
 import table.Record;
 
@@ -219,34 +220,7 @@ public class RoadMapClient {
 		}
 		return null;
 	}
-	public PharmacyOdds[] GetNotFoundPharmacyList() {
-		String sql = "SELECT * FROM `"+roadMap+"` WHERE `FAX_CHASE` > 0 AND `NOT_FOUND` > 0";
-		Statement stmt = null;
-		ResultSet set = null;
-		try {
-			stmt = connect.createStatement();
-			set = stmt.executeQuery(sql);
-			List<PharmacyOdds> list = new ArrayList<PharmacyOdds>();
-			while(set.next()) {
-				list.add(new PharmacyOdds(set.getString("PHARMACY"),set.getDouble("EXTRA")));
-			}
-			if(list.size()>0)
-				return list.toArray(new PharmacyOdds[list.size()]);
-			else 
-				return null;
-		} catch(SQLException ex) {
-				ex.printStackTrace();
-				return null;
-		} finally {
-			try {
-				if(set!=null) set.close();
-				if(stmt!=null) stmt.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+	
 	public String[] getPbms() {
 		String sql = "SELECT * FROM `BLANK_ROADMAP` ORDER BY `State` ASC";
 		Statement stmt = null;
@@ -301,35 +275,7 @@ public class RoadMapClient {
 		}
 	}
 	public String[] getPharmacies() {
-		String sql = "SELECT * FROM `"+roadMap+"`";
-		Statement stmt = null;
-		ResultSet set = null;
-		try {
-			stmt = connect.createStatement();
-			set = stmt.executeQuery(sql);
-			List<String> list = new ArrayList<String>();
-			list.add("All");
-			list.add("No Home");
-			list.add("Medicaid");
-			list.add("Not Found");
-			while(set.next())
-				list.add(set.getString("PHARMACY"));
-			return list.toArray(new String[list.size()]);
-		}catch(SQLException e) {
-			e.printStackTrace();
-			return null;
-		} finally {
-			try {
-				if(set!=null) set.close();
-				if(stmt!=null) stmt.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
-	public String[] getWorkingPharmacies() {
-		String sql = "SELECT * FROM `"+roadMap+"`";
+		String sql = "SELECT * FROM `"+roadMap+"` WHERE `FAX_CHASE` = 1";
 		Statement stmt = null;
 		ResultSet set = null;
 		try {
@@ -413,11 +359,11 @@ public class RoadMapClient {
 				boolean commercial = set.getInt("COMMERCIAL_TIER")>=1;
 				boolean medicare = set.getInt("MEDICARE_TIER")>=1;
 				if(commercial) 
-					builder.append("`TYPE` = '"+InsuranceType.Type.PRIVATE+"' OR `TYPE` = '"+InsuranceType.Type.MARKETPLACE+"' OR `TYPE` = '"+InsuranceType.Type.MARKETPLACE+"'");
+					builder.append("`TYPE` = 'Private Insurance' OR `TYPE` = 'Marketplace' OR `TYPE` = 'Provided by Job'");
 				if(medicare) {
 					if(commercial)
 						builder.append(" OR ");
-					builder.append("`TYPE` = '"+InsuranceType.Type.MEDICARE+"' OR `TYPE` = ''");
+					builder.append("`TYPE` = 'Medicare' OR `TYPE` = ''");
 				}
 			}
 			builder.append(")");
@@ -463,6 +409,43 @@ public class RoadMapClient {
 		String[] pharmacies = getPharmacies();
 		String pharmacy = (String) JOptionPane.showInputDialog(new JFrame(), "Select a Pharmacy", "Pharmacies:", JOptionPane.QUESTION_MESSAGE, null, pharmacies, pharmacies[0]);
 		return pharmacy;
+	}
+	public PharmacyMap getPharmacy(String pharmacy) {
+		String sql = "SELECT * FROM `"+roadMap+"` WHERE `PHARMACY` = '"+pharmacy+"'";
+		Statement stmt = null;
+		ResultSet set = null;
+		try {
+			stmt = connect.createStatement();
+			set = stmt.executeQuery(sql);
+			if(set.next()) 
+				return new PharmacyMap(set);
+			else
+				return null;
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(stmt!=null)stmt.close();
+			} catch(SQLException ex) {
+				
+			} 
+		}
+	}
+	public void LoadAllStates(PharmacyMap map) {
+		String sql = "SELECT * FROM `"+map.getPharmacyName()+"`";
+		Statement stmt = null;
+		ResultSet set = null;
+		try {
+			stmt = connect.createStatement();
+			set = stmt.executeQuery(sql);
+			while(set.next()) {
+				map.addState(new objects.RoadMap(map.getPharmacyName(),set));
+			}
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+		}
 	}
 	public String GetRoadMap(String pharmacy) {
 		String sql = "SELECT * FROM `"+pharmacy+"` ORDER BY `State` ASC";
@@ -835,38 +818,7 @@ public class RoadMapClient {
 			}
 		}
 	}
-	public PharmacyOdds[] GetInStatePharmacies(Record record) {
-		int type = PBM.InsuranceFilter.GetInsuranceType(record);
-		String sql = null;
-		if(type==PBM.InsuranceType.Type.MEDICARE_INSURANCE) 
-			sql =  "SELECT * FROM `"+this.roadMap+"` WHERE `State`  = '"+record.getState()+"' AND `MEDICARE_TIER` >= 1 AND `FAX_CHASE` = 1";
-		else if(type==PBM.InsuranceType.Type.PRIVATE_INSURANCE) 
-			sql =  "SELECT * FROM `"+this.roadMap+"` WHERE `State`  = '"+record.getState()+"' AND `COMMERCIAL_TIER` >= 1 AND `FAX_CHASE` = 1";
-		Statement stmt = null;
-		ResultSet set = null;
-		try {
-			stmt = connect.createStatement();
-			set = stmt.executeQuery(sql);
-			List<PharmacyOdds> list = new ArrayList<PharmacyOdds>();
-			while(set.next())
-				list.add(new PharmacyOdds(set.getString("PHARMACY"),set.getDouble("EXTRA")));
-			if(list.size()>0)
-				return list.toArray(new PharmacyOdds[list.size()]);
-			else 
-				return null;
-		} catch(SQLException ex) {
-				ex.printStackTrace();
-				return null;
-		} finally {
-			try {
-				if(set!=null) set.close();
-				if(stmt!=null) stmt.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+	
 	public boolean CanTakeNotFound(Record record,String pharmacy) {
 		String sql = "SELECT * FROM `"+pharmacy+"` WHERE `State` = '"+record.getState()+"' AND `Not Found` >= 1";
 		Statement stmt = null;
@@ -891,39 +843,7 @@ public class RoadMapClient {
 			}
 		}
 	}
-	public PharmacyOdds[] GetPharmacyList(Record record) {
-		int type = PBM.InsuranceFilter.GetInsuranceType(record);
-		String sql = null;
-		if(type==PBM.InsuranceType.Type.MEDICARE_INSURANCE) 
-			sql =  "SELECT * FROM `"+this.roadMap+"` WHERE `MEDICARE_TIER` >= 1 AND `FAX_CHASE` = 1";
-		else if(type==PBM.InsuranceType.Type.PRIVATE_INSURANCE) 
-			sql =  "SELECT * FROM `"+this.roadMap+"` WHERE `COMMERCIAL_TIER` >= 1 AND `FAX_CHASE` = 1";
-		Statement stmt = null;
-		ResultSet set = null;
-		try {
-			stmt = connect.createStatement();
-			set = stmt.executeQuery(sql);
-			List<PharmacyOdds> list = new ArrayList<PharmacyOdds>();
-			while(set.next()) {
-				list.add(new PharmacyOdds(set.getString("PHARMACY"),set.getDouble("EXTRA")));
-			}
-			if(list.size()>0)
-				return list.toArray(new PharmacyOdds[list.size()]);
-			else 
-				return null;
-		} catch(SQLException ex) {
-				ex.printStackTrace();
-				return null;
-		} finally {
-			try {
-				if(set!=null) set.close();
-				if(stmt!=null) stmt.close();
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-	}
+	
 	public boolean CanPharmacyTake(Record record,String pharmacy) {
 		String sql = "SELECT * FROM `"+pharmacy+"` WHERE `State` = '"+record.getState()+"' AND `"+record.getCarrier()+"` >= 1";
 		Statement stmt = null;
@@ -954,29 +874,6 @@ public class RoadMapClient {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
-	}
-	public class PharmacyOdds {
-		String name;
-		double extra,odds;
-		public PharmacyOdds(String name,double extra) {
-			this.name = name;
-			this.extra = extra;
-		}
-		public String getName() {
-			return name;
-		}
-		public void setOdds(double odds) {
-			if(this.extra==0)
-				this.odds = odds;
-			else
-				this.odds = extra/odds;
-		}
-		public double getOdds() {
-			return odds;
-		}
-		public double getExtra() {
-			return extra;
 		}
 	}
 }

@@ -14,7 +14,6 @@ public class OptumRx {
 			case "WEISRX":
 			case "LABCORP":
 			case "DENSO":
-			case "PSI6238":
 			case "MSG":
 			case "AHCRX":
 			case "ATLUFCW":
@@ -46,6 +45,7 @@ public class OptumRx {
 			case "RXPAPER":
 			case "CURX":
 			case "PSI4005":
+			case "PSI6238":
 				return InsuranceType.PRIVATE_VERIFIED;
 			case "ACUOHMMP":
 				return InsuranceType.MEDICARE_COMMERCIAL;
@@ -61,18 +61,20 @@ public class OptumRx {
 	}
 	private static String Filter610097(Record record) {
 		switch(record.getGrp()) {
+			case "COS":
+				return InsuranceType.MEDICARE_TELMED;
 			case "PDPIND":
 			case "MPDCSP":
 				return InsuranceType.MEDICARE_TELMED;
 			default:
-				return InsuranceType.MEDICARE_COMMERCIAL;
+				return InsuranceType.MEDICARE_TELMED;
 		}
 	}
 	private static String FilterByPcn(Record record) {
 		switch(record.getPcn()) {
 			case "01960000":
 			case "02330000":
-				return InsuranceType.PRIVATE_VERIFIED;
+				return InsuranceType.PRIVATE_NO_TELMED;
 			default:
 				return InsuranceType.UNKNOWN_PBM;
 		}

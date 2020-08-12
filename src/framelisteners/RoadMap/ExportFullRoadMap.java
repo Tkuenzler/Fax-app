@@ -19,7 +19,7 @@ public class ExportFullRoadMap implements ActionListener {
 	public void actionPerformed(ActionEvent arg0) {
 		File file = FileChooser.SaveCsvFile();
 		roadmap = new RoadMapClient();
-		String[] pharmacies = roadmap.getWorkingPharmacies();
+		String[] pharmacies = roadmap.getPharmacies();
 		String[] pbms = roadmap.getPbms();
 		String[] states = roadmap.get50States();
 		BufferedWriter bw = null;

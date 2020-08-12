@@ -2,7 +2,7 @@ package objects;
 
 public class Fax {
 	String saveLocation,notes;
-	String drChaseScript,customScript,liveScript;
+	String drChaseScript,customScript;
 	String painScript,skinScript,scarScript;
 	String pbmScript,dmeScript,singleProductScript,antiFungalScript;
 	boolean pain,derm,acid,vitamins;
@@ -36,18 +36,7 @@ public class Fax {
 		else
 			return dmeScript;
 	}
-	public String getLiveScript() {
-		if(this.liveScript==null)
-			return "";
-		else
-			return liveScript;
-	}
-	public void setLiveScript(String liveScript) {
-		if(liveScript==null)
-			this.liveScript = "";
-		else
-			this.liveScript = liveScript;
-	}
+	
 	public String getCustomScript() {
 		if(this.customScript==null)
 			return "";

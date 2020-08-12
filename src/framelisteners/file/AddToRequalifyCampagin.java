@@ -39,7 +39,7 @@ public class AddToRequalifyCampagin implements ActionListener {
 			bw = new BufferedWriter(new FileWriter(file));
 			marketingName = LoadInfo.getAppName();
 			RoadMapClient roadMap = new RoadMapClient();
-			pharmacies = roadMap.getWorkingPharmacies();
+			pharmacies = roadMap.getPharmacies();
 			roadMap.close();
 			for(Record record: CSVFrame.model.data) {
 				if(!validPharmacy(record.getPharmacy())) {

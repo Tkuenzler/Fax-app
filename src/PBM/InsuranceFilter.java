@@ -3,7 +3,6 @@ package PBM;
 import table.Record;
 
 public class InsuranceFilter {
-	
 	public static String Filter(Record record) {
 		String insurance = null;
 		switch(record.getBin()) {
@@ -28,9 +27,10 @@ public class InsuranceFilter {
 				break;
 			//Anthem
 			case "020099":
-			case "020115":
 				insurance = Anthem.Filter(record);
 				break;
+			case "020115":
+				return InsuranceType.MEDICARE_TELMED;
 			case "610084":
 				insurance =  InsuranceType.MEDICAID;
 				break;
@@ -83,8 +83,9 @@ public class InsuranceFilter {
 				insurance =  Medimpact.Filter(record);
 				break;
 			//OptumRx
+			case "011172":
 			case "011842":
-				insurance =  InsuranceType.MEDICARE_COMMERCIAL;
+				insurance =  InsuranceType.OUT_OF_NETWORK;
 				break;
 			case "610279":
 				insurance =  InsuranceType.PRIVATE_NO_TELMED;
@@ -98,7 +99,6 @@ public class InsuranceFilter {
 				break;
 			//Humana
 			case "015581":
-				return InsuranceType.MEDICARE_TELMED;
 			case "015599":
 				insurance =  InsuranceType.MEDICARE_TELMED;
 				break;
@@ -179,8 +179,9 @@ public class InsuranceFilter {
 				return InsuranceType.Type.MEDICARE_INSURANCE;
 			case InsuranceType.MOLINA:
 			case InsuranceType.MEDICAID:
-			case InsuranceType.TRICARE:
 				return InsuranceType.Type.MEDICAID_INSURANCE;
+			case InsuranceType.TRICARE:
+				return InsuranceType.Type.TRICARE_INSURANCE;
 			default:
 				return 0;
 		}

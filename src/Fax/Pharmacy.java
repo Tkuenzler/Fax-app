@@ -3,93 +3,173 @@ package Fax;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Random;
-
-import Clients.RoadMapClient;
-import Clients.RoadMapClient.PharmacyOdds;
-import source.CSVFrame;
+import PBM.InsuranceFilter;
+import PBM.InsuranceType;
+import objects.PharmacyMap;
+import objects.PharmacyOdds;
+import objects.RoadMap;
 import table.Record;
-
 public class Pharmacy {
-	public static String GetPharmacy(RoadMapClient client,Record record) {
-		if(EmdeonStatus.IsNotFoundStatus(record.getStatus())) 
-			return NotFoundPharmacy(client,record);
-		else if(client.InvalidPBM(record))
-			return NotFoundPharmacy(client,record);
-		int type = PBM.InsuranceFilter.GetInsuranceType(record);
-		if(type==PBM.InsuranceType.Type.MEDICAID_INSURANCE) 
-				return "Medicaid";
-		PharmacyOdds[] pharmacies = client.GetInStatePharmacies(record);
-		if(pharmacies!=null) {
-			String pharmacy = GetPharmacyName(record,pharmacies,client);
-			if(!pharmacy.equalsIgnoreCase("No Home")) {
-				return pharmacy;
-			}
-		}
-		pharmacies = client.GetPharmacyList(record);
-		return GetPharmacyName(record,pharmacies,client);
-	}
-	private static String NotFoundPharmacy(RoadMapClient client,Record record) {
-		PharmacyOdds[] pharmacies = client.GetNotFoundPharmacyList();
-		if(pharmacies==null)
-			return "Not Found";
-		ArrayList<PharmacyOdds> pharmacies_that_can_take = new ArrayList<PharmacyOdds>();
-		for(PharmacyOdds pharmacy: pharmacies) {
-			if(client.CanTakeNotFound(record, pharmacy.getName())) {
-				pharmacies_that_can_take.add(pharmacy);
-			}
-		}
-		//Check if its a No Home or only 1 pharmacy available
-		if(pharmacies_that_can_take.size()==0)
-			return "Not Found";
-		else if(pharmacies_that_can_take.size()==1)
-			return pharmacies_that_can_take.get(0).getName();
-				
-		//Set The Odds 
-		for(int i = 0;i<pharmacies_that_can_take.size();i++) {
-			PharmacyOdds pharmacy = pharmacies_that_can_take.get(i);
-			double odds = 1/(double)pharmacies_that_can_take.size();
-			pharmacy.setOdds(odds);
-		}		
-		//Add records to the pot and draw 1
-		ArrayList<PharmacyOdds> oddsList = new ArrayList<PharmacyOdds>();
-		for(PharmacyOdds pharmacy: pharmacies_that_can_take) {
-			int number = (int)(pharmacy.getOdds()*100);
-			for(int x = 0;x<number;x++) {
-				oddsList.add(pharmacy);
-			}
-		}
-		Collections.shuffle(oddsList); 
-		Random rand = new Random();
-		return oddsList.get(rand.nextInt(oddsList.size())).getName();		
-	}
-	private static String GetPharmacyName(Record record,PharmacyOdds[] pharmacies,RoadMapClient client) {
-		//Get Pharmacies that can take record
-		record.printRecord();
-		ArrayList<PharmacyOdds> pharmacies_that_can_take = new ArrayList<PharmacyOdds>();
-		for(PharmacyOdds pharmacy: pharmacies) {
-			if(client.CanPharmacyTake(record, pharmacy.getName())) {
-				pharmacies_that_can_take.add(pharmacy);
+	
+	
+	public static String GetPharmacy(ArrayList<PharmacyMap> roadMap,Record record) {
+		ArrayList<PharmacyMap> pharmacies_that_can_take = new ArrayList<PharmacyMap>();
+		ArrayList<PharmacyOdds> odds = new ArrayList<PharmacyOdds>();
+		int insurance_type = InsuranceFilter.GetInsuranceType(record);
+		System.out.println(insurance_type);
+		/*
+		 * First we add all pharmacies that can take a particular insurance type
+		 */
+		for(PharmacyMap pharmacy: roadMap) {
+			switch(insurance_type) {
+				case InsuranceType.Type.PRIVATE_INSURANCE:
+					if(pharmacy.canTakePrivate())
+						pharmacies_that_can_take.add(pharmacy);
+					break;
+				case InsuranceType.Type.MEDICARE_INSURANCE:
+					if(pharmacy.canTakeMedicare())
+						pharmacies_that_can_take.add(pharmacy);
+					break;
+				case InsuranceType.Type.NOT_FOUND_INSRUACE:
+					if(pharmacy.canTakeNotFound())
+						pharmacies_that_can_take.add(pharmacy);
+					break;
+				case InsuranceType.Type.TRICARE_INSURANCE:
+					if(pharmacy.canTakeTricare()) {
+						System.out.println(pharmacy.getPharmacyName());
+						pharmacies_that_can_take.add(pharmacy);
+					}
+					break;
+				case InsuranceType.Type.MEDICAID_INSURANCE:
+					return "Medicaid";
+				default:
+					continue;
 			}
 		}
 		if(pharmacies_that_can_take.size()==0)
 			return "No Home";
-		else if(pharmacies_that_can_take.size()==1)
-			return pharmacies_that_can_take.get(0).getName();
-		//Set The Odds and get total
-		for(int i = 0;i<pharmacies_that_can_take.size();i++) {
-			PharmacyOdds pharmacy = pharmacies_that_can_take.get(i);
-			double odds = 1/(double)pharmacies_that_can_take.size();
-			pharmacy.setOdds(odds);
+		/*
+		 * Then we check if there is a pharmacy in the same state that can take the insurance
+		 */
+		for(PharmacyMap pharmacy: pharmacies_that_can_take) {
+			if(pharmacy.isInSameState(record.getState()))
+				if(CheckRoadMap(record,insurance_type,pharmacy)) 
+					odds.add( new PharmacyOdds(pharmacy.getPharmacyName(),pharmacy.getExtra()));
+				
 		}
-		ArrayList<PharmacyOdds> oddsList = new ArrayList<PharmacyOdds>();
-		for(PharmacyOdds pharmacy: pharmacies_that_can_take) {
+		if(odds.size()>0)
+			return GetPharmacyName(odds);
+		/*
+		 * 
+		 */
+		for(PharmacyMap pharmacy: pharmacies_that_can_take) {
+			if(CheckRoadMap(record,insurance_type,pharmacy)) 
+				odds.add(new PharmacyOdds(pharmacy.getPharmacyName(),pharmacy.getExtra()));
+		}
+		if(odds.size()>0)
+			return GetPharmacyName(odds);
+		else
+			return "No Home";
+	}
+	private static boolean CheckRoadMap(Record record,int insurance_type,PharmacyMap pharmacy) {
+		RoadMap map = pharmacy.getRoadMap(record.getState());
+		System.out.println("Checking type:"+insurance_type+" Pharmacy: "+pharmacy);
+		if(map==null)
+			return false;
+		switch(record.getCarrier()) {
+			case RoadMap.AETNA:	
+				if(map.canTake(record,insurance_type,map.getAetna()))
+					return true;
+				else
+					return false;
+			case RoadMap.ANTHEM:
+				if(map.canTake(record,insurance_type,map.getAnthem()))
+					return true;
+				else
+					return false;
+			case RoadMap.ARGUS:
+				if(map.canTake(record,insurance_type,map.getArgus()))
+					return true;
+				else
+					return false;
+			case RoadMap.CAREMARK:
+				if(map.canTake(record,insurance_type,map.getCaremark()))
+					return true;
+				else
+					return false;
+			case RoadMap.CATALYST_RX:
+				if(map.canTake(record,insurance_type,map.getCatalyst()))
+					return true;
+				else
+					return false;
+			case RoadMap.CATAMARAN:
+				if(map.canTake(record,insurance_type,map.getCatamaran()))
+					return true;
+				else
+					return false;
+			case RoadMap.CIGNA:
+				if(map.canTake(record,insurance_type,map.getCigna()))
+					return true;
+				else
+					return false;
+			case RoadMap.ENVISION:
+				if(map.canTake(record,insurance_type,map.getEnvision()))
+					return true;
+				else
+					return false;
+			case RoadMap.EXPRESS_SCRIPTS:
+				System.out.println("ESI: "+map.getExpressScripts());
+				if(map.canTake(record,insurance_type,map.getExpressScripts()))
+					return true;
+				else
+					return false;
+			case RoadMap.HUMANA:
+				if(map.canTake(record,insurance_type,map.getHumana()))
+					return true;
+				else
+					return false;
+			case RoadMap.MEDIMPACT:
+				if(map.canTake(record,insurance_type,map.getMedimpact()))
+					return true;
+				else
+					return false;
+			case RoadMap.NAVITUS:
+				if(map.canTake(record,insurance_type,map.getNavitus()))
+					return true;
+				else
+					return false;
+			case RoadMap.NOT_FOUND:
+				if(map.canTake(record,insurance_type,map.getNotFound()))
+					return true;
+				else
+					return false;
+			case RoadMap.OPTUM_RX:
+				if(map.canTake(record,insurance_type,map.getOptumRx()))
+					return true;
+				else
+					return false;
+			case RoadMap.PRIME_THERAPEUTICS:
+				if(map.canTake(record,insurance_type,map.getPrimeTherapeutics()))
+					return true;
+				else
+					return false;
+			default:
+				if(map.canTake(record,insurance_type,map.getNotFound()))
+					return true;
+				else
+					return false;
+	}
+	}
+	private static String GetPharmacyName(ArrayList<PharmacyOdds> list) {
+		ArrayList<PharmacyOdds> temp = new ArrayList<PharmacyOdds>();
+		for(PharmacyOdds pharmacy: list) {
 			int number = (int)(pharmacy.getOdds()*100);
 			for(int x = 0;x<number;x++) {
-				oddsList.add(pharmacy);
+				temp.add(pharmacy);
 			}
 		}
-		Collections.shuffle(oddsList); 
+		Collections.shuffle(temp); 
 		Random rand = new Random();
-		return oddsList.get(rand.nextInt(oddsList.size())).getName();		
+		return temp.get(rand.nextInt(temp.size())).getName();
 	}
 }

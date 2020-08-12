@@ -65,10 +65,6 @@ public class FaxClientFrame extends JFrame {
 		this.data = data;
 		this.max = this.data.size();
 		setUp();
-		if(fax.getPharmacy().equalsIgnoreCase(fax.getLiveScript())) {
-			insuranceData = new LoadData();
-			insuranceData.GetData(insuranceData.getList());
-		}
 		if(isSingleScript) {
 			insuranceData = new LoadData();
 			insuranceData.GetData(insuranceData.getList());
@@ -479,51 +475,26 @@ public class FaxClientFrame extends JFrame {
 		}
 		//PBM
 		else if(fax.getPharmacy().equalsIgnoreCase(fax.getPbmScript())) {
-			script.LoadNewScript(GetPBMScript(fax,record));
+			int type = InsuranceFilter.GetInsuranceType(record);
+			if(type==InsuranceType.Type.PRIVATE_INSURANCE || type==InsuranceType.Type.MEDICAID_INSURANCE)  {
+				script.LoadNewScript(fax.getDrChaseScript());
+				
+			}
+			else if(type==InsuranceType.Type.MEDICARE_INSURANCE) {
+				String pbmScript = GetPBMScript(fax,record);
+				if(pbmScript==null)
+					script.LoadNewScript(fax.getDrChaseScript());
+				else
+					script.LoadNewScript(pbmScript);
+			}
+			else 
+				script.LoadNewScript(fax.getDrChaseScript());
 			script.PopulateScript(record);
 		}
 		//Anti fungal
 		else if(fax.getPharmacy().equalsIgnoreCase(fax.getAntiFungalScript())) {
 			script.LoadNewScript(fax.getAntiFungalScript());
 			script.PopulateScript(record);
-		}
-		//Live Script
-		else if(fax.getPharmacy().equalsIgnoreCase(fax.getLiveScript())) {
-			int type = InsuranceFilter.GetInsuranceType(record);
-			if(type==InsuranceType.Type.PRIVATE_INSURANCE) {
-				script.LoadNewScript(fax.getDrChaseScript());
-				script.PopulateScript(record);
-				return;
-			}
-			else  {
-				switch(record.getBin()) {
-					case "004336":
-					case "610502":
-					case "610239":
-					case "610591":
-					case "020115":
-					case "015581":
-					case "015599":
-					case "610097":
-						script.LoadNewScript(GetPBMScript(fax,record));
-						script.PopulateScript(record);
-						return;
-				}
-				LoadData data = new LoadData();
-				data.GetData(LoadData.LAKE_IDA_LIST);
-				Drug[] drugs = data.GetDrugs(record);
-				if(drugs!=null) {
-					script.LoadNewScript(fax.getLiveScript());
-					script.SetDrugs(drugs);
-					script.PopulateScript(record);
-					return;
-				}
-				else {
-					script.LoadNewScript(fax.getDrChaseScript());
-					script.PopulateScript(record);
-					return;
-				}
-			}
 		}
 		else  {
 			script.LoadNewScript(fax.getPharmacy());
@@ -551,6 +522,13 @@ public class FaxClientFrame extends JFrame {
 				return folder+"\\"+PBMScript.HUMANA;
 			case "610097":
 				return folder+"\\"+PBMScript.OPTUM_RX;
+			case "610014":
+			case "400023":
+				return folder+"\\"+PBMScript.ESI;
+			case "015574":
+				return folder+"\\"+PBMScript.MEDIMPACT;
+			case "017010":
+				return folder+"\\"+PBMScript.CIGNA;
 			default:
 				return null;
 		}															
@@ -562,6 +540,9 @@ public class FaxClientFrame extends JFrame {
 		public static final String INGENIO_RX = "IngenioRx.pdf";
 		public static final String OPTUM_RX = "OptumRx.pdf";
 		public static final String CASCADE = "Cascade.pdf";
+		public static final String ESI = "ESI.pdf";
+		public static final String MEDIMPACT = "Medimpact.pdf";
+		public static final String CIGNA = "Cigna.pdf";
 	}
 	public class ConnectionDisruptedFrame extends JFrame {
 		public ConnectionDisruptedFrame() {
