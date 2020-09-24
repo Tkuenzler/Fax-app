@@ -24,6 +24,7 @@ public class FaxProperties {
 	private final String ANTI_FUNGAL_SCRIPT = "anti_fungal_script";
 	private final String PBM_SCRIPT = "pbm_script";
 	private final String DME_SCRIPT = "dme_script";
+	private final String COVERED_SCRIPT = "covered_script";
 	private final String SAVE_LOCATION = "save";
 	private final String PAIN = "pain";
 	private final String DERM = "derm";
@@ -46,6 +47,11 @@ public class FaxProperties {
 			if(!file.exists())
 				file.createNewFile();
 			out = new FileOutputStream(fileName);
+			
+			if(prop.containsKey(COVERED_SCRIPT))
+				prop.setProperty(COVERED_SCRIPT,fax.getCoveredScript());
+			else
+				prop.put(COVERED_SCRIPT, fax.getCoveredScript());
 			
 			if(prop.containsKey(DR_CHASE_SCRRIPT))
 				prop.setProperty(DR_CHASE_SCRRIPT,fax.getDrChaseScript());
@@ -142,6 +148,7 @@ public class FaxProperties {
 			fax.setDrChaseScript(prop.getProperty(DR_CHASE_SCRRIPT));
 			fax.setCustomScript(prop.getProperty(CUSTOM_SCRIPT));
 			fax.setDMEScript(prop.getProperty(DME_SCRIPT));
+			fax.setCoveredScript(prop.getProperty(COVERED_SCRIPT));
 			fax.setPainScript(prop.getProperty(PAIN_SCRIPT));
 			fax.setSkinScript(prop.getProperty(SKIN_SCRIPT));
 			fax.setScarScript(prop.getProperty(SCAR_SCRIPT));

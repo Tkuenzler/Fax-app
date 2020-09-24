@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import org.json.JSONException;
 import Info.RoadMap;
+import PBM.InsuranceFilter;
 import PBM.InsuranceType;
 import objects.PharmacyMap;
 import source.LoadInfo;
@@ -282,6 +283,7 @@ public class RoadMapClient {
 			stmt = connect.createStatement();
 			set = stmt.executeQuery(sql);
 			List<String> list = new ArrayList<String>();
+			list.add("All");
 			while(set.next())
 				list.add(set.getString("PHARMACY"));
 			return list.toArray(new String[list.size()]);
@@ -513,7 +515,7 @@ public class RoadMapClient {
 		}
 	}
 	public int isInRoadMap(Record record,String pharmacy) {
-		String sql = "SELECT `"+record.getPBMFromBin(record.getBin())+"` FROM `"+pharmacy+"` WHERE `State` = '"+record.getState()+"'";
+		String sql = "SELECT `"+InsuranceFilter.GetPBMFromBin(record)+"` FROM `"+pharmacy+"` WHERE `State` = '"+record.getState()+"'";
 		int value;
 		ResultSet set = null;
 		Statement stmt  = null;
@@ -521,7 +523,7 @@ public class RoadMapClient {
 			stmt = connect.createStatement();
 			set = stmt.executeQuery(sql);
 			if(set.next()) 
-				value = set.getInt(record.getPBMFromBin(record.getBin()));
+				value = set.getInt(InsuranceFilter.GetPBMFromBin(record));
 			else  
 				return -2;
 			return value;

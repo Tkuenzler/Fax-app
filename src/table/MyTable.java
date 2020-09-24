@@ -36,6 +36,7 @@ import Clients.DatabaseClient;
 import Clients.EmdeonClient;
 import Clients.RoadMapClient;
 import Doctor.Doctor;
+import Fax.Drug;
 import Fax.FaxStatus;
 import Fax.MessageStatus;
 import Fax.Pharmacy;
@@ -186,11 +187,14 @@ public class MyTable extends JTable	{
 		item = new JMenuItem("Check Insurance");
 		item.addActionListener(new CheckInsurance());
 		popupMenu.add(item);
-		setComponentPopupMenu(popupMenu);
 		item = new JMenuItem("Open In Webform");
 		item.addActionListener(new OpenInWebform());
 		popupMenu.add(item);
+		item = new JMenuItem("Set Covered Items");
+		item.addActionListener(new SetCoveredItems());
+		popupMenu.add(item);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+		setComponentPopupMenu(popupMenu);
 	}
 	@Override
 	public void setValueAt(Object data, int row, int column) {
@@ -1023,6 +1027,24 @@ public class MyTable extends JTable	{
 				Record record = CSVFrame.model.getRowAt(row);
 				record.setPharmacy(Pharmacy.GetPharmacy(roadMap, record));
 			}
+		}
+	}
+	private class SetCoveredItems implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			// TODO Auto-generated method stub
+			String coveredMeds = Drug.GetDrugNames();
+			DatabaseClient client = new DatabaseClient(true);
+			int[] rows = getSelectedRows();
+			int count = 0;
+			for(int i: rows) {
+				Record record = CSVFrame.model.getRowAt(i);
+				int value = client.setCoveredItems(record,coveredMeds);
+				if(value==1)
+					count++;
+			}
+			client.close();
+			JOptionPane.showMessageDialog(null, "Succesfully updated "+count+" medications");
 		}
 	}
 	private class EmdeonRecord implements ActionListener {

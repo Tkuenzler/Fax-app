@@ -22,6 +22,7 @@ import table.Record;
 public class Script {
 	String src,category;
 	PDDocument pdfDocument;
+	PDFMergerUtility pdfMerger;
 	public String fileName;
 	Record record;
 	Fax fax;
@@ -75,19 +76,57 @@ public class Script {
 				break;
 			case "Drug 1":
 				if(drug1!=null)
-					acroForm.getField("Drug 1").setValue(drug1.getName()); 
+					acroForm.getField("Drug 1").setValue("Medication:  "+drug1.getName()); 
 				break;
 			case "Drug Qty 1": 
 				if(drug1!=null)
-					acroForm.getField("Drug Qty 1").setValue("Medication:  "+drug1.getQty()); 
+					acroForm.getField("Drug Qty 1").setValue("Dispense:  "+drug1.getQty()); 
 				break;
 			case "Drug Sig 1":
 				if(drug1!=null)
-					acroForm.getField("Drug Sig 1").setValue("Dispense:  "+drug1.getSig()); 
+					acroForm.getField("Drug Sig 1").setValue("Sig:  "+drug1.getSig()); 
 				break;
 			case "Drug Therapy 2":
 				if(drug2!=null)
-					acroForm.getField("Drug Therapy 2").setValue("Sig:  "+drug2.getTherapy()); 
+					acroForm.getField("Drug Therapy 2").setValue(drug2.getTherapy()); 
+				break;
+			case "Drug 2":
+				if(drug2!=null)
+					acroForm.getField("Drug 2").setValue("Medication:  "+drug2.getName()); 
+				break;
+			case "Drug Qty 2": 
+				if(drug2!=null)
+					acroForm.getField("Drug Qty 2").setValue("Dispense:  "+drug2.getQty()); 
+				break;
+			case "Drug Sig 2":
+				if(drug2!=null)
+					acroForm.getField("Drug Sig 2").setValue("Sig:  "+drug2.getSig()); 
+				break;
+			}
+		}
+	}
+	public void PopulateDrugs(List<PDField> fields,Drug drug1,Drug drug2) throws IOException {
+		for(PDField field: fields) {
+			switch(field.getPartialName()) {
+			case "Drug Therapy 1":
+				if(drug1!=null)
+					acroForm.getField("Drug Therapy 1").setValue(drug1.getTherapy()); 
+				break;
+			case "Drug 1":
+				if(drug1!=null)
+					acroForm.getField("Drug 1").setValue("Medication:  "+drug1.getName()); 
+				break;
+			case "Drug Qty 1": 
+				if(drug1!=null)
+					acroForm.getField("Drug Qty 1").setValue("Dispense:  "+drug1.getQty()); 
+				break;
+			case "Drug Sig 1":
+				if(drug1!=null)
+					acroForm.getField("Drug Sig 1").setValue("Sig:  "+drug1.getSig()); 
+				break;
+			case "Drug Therapy 2":
+				if(drug2!=null)
+					acroForm.getField("Drug Therapy 2").setValue(drug2.getTherapy()); 
 				break;
 			case "Drug 2":
 				if(drug2!=null)
@@ -225,6 +264,37 @@ public class Script {
 					break;
 				*/
 			}
+		}
+	}
+	public void AddScript(Drug drug1, Drug drug2) throws InvalidPasswordException, IOException, ScriptException {
+		System.out.println("ADDING: "+drug1.getName());
+		pdfMerger = new PDFMergerUtility();
+		pdfDocument = PDDocument.load(new File(fax.getCustomScript()));
+		docCatalog = pdfDocument.getDocumentCatalog();
+		acroForm = docCatalog.getAcroForm();
+		try {
+			//COVER PAGE
+			List<PDField> fields = acroForm.getFields();
+			populateFields(fields,record);
+			if(drug1!=null || drug2!=null)
+				PopulateDrugs(fields,drug1,drug2);
+			File file1 = new File(fileName);
+			File file2 = new File(fax.getSaveLocation()+"\\"+fax.getLogin()+"2.pdf");
+			pdfDocument.save(file2);
+	        pdfMerger.addSource(file1);
+	        pdfMerger.addSource(file2);
+	        pdfMerger.setDestinationFileName(fileName);
+	        pdfMerger.mergeDocuments(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			//JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+		}  catch (IllegalArgumentException e2) {
+			System.out.println(e2.getMessage());
+			e2.printStackTrace();
+			throw new ScriptException("Illegal Argument");
+		}  finally {
+			
 		}
 	}
 	public void PopulateScript(Record record) throws ScriptException {

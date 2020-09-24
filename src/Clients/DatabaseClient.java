@@ -24,6 +24,7 @@ import com.mysql.jdbc.CommunicationsException;
 import Fax.EmdeonStatus;
 import Fax.FaxStatus;
 import Fax.MessageStatus;
+import Fax.ProductScripts;
 import Fax.TelmedStatus;
 import Info.DatabaseUser;
 import PBM.InsuranceFilter;
@@ -536,6 +537,7 @@ public class DatabaseClient {
 			stmt = connect.createStatement();
 			return stmt.executeUpdate(sql);
 		} catch(SQLException ex) {
+			ex.printStackTrace();
 			return ex.getErrorCode();
 		} 
 		finally {
@@ -1824,11 +1826,52 @@ public class DatabaseClient {
 	/*
 	 * ALTERNATE SCRIPT FUNCTIONS
 	 */
+	public int setCoveredItems(Record record,String meds) {
+		String sql = "UPDATE `Alternate_Scripts` SET `COVERED_MEDS` = '"+meds+"' WHERE `_id` = '"+record.getId()+"'";
+		Statement stmt = null;
+		try {
+			stmt = connect.createStatement();
+			return stmt.executeUpdate(sql);
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+			return ex.getErrorCode();
+		} finally {
+			try {
+				if(stmt!=null)stmt.close();
+			} catch(SQLException ex) {
+				
+			}
+		}
+	}
+	public void LoadCoveredItems() {
+		String sql = "SELECT * FROM `Leads` INNER JOIN `Alternate_Scripts` ON `Leads`.`_id` = `Alternate_Scripts`.`_id` WHERE `COVERED_MEDS` <> ''"
+				+" AND (`Alternate_Scripts`.`TOPICAL_SCRIPT_MESSAGE_STATUS` = 'SendingFailed' OR `Alternate_Scripts`.`TOPICAL_SCRIPT_FAX_SENT_DATE` = '0000-00-00' "
+				+"OR `Alternate_Scripts`.`TOPICAL_SCRIPT_FAX_SENT_DATE` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY))";
+		System.out.println(sql);
+		Statement stmt = null;
+		ResultSet set = null;
+		try {
+			stmt = connect.createStatement();
+			set = stmt.executeQuery(sql);
+			while(set.next())
+				CSVFrame.model.addRow(new Record(set,database,"Leads"));
+		} catch(SQLException ex) {
+			System.out.println(ex.getMessage());
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(stmt!=null) stmt.close();
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+			e.printStackTrace();
+			}
+		}
+	}
 	public void LoadAlternateScripts(String pharmacy) {
 		String pharmacyQuery = GetPharmacyQuery(pharmacy);
 		String sql = "SELECT * FROM `Leads` INNER JOIN `Alternate_Scripts` ON `Leads`.`_id` = `Alternate_Scripts`.`_id` WHERE"
 				+FaxStatus.SQL_DENIED+" AND"+pharmacyQuery+" AND "
-				+"`"+Columns.FAX_DISPOSITION_DATE+"` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY) AND "
+				+"(`"+Columns.FAX_DISPOSITION_DATE+"` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY) AND `"+Columns.FAX_SENT_DATE+"` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY)) AND "
 				+"(`Alternate_Scripts`.`TOPICAL_SCRIPT_FAX_DISPOSITION` = '' "
 				+"AND (`Alternate_Scripts`.`TOPICAL_SCRIPT_MESSAGE_STATUS` = 'SendingFailed' OR `Alternate_Scripts`.`TOPICAL_SCRIPT_FAX_SENT_DATE` = '0000-00-00' "
 				+"OR `Alternate_Scripts`.`TOPICAL_SCRIPT_FAX_SENT_DATE` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY)))";
@@ -1879,14 +1922,18 @@ public class DatabaseClient {
 			}
 		}
 	}
-	public void LoadAntiFungalScript(String pharmacy) {
+	public void LoadProduct(String pharmacy,String product) {
 		String pharmacyQuery = GetPharmacyQuery(pharmacy);
+		String message_status = ProductScripts.GetProductMessageStatus(product);
+		String fax_sent_date = ProductScripts.GetProductFaxDate(product);
+		String fax_disposition = ProductScripts.GetProductFaxDispositionColumn(product);
 		String sql = "SELECT * FROM `Leads` INNER JOIN `Alternate_Scripts` ON `Leads`.`_id` = `Alternate_Scripts`.`_id` WHERE "
-				+ "(`FAX_DISPOSITION` <> '"+FaxStatus.ESCRIBE+"' AND `FAX_DISPOSITION` <> '"+FaxStatus.DECEASED+"' AND `FAX_DISPOSITION` <> '"+FaxStatus.NOT_INTERESTED+"') AND"+pharmacyQuery+" AND "
+				+ "(`FAX_DISPOSITION` <> '"+FaxStatus.WRONG_DOCTOR+"' AND `FAX_DISPOSITION` <> '"+FaxStatus.ESCRIBE+"' AND `FAX_DISPOSITION` <> '"+FaxStatus.DECEASED+"' AND `FAX_DISPOSITION` <> '"+FaxStatus.NOT_INTERESTED+"') AND"+pharmacyQuery+" AND "
 				+"`"+Columns.FAX_DISPOSITION_DATE+"` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY) AND "
-				+"(`Alternate_Scripts`.`ANTI_FUNGAL_SCRIPT_FAX_DISPOSITION` = '' "
-				+"AND (`Alternate_Scripts`.`ANTI_FUNGAL_SCRIPT_MESSAGE_STATUS` = 'SendingFailed' OR `Alternate_Scripts`.`ANTI_FUNGAL_SCRIPT_FAX_SENT_DATE` = '0000-00-00' "
-				+"OR `Alternate_Scripts`.`ANTI_FUNGAL_SCRIPT_FAX_SENT_DATE` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY)))";
+				+"(`Alternate_Scripts`.`"+fax_disposition+"` = '' "
+				+"AND (`Alternate_Scripts`.`"+message_status+"` = 'SendingFailed' OR `Alternate_Scripts`.`"+fax_sent_date+"` = '0000-00-00' "
+				+"OR `Alternate_Scripts`.`"+fax_sent_date+"` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY))) AND "
+				+ ProductScripts.NotFaxedInDays(5);
 		System.out.println(sql);
 		Statement stmt = null;
 		ResultSet set = null;
@@ -1992,6 +2039,29 @@ public class DatabaseClient {
 				// TODO Auto-generated catch block
 			e.printStackTrace();
 			}
+		}
+	}
+	public String loadAlternateScriptFaxDisposition(String column,Record record) {
+		String sql = "SELECT * FROM `Alternate_Scripts` WHERE `_id` = '"+record.getId()+"'";
+		Statement stmt = null;
+		ResultSet set = null;
+		try {
+			stmt = connect.createStatement();
+			set = stmt.executeQuery(sql);
+			if(set.next()) 
+				return set.getString(column);
+			else 
+				return null;
+		} catch(SQLException ex) {
+			ex.printStackTrace();
+			return null;
+		} finally {
+			try {
+				if(set!=null) set.close();
+				if(stmt!=null)stmt.close();
+			} catch(SQLException ex) {
+				
+			} 
 		}
 	}
 	public void AlternateScriptsLoadApprovals(String column,String columnDate,String pharmacy,int daysBack) {
@@ -2340,6 +2410,7 @@ public class DatabaseClient {
 		public static final String DR_CHASE_AGENT = "DR_CHASE_AGENT";
 		public static final String CHASE_COUNT = "CHASE_COUNT";
 		public static final String CALL_CENTER = "CALL_CENTER";
+		public static final String PRODUCTS = "PRODUCTS";
 		public static final String ALL = "ALL";
 		public static final String[] HEADERS = {ALL,FIRST_NAME,LAST_NAME,DOB,PHONE_NUMBER,ADDRESS,CITY,STATE,ZIPCODE,
 				CARRIER,POLICY_ID,BIN,GROUP,PCN,NPI,DR_FIRST,DR_LAST,DR_ADDRESS1,DR_CITY,DR_STATE,EMDEON_STATUS,ID,LAST_EMDEON_DATE,

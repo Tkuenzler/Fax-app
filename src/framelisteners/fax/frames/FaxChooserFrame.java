@@ -43,6 +43,7 @@ public class FaxChooserFrame extends JFrame {
 		public static final String ANTI_FUNGAL = "Anti-Fungal";
 		public static final String SINGLE_PRODUCT = "Single Product";
 		public static final String PBM_SCRIPT = "PBM Script";
+		public static final String COVERED_SCRIPT = "Covered Scripts";
 		public static final String DME_SCRIPT = "DME Script";
 	}
 	private HashMap<String,FaxNumber> faxNumbers;
@@ -58,6 +59,7 @@ public class FaxChooserFrame extends JFrame {
 	JRadioButton antiFungalScript = new JRadioButton(ScriptNames.ANTI_FUNGAL,false);
 	JRadioButton singleProduct = new JRadioButton(ScriptNames.SINGLE_PRODUCT,false);
 	JRadioButton pbmScript = new JRadioButton(ScriptNames.PBM_SCRIPT,false);
+	JRadioButton coveredScript = new JRadioButton(ScriptNames.COVERED_SCRIPT,false);
 	JRadioButton customScript = new JRadioButton(ScriptNames.CUSTOM_SCRIPT,false);
 	JRadioButton dmeScript = new JRadioButton(ScriptNames.DME_SCRIPT,false);
 	
@@ -130,6 +132,9 @@ public class FaxChooserFrame extends JFrame {
 		
 		dmeScript.setBounds(10,180,120 ,20);
 		scriptPanel.add(dmeScript);
+		
+		coveredScript.setBounds(10,200,120 ,20);
+		scriptPanel.add(coveredScript);
 		
 		JPanel productPanel = new JPanel();
 		productPanel.setLayout(null);
@@ -214,6 +219,10 @@ public class FaxChooserFrame extends JFrame {
 							fax.setPharmacy(fax.getDMEScript());
 							script = new Script(fax,true);
 							break;
+						case ScriptNames.COVERED_SCRIPT:
+							fax.setPharmacy(fax.getCoveredScript());
+							script = new Script(fax,true);
+							break;
 						default:
 							JOptionPane.showMessageDialog(null, "Unknown pharmacy");
 							return;
@@ -248,6 +257,7 @@ public class FaxChooserFrame extends JFrame {
 		pbmScript.addActionListener(new ScriptListener());
 		customScript.addActionListener(new ScriptListener());
 		dmeScript.addActionListener(new ScriptListener());
+		coveredScript.addActionListener(new ScriptListener());
 		scripts.add(drChase);
 		scripts.add(painScript);
 		scripts.add(scarScript);
@@ -257,6 +267,7 @@ public class FaxChooserFrame extends JFrame {
 		scripts.add(customScript);
 		scripts.add(antiFungalScript);
 		scripts.add(dmeScript);
+		scripts.add(coveredScript);
 	}
 	private String getPharmacy() {
 		Enumeration<AbstractButton> buttons = scripts.getElements();

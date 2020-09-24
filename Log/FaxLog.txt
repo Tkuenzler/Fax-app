@@ -2034,4 +2034,36 @@ C:\Users\jm734\Desktop\Fax Scripts\DR_CHASE - MAX.pdf (The system cannot find th
 FileNotFoundException
 C:\Users\jm734\Desktop\Fax Scripts\DR_CHASE - MAX.pdf (The system cannot find the path specified)08/10/2020 11:52:49
 IOException
-No such host is known (platform.ringcentral.com)
+No such host is known (platform.ringcentral.com)08/12/2020 12:23:17
+IOException
+Network is unreachable: connect08/18/2020 11:27:16
+IOException
+platform.ringcentral.com08/18/2020 11:47:00
+IOException
+platform.ringcentral.com08/19/2020 14:26:46
+IOException
+Read timed out08/26/2020 10:00:54
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:01:32
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:02:07
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:03:18
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:03:56
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:06:00
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:06:24
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:07:08
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:07:49
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:09:12
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:09:41
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect08/26/2020 10:11:42
+IOException
+Connect to platform.ringcentral.com:443 [platform.ringcentral.com/199.255.120.210] failed: Connection timed out: connect

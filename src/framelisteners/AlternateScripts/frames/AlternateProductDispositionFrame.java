@@ -84,23 +84,9 @@ public class AlternateProductDispositionFrame extends JFrame implements ActionLi
 				else 
 					JOptionPane.showMessageDialog(null, "Patient Not Faxed for Topical Script Yet");
 				break;
-			case ProductScripts.ORAL_SCRIPT:
-				update = client.UpdateProductDisposition(column,columnDate,disposition,id);
-				/*
-				if(client.IsFaxedForOralScript(id))
-				
-				else 
-					JOptionPane.showMessageDialog(null, "Patient Not Faxed for Oral Script Yet");
-				*/
-				break;
-			case ProductScripts.ANTI_FUNGAL_SCRIPT:
-				update = client.UpdateProductDisposition(column,columnDate,disposition,id);
-				break;
-			case ProductScripts.CONSTIPATION_SCRIPT:
-				update = client.UpdateProductDisposition(column,columnDate,disposition,id);
-				break;
 			default:
-				JOptionPane.showMessageDialog(null, "Option Not Set Up");
+				update = client.UpdateProductDisposition(column,columnDate,disposition,id);
+				break;
 		}
 		if(update>0){
 			JOptionPane.showMessageDialog(null, "Successfully updated");

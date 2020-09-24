@@ -26,6 +26,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlTextInput;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 
 import Fax.EmdeonStatus;
+import PBM.InsuranceFilter;
 import PBM.InsuranceType;
 import Properties.EmdeonProperties;
 import objects.Emdeon;
@@ -228,53 +229,6 @@ public class EmdeonClient {
 		}
 		return info;
 	}
-	private String getPBM(String payer) {
-		switch(payer) {
-			case "8005465677": return "Express Scripts";
-			case "8009221557": return "Express Scripts";
-			case "8006620210": return "Express Scripts";
-			case "8002386279": return "Aetna";
-			case "8007002541": return "Wellpoint";
-			case "8008676564": return "Caremark";
-			case "8004212342": return "Caremark";
-			case "8555380453": return "Caremark"; 
-			case "8555380454": return "Caremark";
-			case "8666934620": return "Caremark";
-			case "8008801188": return "Catamaran";
-			case "8887060421": return "Catamaran";
-			case "8005227487": return "Cigna";
-			case "8007831307": return "Humana";
-			case "8008654034": return "Humana";
-			case "8888776420": return "Prime Therapeutics";
-			case "8008214795": return "Prime Therapeutics";
-			case "8003911926": return "Prime Therapeutics";
-			case "8773919291": return "Medimpact";
-			case "8007882949": return "Medimpact";
-			case "8773911123": return "Medimpact";
-			case "8445136003": return "Medimpact";
-			case "8776866875": return "Horizon BCBS of NJ";
-			case "8003614542": return "Envision RX";
-			case "8557915302": return "Envision RX";
-			case "8662502005": return "Envision RX";
-			case "8009939898": return "Independent Health";
-			case "8663332757": return "Navitus";
-			case "8662703877": return "Navitus";
-			case "8004608988": return "US Scripts";
-			case "8888694600": return "Catalyst Rx";
-			case "8669846462": return "Meridian";
-			case "8887917255": return "OptumRx";
-			case "8778896510": return "OptumRx";
-			case "8778896481": return "OptumRx";
-			case "8008658715": return "Humana";
-			case "8886255686": return "Cigna";
-			case "8002446224": return "Cigna";
-			case "8008473859": return "WV Medicaid";
-			case "8007979791": return "OptumRx";
-			case "8554429900": return "Select Medicare"; 
-			case "8558540270":
-		default: return payer;
-		}
-	}
 	private boolean checkRecord(Record r) {
 		if(r.getFirstName().length()<=1 || r.getLastName().length()<=1)
 			return false;
@@ -304,10 +258,6 @@ public class EmdeonClient {
 					info.setStatus(EmdeonStatus.FOUND);
 					break;
 				case FieldNames.PAYER_HELP_DESK:
-					if(cell.getIndex()==1)
-						info.privatePrimary.setCarrier(getPBM(cell.getNextElementSibling().asText()));
-					else 
-						info.privatePrimary.setCarrier(getPBM(cell.getPreviousElementSibling().asText()));
 					break;
 				case FieldNames.POLICY_ID:
 					if(cell.getIndex()==1)
@@ -320,6 +270,7 @@ public class EmdeonClient {
 						info.privatePrimary.setBin(cell.getNextElementSibling().asText());
 					else 
 						info.privatePrimary.setBin(cell.getPreviousElementSibling().asText());
+					info.privatePrimary.setCarrier(InsuranceFilter.GetPBMFromBin(record));
 					break;
 				case FieldNames.PCN:
 					if(cell.getIndex()==1)
@@ -418,11 +369,7 @@ public class EmdeonClient {
 						record.setBenefitId(cell.getPreviousElementSibling().asText());
 					System.out.println("BENEFIT ID:"+record.getBenefitId());
 					break;
-				case FieldNames.PAYER_HELP_DESK:
-					if(cell.getIndex()==1)
-						info.medicarePrimary.setCarrier(getPBM(cell.getNextElementSibling().asText()));
-					else 
-						info.medicarePrimary.setCarrier(getPBM(cell.getPreviousElementSibling().asText()));
+				case FieldNames.PAYER_HELP_DESK:					
 					break;
 				case FieldNames.POLICY_ID:
 					if(cell.getIndex()==1)

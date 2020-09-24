@@ -30,6 +30,7 @@ public class Caremark {
 					return InsuranceType.MEDICARE_COMMERCIAL;
 				switch(record.getGrp()) {
 					case "RX6270":
+					case "RX8120":
 						return InsuranceType.MEDICARE_TELMED;
 					case "RX8915":
 					case "RX8905":

@@ -20,6 +20,7 @@ import javax.swing.table.TableRowSorter;
 import PaidReport.MarkPaidReport;
 import PaidReport.MarkReport;
 import framelisteners.AlternateScripts.LoadAlternateScriptApprovals;
+import framelisteners.AlternateScripts.LoadAlternateScriptsFaxDisposition;
 import framelisteners.AlternateScripts.LoadOldDenials;
 import framelisteners.AlternateScripts.LoadProducts;
 import framelisteners.AlternateScripts.LoadWrongDoctor;
@@ -562,6 +563,9 @@ public class CSVFrame extends JFrame  {
 		alternateProducts.add(alternateProductApprovals);
 		item = new JMenuItem("Load Denials");
 		item.addActionListener(new LoadOldDenials());
+		alternateProducts.add(item);
+		item = new JMenuItem("Load Fax Dispositions");
+		item.addActionListener(new LoadAlternateScriptsFaxDisposition());
 		alternateProducts.add(item);
 		bar.add(alternateProducts);
 		

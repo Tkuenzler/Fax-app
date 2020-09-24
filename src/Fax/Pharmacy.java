@@ -153,6 +153,11 @@ public class Pharmacy {
 					return true;
 				else
 					return false;
+			case RoadMap.SILVER_SCRIPTS_WELL_CARE:
+				if(map.canTake(record,insurance_type,map.getSilverScriptsWellCare()))
+					return true;
+				else
+					return false;
 			default:
 				if(map.canTake(record,insurance_type,map.getNotFound()))
 					return true;

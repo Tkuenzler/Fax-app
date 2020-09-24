@@ -47,11 +47,6 @@ public class AddToRequalifyCampagin implements ActionListener {
 					bw.newLine();
 					continue;
 				}
-				if(info.IsAudtied(record.getPhone())) {
-					bw.write(record.getFirstName()+" "+record.getLastName()+": "+record.getPhone()+" HAS BEEN AUDITED");
-					bw.newLine();
-					continue;
-				}
 				String response = AddToRequalify(record);
 				bw.write(record.getFirstName()+" "+record.getLastName()+": "+record.getPhone()+" "+response);
 				bw.newLine();
@@ -67,6 +62,7 @@ public class AddToRequalifyCampagin implements ActionListener {
 	}
 	private boolean CheckCategories() {
 		for(Record record: CSVFrame.model.data) {
+			String[] categories = record.getEmail().split(",");
 			switch(record.getEmail().trim().toUpperCase()) {
 					case "PAIN":
 					case "CONSTIPATION":

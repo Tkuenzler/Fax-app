@@ -4,12 +4,24 @@ public class Fax {
 	String saveLocation,notes;
 	String drChaseScript,customScript;
 	String painScript,skinScript,scarScript;
-	String pbmScript,dmeScript,singleProductScript,antiFungalScript;
+	String pbmScript,dmeScript,singleProductScript,antiFungalScript,coveredScript;
 	boolean pain,derm,acid,vitamins;
 	String pharmacy;
 	String login,password,company;
 	
 	
+	public String getCoveredScript() {
+		if(coveredScript==null)
+			return "";
+		else
+			return coveredScript;
+	}
+	public void setCoveredScript(String coveredScript) {
+		if(coveredScript==null)
+			this.coveredScript = "";
+		else
+			this.coveredScript = coveredScript;
+	}
 	
 	public String getAntiFungalScript() {
 		if(antiFungalScript==null)

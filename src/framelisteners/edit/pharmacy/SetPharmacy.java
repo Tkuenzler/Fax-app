@@ -3,8 +3,6 @@ package framelisteners.edit.pharmacy;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
-
 import Clients.RoadMapClient;
 import Fax.Pharmacy;
 import objects.PharmacyMap;
@@ -37,6 +35,8 @@ public class SetPharmacy implements ActionListener {
 		 */
 		for(String pharmacy: pharmacies) {
 			PharmacyMap map = client.getPharmacy(pharmacy);
+			if(map==null)
+				continue;
 			client.LoadAllStates(map);
 			roadMap.add(map);
 		}

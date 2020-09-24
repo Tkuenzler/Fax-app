@@ -6,6 +6,9 @@ import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.Period;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -16,13 +19,14 @@ import Clients.NDCVerifyClient;
 import Clients.RingCentralClient;
 import Fax.FaxStatus;
 import Fax.MessageStatus;
+import PBM.InsuranceFilter;
 import PBM.InsuranceType;
 import source.CSVFrame;
 
 public class Record implements Cloneable{
 	boolean hasBeenEmdeoned;
 	public int row;
-	String id,messageId;
+	String id,messageId,age;
 	String firstName,lastName,dob,ssn,gender;
 	String address,city,state,zip,phone,email;
 	String status,type,carrier,policyId,bin,grp,pcn;
@@ -33,6 +37,8 @@ public class Record implements Cloneable{
 	String database,table;
 	String contractId,benefitId;
 	String brace_list;
+	String coveredMeds;
+	String[] products;
 	Color color = Color.WHITE;
 	public Record() {
 	
@@ -84,7 +90,7 @@ public class Record implements Cloneable{
 			setZip(result.getString(DatabaseClient.Columns.ZIPCODE));
 			setGender(toProperCase(result.getString(DatabaseClient.Columns.GENDER)));
 			setDob(result.getString(DatabaseClient.Columns.DOB));
-			setCarrier(toProperCase(result.getString(DatabaseClient.Columns.CARRIER)));
+			setCarrier(result.getString(DatabaseClient.Columns.CARRIER));
 			setBin(result.getString(DatabaseClient.Columns.BIN));
 			setPcn(result.getString(DatabaseClient.Columns.PCN));
 			setGrp(result.getString(DatabaseClient.Columns.GROUP));
@@ -110,6 +116,9 @@ public class Record implements Cloneable{
 			setType(result.getString(DatabaseClient.Columns.TYPE));
 			setAgent(result.getString(DatabaseClient.Columns.AGENT));
 			setCallCenter(result.getString(DatabaseClient.Columns.CALL_CENTER));
+			setProducts(result.getString(DatabaseClient.Columns.PRODUCTS));
+			if(containsColumnName(meta,"COVERED_MEDS"))
+				setCoveredMeds(result.getString("COVERED_MEDS"));
 			this.table = table;
 			this.database = database;
 		} catch (SQLException e) {
@@ -140,6 +149,42 @@ public class Record implements Cloneable{
 		setDrZip(result.getString(DatabaseClient.Columns.DR_ZIP).replaceAll("\"'",""));
 		setDrPhone(result.getString(DatabaseClient.Columns.DR_PHONE).replaceAll("[()\\-\\s]", ""));
 		setDrFax(result.getString(DatabaseClient.Columns.DR_FAX));
+	}
+	public int getAge() {
+		if(this.dob.equalsIgnoreCase("") || this.dob.equalsIgnoreCase("01/01/1900"))
+			return 0;
+		else  {
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MM/dd/yyyy");
+			LocalDate birthDate = LocalDate.parse(this.dob,formatter);
+			LocalDate currentDate = LocalDate.now();
+			return Period.between(birthDate, currentDate).getYears();
+		}
+			
+	}
+	public void setCoveredMeds(String meds) {
+		System.out.println(meds);
+		if(meds==null)
+			this.coveredMeds = "";
+		else
+			this.coveredMeds = meds;
+	}
+	public String getCoveredMeds() {
+		if(coveredMeds==null)
+			return "";
+		else
+			return coveredMeds;
+	}
+	public void setProducts(String products) {
+		if(products==null)
+			this.products = new String[] {"Pain"};
+		else 
+			this.products = products.split(",");
+	}
+	public String[] getProducts() {
+		if(this.products==null)
+			return new String[] {"Pain"};
+		else
+			return products;
 	}
 	public String getBrace_list() {
 		if(this.brace_list == null)
@@ -422,7 +467,6 @@ public class Record implements Cloneable{
 			case 5: this.bin = "0"+bin; break;
 			default: this.bin = bin; break;
 		}
-		setCarrier(getPBMFromBin(bin));
 	}
 	public String getGrp() {
 		if(grp==null)
@@ -808,68 +852,6 @@ public class Record implements Cloneable{
 	public void setTable(String table) {
 		this.table = table;
 	}
-	public String getPBMFromBin(String bin) {
-		if(bin==null)
-			return this.carrier;
-		switch(bin) {
-			case "004336": 
-			case "610239":
-			case "610591":
-				return "Caremark";
-			case "020115":
-			case "020099":
-				return "Anthem";
-			case "610502":
-				return "Aetna";
-			case "017010":
-				return "Cigna";
-			case "610014":
-			case "400023":
-			case "003858":
-			case "011800":
-				return "Express Scripts";
-			case "012833":
-			case "011552":
-			case "016499":
-			case "016895":
-			case "014897":
-			case "800001":
-			case "004915":
-			case "015905":
-			case "610455":
-			case "610212":
-				return "Prime Therapeutics";
-			case "610011":
-			case "015814":
-			case "001553":
-			case "610593":
-			case "011214":
-				return "Catamaran";
-			case "015574":
-			case "015921":
-			case "003585":
-				return "Medimpact";
-			case "011842":
-			case "610279":
-			case "610097":
-			case "610494":
-			case "610127": 
-				return "OptumRx";
-			case "600428":
-				return "Argus";
-			case "005947":
-			case "603286":
-				return "Catalyst Rx";
-			case "015599":
-			case "015581":
-			case "610649":
-				return "Humana";
-			case "018117":
-				return "Magellan Rx ";
-			default:
-				return this.carrier;
-		}
-	}
 	public String getContractId() {
 		return contractId;
 	}
@@ -966,7 +948,7 @@ public class Record implements Cloneable{
 		setBin(obj.getString(NDCVerifyClient.JSON.BIN));
 		setPcn(obj.getString(NDCVerifyClient.JSON.PCN));
 		setGrp(obj.getString(NDCVerifyClient.JSON.GRP));
-		setCarrier(getPBMFromBin(obj.getString(NDCVerifyClient.JSON.BIN)));
+		setCarrier(InsuranceFilter.GetPBMFromBin(this));
 	}
 
 	public String toProperCase(String text) {

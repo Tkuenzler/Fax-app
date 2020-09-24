@@ -137,7 +137,9 @@
 			"name": "Rheem Pharmacy Requalify",
 			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
 			"KEY": "93y9kwlkSge8rfugvPXTbw",
-			"Pin": "572633428"
+			"Pin": "572633428",
+			"email": "mtrheem@gmail.com",
+			"email_password": "Tommy6847!"
 		},
 		{
 			"number": "15612088766",
@@ -147,9 +149,29 @@
 			"SECRET": "2pWwHGALTqKjOM3J8CQa-wSmLoqPNBSq-UL1jppP_n3g",
 			"KEY": "2GLlQwihSBWTtWOjqU7fGg",
 			"Pin": "572633428"
-		}			
-		
-		
+		},
+		{
+			"number": "18324581961",
+			"password": "Kuenzler5726",
+			"ext": "101",
+			"name": "Med Rx Texas",
+			"SECRET": "PAXMi-8HSdGgcujvdrVbpwrVZ30H61TcOMVx-kRcysJw",
+			"KEY": "ia661QoQRh2Nqr6wD3HdYg",
+			"Pin": "572633428",
+			"email": "MTMedRx@gmail.com",
+			"email_password": "Tommy6847!"
+		},
+		{
+			"number": "13182556193",
+			"password": "Kuenzler5726",
+			"ext": "102",
+			"name": "Med Rx Louisiana",
+			"SECRET": "PAXMi-8HSdGgcujvdrVbpwrVZ30H61TcOMVx-kRcysJw",
+			"KEY": "ia661QoQRh2Nqr6wD3HdYg",
+			"Pin": "572633428",
+			"email": "MTMedRx@gmail.com",
+			"email_password": "Tommy6847!"
+		}
 	],
 	"DATABASE_LOGIN":
 	{

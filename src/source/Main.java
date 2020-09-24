@@ -6,6 +6,8 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -15,17 +17,33 @@ import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
 import javax.swing.UIManager;
 import javax.swing.UnsupportedLookAndFeelException;
-
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.utils.URIBuilder;
 import org.json.JSONException;
+import org.json.JSONObject;
+import Tests.Database;
+import Tests.LeadColumns;
+import Tests.Queries;
+import Tests.Query;
+import table.Record;
+
 
 
 public class Main {
 	
-	public static void main(String[] args) throws ClientProtocolException, IOException {			
+	public static void main(String[] args) throws ClientProtocolException, IOException, JSONException, SQLException {			
 		//FCCClient.GetComplaintsFromNumbers();
-		test();
+		//EZScriptRxClient rxClient = new EZScriptRxClient();
+		//rxClient.Login("allfamilyrheem", "@11Fam1lyPh@rm%");
+		System.out.println(Queries.Select.CONFIRMED_NOT_RECEIVED_WITH_BIN);
+		Database client = new Database("MT_MARKETING");
+		client.login();
+		ResultSet set  = client.selectSort("Leads", null, Queries.Select.CONFIRMED_NOT_RECEIVED_WITH_BIN, new String[] {"All_Pharmacy"},new String[] {LeadColumns.LAST_UPDATED},new String[] {Query.Order.DESCENDING});
+		while(set.next()) {
+			Record record = new Record(set,"","");
+			System.out.println(record.getFirstName()+" "+record.getLastName());
+			
+		}
 		try {
 			SwingUtilities.invokeLater(new Runnable() {
 				public void run() {					

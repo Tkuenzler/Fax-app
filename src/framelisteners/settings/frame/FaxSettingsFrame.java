@@ -22,6 +22,7 @@ public class FaxSettingsFrame extends JFrame  {
 	JTextField singleProductScriptLocation = new JTextField(50);
 	JTextField pbmScriptLocation = new JTextField(50);
 	JTextField customScriptLocation = new JTextField(50);
+	JTextField coveredScriptLocation = new JTextField(50);
 	JTextField dmeScriptLocation = new JTextField(50);
 	
 	//maintenance
@@ -34,6 +35,7 @@ public class FaxSettingsFrame extends JFrame  {
 	JButton browseAntiFungalLocation = new JButton("Load Anti-Fungal Script");
 	JButton browseSingleProductScriptLocation = new JButton("Load Sinlge Product Script");
 	JButton browsePbmScriptLocation = new JButton("Load PBM Script");
+	JButton browseCoveredScriptLocation = new JButton("Load Covered Script");
 	JButton browseCustomScriptLocation = new JButton("Load Custom Script");
 	JButton browseDMEScriptLocation = new JButton("Load DME Script");
 	
@@ -53,6 +55,7 @@ public class FaxSettingsFrame extends JFrame  {
 		pbmScriptLocation.setEditable(false);
 		customScriptLocation.setEditable(false);
 		dmeScriptLocation.setEditable(false);
+		coveredScriptLocation.setEditable(false);
 		loadSettings();
 		setUpPanel();
 		browseSingleProductScriptLocation.addActionListener(new BrowseSingleProductScript());
@@ -65,6 +68,7 @@ public class FaxSettingsFrame extends JFrame  {
 		browseAntiFungalLocation.addActionListener(new BrowseAntiFungal());
 		browseCustomScriptLocation.addActionListener(new BrowseCustomScript());
 		browseDMEScriptLocation.addActionListener(new BrowseDMEScript());
+		browseCoveredScriptLocation.addActionListener(new BrowseCoveredScript());
 		save.addActionListener(new Save());
 		setVisible(true);
 	}
@@ -75,6 +79,7 @@ public class FaxSettingsFrame extends JFrame  {
 		painScriptLocation.setText(fax.getPainScript());
 		scarScriptLocation.setText(fax.getScarScript());
 		skinScriptLocation.setText(fax.getSkinScript());
+		coveredScriptLocation.setText(fax.getCoveredScript());
 		antiFungalScriptLocation.setText(fax.getAntiFungalScript());
 		pbmScriptLocation.setText(fax.getPbmScript());
 		savedLocation.setText(fax.getSaveLocation());
@@ -124,6 +129,9 @@ public class FaxSettingsFrame extends JFrame  {
 	    
 	    panel2.add(browseDMEScriptLocation,"gaptop 10px, gapleft 10px");
 	    panel2.add(dmeScriptLocation,"gaptop 10px, gapleft 5px, wrap");
+	    
+	    panel2.add(browseCoveredScriptLocation,"gaptop 10px, gapleft 10px");
+	    panel2.add(coveredScriptLocation,"gaptop 10px, gapleft 5px, wrap");
 	
 		panel2.add(new JLabel("Company: "), "gaptop 10px, gapleft 10px");
 		panel2.add(company, "gaptop 10px, gapleft 5px");
@@ -148,10 +156,19 @@ public class FaxSettingsFrame extends JFrame  {
 			fax.setCustomScript(customScriptLocation.getText());
 			fax.setSaveLocation(savedLocation.getText());		
 			fax.setDMEScript(dmeScriptLocation.getText());
+			fax.setCoveredScript(coveredScriptLocation.getText());
 			FaxProperties properties = new FaxProperties();
 			properties.saveFaxProperties(fax);
 			dispose();
 		} 
+	}
+	private class BrowseCoveredScript implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			String file = FileChooser.OpenPdfFile("Open Covered Script");
+			if(file!=null) 
+				coveredScriptLocation.setText(file);	
+		}
 	}
 	private class BrowseDMEScript implements ActionListener {
 		@Override

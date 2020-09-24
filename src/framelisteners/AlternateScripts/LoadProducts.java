@@ -24,12 +24,13 @@ public class LoadProducts implements ActionListener {
 			case ProductScripts.ORAL_SCRIPT:
 				LoadOralScript();
 				break;	
-			case ProductScripts.ANTI_FUNGAL_SCRIPT:
-				LoadAntiFungalScript();
+			case ProductScripts.COVERED_MEDS:
+				LoadCoveredItems();
 				break;
-			case ProductScripts.CONSTIPATION_SCRIPT:
-				LoadConstipationScript();
+			default:
+				LoadProduct(product);
 				break;
+			
 		}
 	}
 	private void LoadAlternateScript() {
@@ -42,14 +43,14 @@ public class LoadProducts implements ActionListener {
 		client.LoadOralScripts(pharmacy);
 		client.close();
 	}
-	private void LoadAntiFungalScript() {
+	private void LoadProduct(String product) {
 		DatabaseClient client = new DatabaseClient(true);
-		client.LoadAntiFungalScript(pharmacy);
+		client.LoadProduct(pharmacy,product);
 		client.close();
 	}
-	private void LoadConstipationScript() {
+	private void LoadCoveredItems() {
 		DatabaseClient client = new DatabaseClient(true);
-		client.LoadConstipationScript(pharmacy);
+		client.LoadCoveredItems();
 		client.close();
 	}
 }

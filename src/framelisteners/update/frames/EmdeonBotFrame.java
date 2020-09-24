@@ -13,6 +13,7 @@ import javax.swing.border.Border;
 
 import Clients.EmdeonClient;
 import Clients.InfoDatabase;
+import PBM.InsuranceFilter;
 import Properties.EmdeonProperties;
 import objects.Emdeon;
 import objects.Insurance;
@@ -110,21 +111,27 @@ public class EmdeonBotFrame extends JFrame {
 		InsuranceInfo info = emdeon.fillOutForm(record,emd.getPause()*1000);
 		info.setInsuranceType();
 		if(info.isCommercial) 
-			updateInsurance(info.privatePrimary,i);
+			updateInsurance(info.privatePrimary,i,record);
 		else if(info.isMedicare) 
-			updateInsurance(info.medicarePrimary,i);
+			updateInsurance(info.medicarePrimary,i,record);
 		else
 			model.updateValue(info.status, i, MyTableModel.STATUS);
 	}
 	
-	private void updateInsurance(Insurance insurance, int i) {
+	private void updateInsurance(Insurance insurance, int i,Record record) {
+		record.setPolicyId(insurance.getPolicyId());
+		record.setBin(insurance.getBin());
+		record.setGrp(insurance.getGrp());
+		record.setPcn(insurance.getPcn());
+		record.setEmail(insurance.getInfo());
+		record.setCarrier(InsuranceFilter.GetPBMFromBin(record));
 		model.updateValue("FOUND", i, MyTableModel.STATUS);
 		model.updateValue(insurance.getType(), i, MyTableModel.TYPE);
-		model.updateValue(insurance.getCarrier(), i, MyTableModel.CARRIER);
-		model.updateValue(insurance.getPolicyId(), i, MyTableModel.POLICY_ID);
-		model.updateValue(insurance.getBin(), i, MyTableModel.BIN);
-		model.updateValue(insurance.getGrp(), i, MyTableModel.GROUP);
-		model.updateValue(insurance.getPcn(), i, MyTableModel.PCN);
-		model.updateValue(insurance.getInfo(), i, MyTableModel.EMAIL);
+		model.updateValue(record.getCarrier(), i, MyTableModel.CARRIER);
+		model.updateValue(record.getPolicyId(), i, MyTableModel.POLICY_ID);
+		model.updateValue(record.getBin(), i, MyTableModel.BIN);
+		model.updateValue(record.getGrp(), i, MyTableModel.GROUP);
+		model.updateValue(record.getPcn(), i, MyTableModel.PCN);
+		model.updateValue(record.getEmail(), i, MyTableModel.EMAIL);
 	}
 }
