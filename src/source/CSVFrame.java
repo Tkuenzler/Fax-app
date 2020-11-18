@@ -17,6 +17,8 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.TableRowSorter;
 
+import DME.LoadDMEFaxables;
+import DME.LoadFaxDispositionDME;
 import PaidReport.MarkPaidReport;
 import PaidReport.MarkReport;
 import framelisteners.AlternateScripts.LoadAlternateScriptApprovals;
@@ -65,7 +67,6 @@ import framelisteners.Database.Load.GetAllLeads;
 import framelisteners.Database.Load.GetLeadsFromDaysBack;
 import framelisteners.Database.Load.LoadAFID;
 import framelisteners.Database.Load.LoadColumn;
-import framelisteners.Database.Load.LoadFusionDenials;
 import framelisteners.Database.Load.LoadOldPharmacies;
 import framelisteners.Database.Load.LoadPaddlePointTelmed;
 import framelisteners.Database.Load.LoadVendorId;
@@ -77,6 +78,9 @@ import framelisteners.RoadMap.ExportFullRoadMap;
 import framelisteners.RoadMap.ExportRoadMap;
 import framelisteners.RoadMap.LoadCheckRoadMapFrame;
 import framelisteners.RoadMap.LoadRoadMap;
+import framelisteners.Scripts.AddScripts;
+import framelisteners.Scripts.DownloadScripts;
+import framelisteners.Scripts.LoadScriptRecords;
 import framelisteners.edit.CellsEditable;
 import framelisteners.edit.ClearColumn;
 import framelisteners.edit.ClearDoctorInfo;
@@ -89,12 +93,14 @@ import framelisteners.edit.SetColumn;
 import framelisteners.edit.Sort;
 import framelisteners.edit.Doctor.CheckDrFax;
 import framelisteners.edit.Doctor.VerifyDrType;
+import framelisteners.edit.pharmacy.CheckForPharmacy;
 import framelisteners.edit.pharmacy.CheckPharmacy;
 import framelisteners.edit.pharmacy.CheckState;
 import framelisteners.edit.pharmacy.CheckTopDrugs;
 import framelisteners.edit.pharmacy.SetPharmacy;
 import framelisteners.fax.FaxSettings;
 import framelisteners.fax.SendFax;
+import framelisteners.file.AddStationIds;
 import framelisteners.file.AddToDNF;
 import framelisteners.file.AddToRequalifyCampagin;
 import framelisteners.file.Clear;
@@ -105,8 +111,11 @@ import framelisteners.file.RemoveDuplicate;
 import framelisteners.file.SuppressionExporter;
 import framelisteners.file.Supression;
 import framelisteners.file.Test;
-import framelisteners.file.export.Export;
+import framelisteners.file.export.ExportCSV;
+import framelisteners.file.export.ExportDME;
 import framelisteners.file.export.ExportExcel;
+import framelisteners.invoices.AttestationFormat;
+import framelisteners.invoices.CreateAttestationLetter;
 import framelisteners.invoices.CreateInvoices;
 import framelisteners.settings.AddRoadMap;
 import framelisteners.settings.AddToVici;
@@ -195,10 +204,13 @@ public class CSVFrame extends JFrame  {
 		file.add(item);
 		JMenu export = new JMenu("Export");
 		item = new JMenuItem("Export CSV");
-		item.addActionListener(new Export());
+		item.addActionListener(new ExportCSV());
 		export.add(item);
 		item = new JMenuItem("Export XLS");
 		item.addActionListener(new ExportExcel());
+		export.add(item);
+		item = new JMenuItem("Export DME");
+		item.addActionListener(new ExportDME());
 		export.add(item);
 		item = new JMenuItem("Export as suppression list");
 		item.addActionListener(new SuppressionExporter());
@@ -226,6 +238,9 @@ public class CSVFrame extends JFrame  {
 		item = new JMenuItem("Create Insurance JSON");
 		item.addActionListener(new CreateInsuranceJSON());
 		file.add(item);
+		item = new JMenuItem("Add Station Ids");
+		item.addActionListener(new AddStationIds());
+		file.add(item);
 		file.addSeparator();
 		item = new JMenuItem("TEST");
 		item.addActionListener(new Test());
@@ -248,6 +263,9 @@ public class CSVFrame extends JFrame  {
 			checkForPharmacy.add(item);
 			item = new JMenuItem("Check Pharmacy");
 			item.addActionListener(new CheckPharmacy());
+			checkForPharmacy.add(item);
+			item = new JMenuItem("Check for other Pharmacy");
+			item.addActionListener(new CheckForPharmacy());
 			checkForPharmacy.add(item);
 			item = new JMenuItem("Check State");
 			item.addActionListener(new CheckState());
@@ -346,9 +364,7 @@ public class CSVFrame extends JFrame  {
 		item = new JMenuItem("Load Live Faxable Leads");
 		item.addActionListener(new LoadLiveFaxables());
 		doctorChase.add(item);
-		item = new JMenuItem("Load DME Faxable Leads");
-		item.addActionListener(new LoadDMEFaxable());
-		doctorChase.add(item);
+		
 		item = new JMenuItem("Load Approvals");
 		item.addActionListener(new LoadApprovals());
 		doctorChase.add(item);
@@ -422,9 +438,6 @@ public class CSVFrame extends JFrame  {
 		loadFrom.add(item);
 		item = new JMenuItem("Set Lookups");
 		item.addActionListener(new SetLookUps());
-		loadFrom.add(item);
-		item = new JMenuItem("Load Fusion Denials");
-		item.addActionListener(new LoadFusionDenials());
 		loadFrom.add(item);
 		database.add(loadFrom);
 		
@@ -569,6 +582,19 @@ public class CSVFrame extends JFrame  {
 		alternateProducts.add(item);
 		bar.add(alternateProducts);
 		
+		JMenu scripts = new JMenu("Scripts");
+		item = new JMenuItem("Add Scripts");
+		item.addActionListener(new AddScripts());
+		scripts.add(item);
+		item = new JMenuItem("Download Scripts");
+		item.addActionListener(new DownloadScripts());
+		scripts.add(item);
+		item = new JMenuItem("Load Records with Scripts");
+		item.addActionListener(new LoadScriptRecords());
+		scripts.add(item);
+		
+		bar.add(scripts);
+		
 		JMenu roadmap = new JMenu("RoadMaps");
 		item = new JMenuItem("Check Road Map");
 		item.addActionListener(new LoadCheckRoadMapFrame());
@@ -588,6 +614,12 @@ public class CSVFrame extends JFrame  {
 		item = new JMenuItem("Create Invoices");
 		item.addActionListener(new CreateInvoices());
 		invoice.add(item);
+		item = new JMenuItem("Create Attestation Letters");
+		item.addActionListener(new CreateAttestationLetter());
+		invoice.add(item);
+		item = new JMenuItem("Attestation CSV Fromat");
+		item.addActionListener(new AttestationFormat());
+		invoice.add(item);
 		bar.add(invoice);
 		
 		JMenu notFound = new JMenu("Not Found");
@@ -598,6 +630,15 @@ public class CSVFrame extends JFrame  {
 		item.addActionListener(new LoadInvalidInfo());
 		notFound.add(item);
 		bar.add(notFound);
+		
+		JMenu dme = new JMenu("DME");
+		item = new JMenuItem("Load Faxables");
+		item.addActionListener(new LoadDMEFaxables());
+		dme.add(item);
+		item = new JMenuItem("Load Leads by Fax Disposition");
+		item.addActionListener(new LoadFaxDispositionDME());
+		dme.add(item);
+		bar.add(dme);
 		
 		JMenu invoiceReports = new JMenu("Invoicing Reports");
 		JMenu report = new JMenu("Reports");

@@ -9,14 +9,19 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import Clients.DatabaseClient;
 import Clients.NDCVerifyClient;
 import Clients.RingCentralClient;
+import Database.Columns.DMEColumns;
+import Database.Columns.LeadColumns;
 import Fax.FaxStatus;
 import Fax.MessageStatus;
 import PBM.InsuranceFilter;
@@ -112,6 +117,10 @@ public class Record implements Cloneable{
 			setMessageId(result.getString(DatabaseClient.Columns.MESSAGE_ID));
 			if(containsColumnName(meta,DatabaseClient.Columns.NOTES))
 				setNotes(result.getString(DatabaseClient.Columns.NOTES));
+			if(containsColumnName(meta,LeadColumns.PAIN_LOCATION))
+					setPainLocation(result.getString(LeadColumns.PAIN_LOCATION));
+			if(containsColumnName(meta,LeadColumns.PAIN_CAUSE))
+				setPainCause(result.getString(LeadColumns.PAIN_CAUSE));
 			setStatus(result.getString(DatabaseClient.Columns.EMDEON_STATUS));
 			setType(result.getString(DatabaseClient.Columns.TYPE));
 			setAgent(result.getString(DatabaseClient.Columns.AGENT));
@@ -127,28 +136,28 @@ public class Record implements Cloneable{
 		}
 	}
 	public void setDME(ResultSet result) throws SQLException {
-		setFirstName(toProperCaseNoStripDown(result.getString(DatabaseClient.Columns.FIRST_NAME)));
-		setLastName(toProperCaseNoStripDown(result.getString(DatabaseClient.Columns.LAST_NAME)));
-		setPhone(result.getString(DatabaseClient.Columns.PHONE_NUMBER).replaceAll("[()\\s-]+", ""));
-		setAddress(toProperCase(result.getString(DatabaseClient.Columns.ADDRESS)));
-		setCity(toProperCase(result.getString(DatabaseClient.Columns.CITY)));
-		setState(result.getString(DatabaseClient.Columns.STATE).toUpperCase());
-		setZip(result.getString(DatabaseClient.Columns.ZIPCODE));
-		setGender(toProperCase(result.getString(DatabaseClient.Columns.GENDER)));
-		setDob(result.getString(DatabaseClient.Columns.DOB));
-		setCarrier(toProperCase(result.getString(DatabaseClient.Columns.CARRIER)));
-		setPolicyId(result.getString(DatabaseClient.Columns.POLICY_ID));
-		setBrace_list(result.getString("BRACES"));
-		setId(getFirstName()+getLastName()+getPhone()); 
-		setNpi(result.getString(DatabaseClient.Columns.NPI));
-		setDrFirst(toProperCase(result.getString(DatabaseClient.Columns.DR_FIRST)));
-		setDrLast(toProperCase(result.getString(DatabaseClient.Columns.DR_LAST)));
-		setDrAddress1(toProperCase(result.getString(DatabaseClient.Columns.DR_ADDRESS1)));
-		setDrCity(toProperCase(result.getString(DatabaseClient.Columns.DR_CITY).replaceAll("\"'","")));
-		setDrState(result.getString(DatabaseClient.Columns.DR_STATE).replaceAll("\"'","").toUpperCase());
-		setDrZip(result.getString(DatabaseClient.Columns.DR_ZIP).replaceAll("\"'",""));
-		setDrPhone(result.getString(DatabaseClient.Columns.DR_PHONE).replaceAll("[()\\-\\s]", ""));
-		setDrFax(result.getString(DatabaseClient.Columns.DR_FAX));
+		setFirstName(toProperCaseNoStripDown(result.getString(DMEColumns.FIRST_NAME)));
+		setLastName(toProperCaseNoStripDown(result.getString(DMEColumns.LAST_NAME)));
+		setPhone(result.getString(DMEColumns.PHONE).replaceAll("[()\\s-]+", ""));
+		setAddress(toProperCase(result.getString(DMEColumns.ADDRESS)));
+		setCity(toProperCase(result.getString(DMEColumns.CITY)));
+		setState(result.getString(DMEColumns.STATE).toUpperCase());
+		setZip(result.getString(DMEColumns.ZIP));
+		setGender(toProperCase(result.getString(DMEColumns.GENDER)));
+		setDob(result.getString(DMEColumns.DOB));
+		setCarrier(toProperCase(result.getString(DMEColumns.CARRIER)));
+		setPolicyId(result.getString(DMEColumns.POLICY_ID));
+		setBrace_list(result.getString(DMEColumns.BRACES));
+		setId(result.getString(DMEColumns.ID)); 
+		setNpi(result.getString(DMEColumns.NPI));
+		setDrFirst(toProperCase(result.getString(DMEColumns.DR_FIRST)));
+		setDrLast(toProperCase(result.getString(DMEColumns.DR_LAST)));
+		setDrAddress1(toProperCase(result.getString(DMEColumns.DR_ADDRESS)));
+		setDrCity(toProperCase(result.getString(DMEColumns.DR_CITY).replaceAll("\"'","")));
+		setDrState(result.getString(DMEColumns.DR_STATE).replaceAll("\"'","").toUpperCase());
+		setDrZip(result.getString(DMEColumns.DR_ZIP).replaceAll("\"'",""));
+		setDrPhone(result.getString(DMEColumns.DR_PHONE).replaceAll("[()\\-\\s]", ""));
+		setDrFax(result.getString(DMEColumns.DR_FAX));
 	}
 	public int getAge() {
 		if(this.dob.equalsIgnoreCase("") || this.dob.equalsIgnoreCase("01/01/1900"))
@@ -174,6 +183,31 @@ public class Record implements Cloneable{
 		else
 			return coveredMeds;
 	}
+	public void addProduct(String product) {
+		if(products!=null) {
+			
+		}
+		String p = null;
+		if(product.toUpperCase().contains("PAIN"))
+			p = "Pain";
+		else if(product.toUpperCase().contains("DERM"))
+			p = "Dermatitis";
+		else if(product.toUpperCase().contains("SCAR"))
+			p = "Scar";
+		else if(product.toUpperCase().contains("MIGRAIN"))
+			p = "Migraines";
+		if(this.products==null)
+			this.products = new String[] {p};
+		else {
+			ArrayList<String> array = new ArrayList<String>();
+			for(String pr: this.products) {
+				array.add(pr);
+			}
+			array.add(p);
+			this.products = array.toArray(new String[array.size()]);	
+		}
+			
+	}
 	public void setProducts(String products) {
 		if(products==null)
 			this.products = new String[] {"Pain"};
@@ -197,6 +231,7 @@ public class Record implements Cloneable{
 			this.brace_list = "";
 		else 
 			this.brace_list = brace_list;
+		System.out.println(getPhone()+" "+this.brace_list);
 	}
 	public String getAgent() {
 		if(this.agent==null)
@@ -754,6 +789,7 @@ public class Record implements Cloneable{
 			case MessageStatus.DNF: setRowColor(Color.BLACK); break;
 			case MessageStatus.BAD_FAX_NUMBER: setRowColor(Color.MAGENTA); break;
 			case MessageStatus.ON_HOLD: setRowColor(Color.BLACK); break;
+			case MessageStatus.NO_BRACE_LISTED: setRowColor(Color.ORANGE); break;
 			case "": setRowColor(Color.WHITE); break;
 			//RingCentral Errors
 			case RingCentralClient.Errors.INVALID_URL:

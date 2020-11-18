@@ -31,6 +31,7 @@ public class RoadMapClient {
 			 connect = DriverManager
 				      .getConnection("jdbc:mysql://"+HOST_NAME+":3306/Road_Map", "tkuenzler","Tommy6847");
 			 roadMap = LoadInfo.getRoadMap().getRoadMap();
+			 System.out.println(roadMap);
 		} catch (ClassNotFoundException e) {
 			// TODO Auto-generated catch block
 			JOptionPane.showMessageDialog(null, e.getMessage());
@@ -78,6 +79,9 @@ public class RoadMapClient {
 		} 
 		this.database = "Road_Map";
 		this.table = table;
+	}
+	public String getTable() {
+		return this.roadMap; 
 	}
 	public void setTable(String pharmacy) {
 		this.table = pharmacy;
@@ -145,7 +149,7 @@ public class RoadMapClient {
 		ResultSet set = null;
 		try {
 			RoadMap roadmap = LoadInfo.getRoadMap();
-			String sql = "SELECT * FROM `"+roadmap.getRoadMap()+"`";
+			String sql = "SELECT * FROM `"+roadmap.getRoadMap()+"` WHERE `FAX_CHASE` = 1";
 			StringBuilder sb = new StringBuilder();
 			stmt = connect.createStatement();
 			set = stmt.executeQuery(sql);
@@ -237,6 +241,7 @@ public class RoadMapClient {
 				else 
 					list.add(data.getColumnName(i));
 			}
+			
 			return list.toArray(new String[list.size()]);
 		}catch(SQLException e) {
 			e.printStackTrace();
@@ -284,7 +289,7 @@ public class RoadMapClient {
 			set = stmt.executeQuery(sql);
 			List<String> list = new ArrayList<String>();
 			list.add("All");
-			while(set.next())
+			while(set.next()) 
 				list.add(set.getString("PHARMACY"));
 			return list.toArray(new String[list.size()]);
 		}catch(SQLException e) {

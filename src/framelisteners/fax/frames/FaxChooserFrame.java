@@ -37,9 +37,9 @@ public class FaxChooserFrame extends JFrame {
 	private class ScriptNames {
 		public static final String DR_CHASE = "Dr Chase";
 		public static final String CUSTOM_SCRIPT = "Custom Script";
-		public static final String PAIN = "Pain";
-		public static final String SCAR = "Scar";
-		public static final String SKIN = "Skin";
+		public static final String RXPLUS = "Rx Plus";
+		public static final String RXPLUS2 = "Rx Plus 2";
+		public static final String RXPLUS_CAREMARK = "Rx Plus Caremark";
 		public static final String ANTI_FUNGAL = "Anti-Fungal";
 		public static final String SINGLE_PRODUCT = "Single Product";
 		public static final String PBM_SCRIPT = "PBM Script";
@@ -53,9 +53,9 @@ public class FaxChooserFrame extends JFrame {
 	JCheckBox notes = new JCheckBox("With Notes",false);
 	//Scripts
 	JRadioButton drChase = new JRadioButton(ScriptNames.DR_CHASE,false);
-	JRadioButton painScript = new JRadioButton(ScriptNames.PAIN,false);
-	JRadioButton scarScript = new JRadioButton(ScriptNames.SCAR,false);
-	JRadioButton skinScript = new JRadioButton(ScriptNames.SKIN,false);
+	JRadioButton rxPlusScript = new JRadioButton(ScriptNames.RXPLUS,false);
+	JRadioButton rxPlus2Script = new JRadioButton(ScriptNames.RXPLUS2,false);
+	JRadioButton rxPlusCaremarkScript = new JRadioButton(ScriptNames.RXPLUS_CAREMARK,false);
 	JRadioButton antiFungalScript = new JRadioButton(ScriptNames.ANTI_FUNGAL,false);
 	JRadioButton singleProduct = new JRadioButton(ScriptNames.SINGLE_PRODUCT,false);
 	JRadioButton pbmScript = new JRadioButton(ScriptNames.PBM_SCRIPT,false);
@@ -64,11 +64,6 @@ public class FaxChooserFrame extends JFrame {
 	JRadioButton dmeScript = new JRadioButton(ScriptNames.DME_SCRIPT,false);
 	
 	ButtonGroup scripts = new ButtonGroup();
-	//Products
-	JCheckBox pain = new JCheckBox("Pain",true);
-	JCheckBox derm = new JCheckBox("Derm",true);
-	JCheckBox acid = new JCheckBox("Acid",true);
-	JCheckBox vitamins = new JCheckBox("Vitamins",true);
 	
 	JButton btnFax = new JButton("Fax");
 	Vector<Record> data;
@@ -112,19 +107,19 @@ public class FaxChooserFrame extends JFrame {
 		singleProduct.setBounds(10,40,120 ,20);
 		scriptPanel.add(singleProduct);
 		
-		painScript.setBounds(10,60,120 ,20);
-		scriptPanel.add(painScript);
+		rxPlusScript.setBounds(10,60,120 ,20);
+		scriptPanel.add(rxPlusScript);
+		
+		rxPlus2Script.setBounds(10,80,120 ,20);
+		scriptPanel.add(rxPlus2Script);
+		
+		rxPlusCaremarkScript.setBounds(10,100,120 ,20);
+		scriptPanel.add(rxPlusCaremarkScript);
 
-		scarScript.setBounds(10,80,120 ,20);
-		scriptPanel.add(scarScript);
-		
-		skinScript.setBounds(10,100,120 ,20);
-		scriptPanel.add(skinScript);
-		
 		antiFungalScript.setBounds(10,120,120 ,20);
 		scriptPanel.add(antiFungalScript);
 		
-		pbmScript.setBounds(10,140,120 ,20);
+		pbmScript.setBounds(10,140,100 ,20);
 		scriptPanel.add(pbmScript);
 		
 		customScript.setBounds(10,160,120 ,20);
@@ -136,24 +131,6 @@ public class FaxChooserFrame extends JFrame {
 		coveredScript.setBounds(10,200,120 ,20);
 		scriptPanel.add(coveredScript);
 		
-		JPanel productPanel = new JPanel();
-		productPanel.setLayout(null);
-		productPanel.setBorder(BorderFactory.createTitledBorder("Products"));
-		productPanel.setBounds(150, 50, 140, 230);
-		
-		pain.setBounds(10, 20, 120, 20);
-		productPanel.add(pain);
-		
-		derm.setBounds(10, 40, 120, 20);
-		productPanel.add(derm);
-		
-		acid.setBounds(10,60,120,20);
-		productPanel.add(acid);
-		
-		vitamins.setBounds(10,80,120,20);
-		productPanel.add(vitamins);
-		
-		contentPane.add(productPanel);
 		contentPane.add(scriptPanel);
 		btnFax.setBounds(75, 280, 125, 20);
 		for(String s: faxNumbers.keySet()) {
@@ -174,10 +151,6 @@ public class FaxChooserFrame extends JFrame {
 				int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to fax on "+faxLine+" on "+pharmacy+" script?", pharmacy, JOptionPane.YES_NO_OPTION);
 				if(confirm==JOptionPane.NO_OPTION)
 					return;
-				fax.setPain(pain.isSelected());
-				fax.setDerm(derm.isSelected());
-				fax.setAcid(acid.isSelected());
-				fax.setVitamins(vitamins.isSelected());
 				try {						
 					Script script;
 					switch(pharmacy) {
@@ -190,16 +163,16 @@ public class FaxChooserFrame extends JFrame {
 							script = new Script(fax,true);
 							script.SetDrugs(Drug.GetDrug(Drug.GetADrug("What is the first medication?")),Drug.GetDrug(Drug.GetADrug("What is the second medication?")));
 							break;
-						case ScriptNames.PAIN:
-							fax.setPharmacy(fax.getPainScript());
+						case ScriptNames.RXPLUS:
+							fax.setPharmacy(fax.getRxPlusScript());
 							script = new Script(fax,true);
 							break;
-						case ScriptNames.SCAR:
-							fax.setPharmacy(fax.getScarScript());
+						case ScriptNames.RXPLUS2:
+							fax.setPharmacy(fax.getRxPlusScript2());
 							script = new Script(fax,true);
 							break;
-						case ScriptNames.SKIN:
-							fax.setPharmacy(fax.getSkinScript());
+						case ScriptNames.RXPLUS_CAREMARK:
+							fax.setPharmacy(fax.getRxPlusCaremark());
 							script = new Script(fax,true);
 							break;
 						case ScriptNames.ANTI_FUNGAL:
@@ -248,20 +221,10 @@ public class FaxChooserFrame extends JFrame {
 		contentPane.add(btnFax);
 	}
 	private void setScripts() {
-		drChase.addActionListener(new ScriptListener());
-		painScript.addActionListener(new ScriptListener());
-		scarScript.addActionListener(new ScriptListener());
-		skinScript.addActionListener(new ScriptListener());		
-		antiFungalScript.addActionListener(new ScriptListener());
-		singleProduct.addActionListener(new ScriptListener());
-		pbmScript.addActionListener(new ScriptListener());
-		customScript.addActionListener(new ScriptListener());
-		dmeScript.addActionListener(new ScriptListener());
-		coveredScript.addActionListener(new ScriptListener());
 		scripts.add(drChase);
-		scripts.add(painScript);
-		scripts.add(scarScript);
-		scripts.add(skinScript);
+		scripts.add(rxPlusScript);
+		scripts.add(rxPlus2Script);
+		scripts.add(rxPlusCaremarkScript);
 		scripts.add(singleProduct);
 		scripts.add(pbmScript);
 		scripts.add(customScript);
@@ -277,23 +240,5 @@ public class FaxChooserFrame extends JFrame {
 				return button.getText();
 		}
 		return null;
-	}
-	private class ScriptListener implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			// TODO Auto-generated method stub
-			if(drChase.isSelected()) {
-				derm.setSelected(true);
-				pain.setSelected(true);
-				acid.setSelected(true);
-				vitamins.setSelected(true);
-			}
-			else {
-				derm.setSelected(false);
-				pain.setSelected(false);
-				acid.setSelected(false);
-				vitamins.setSelected(false);
-			}
-		}
 	}
 }

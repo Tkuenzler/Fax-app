@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Vector;
+
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -19,7 +20,9 @@ import org.apache.pdfbox.pdmodel.encryption.InvalidPasswordException;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
 import com.mysql.jdbc.CommunicationsException;
+
 import Clients.DatabaseClient;
 import Clients.InfoDatabase;
 import Clients.RingCentralClient;
@@ -27,15 +30,14 @@ import Fax.Drug;
 import Fax.MessageStatus;
 import Fax.ProductScripts;
 import Info.FaxNumber;
+import Log.Log;
 import Log.Logger;
 import PBM.InsuranceFilter;
 import PBM.InsuranceType;
 import PivotTable.LoadData;
-import Log.Log;
 import images.Script;
 import images.Script.ScriptException;
 import objects.Fax;
-import source.CSVFrame;
 import table.Record;
 
 public class FaxClientFrame extends JFrame {
@@ -48,14 +50,13 @@ public class FaxClientFrame extends JFrame {
 	DatabaseClient db;
 	int updateDb,recordToGetStatus;
 	Timer timer;
-	Script script;
 	boolean singleProductFax;
 	String product,statusColumn,dateColumn;
 	LoadData insuranceData;
 	Logger log = new Logger(Log.FaxLog);
+	Script script;
 	public FaxClientFrame(Fax fax,Vector<Record> data, FaxNumber faxNumber,Script script,boolean isSingleScript) throws IOException, JSONException {
 		super("Faxing");
-		this.script = script;
 		this.fax = fax;
 		client = new RingCentralClient(faxNumber);
 		if (!client.login()) {
@@ -66,8 +67,6 @@ public class FaxClientFrame extends JFrame {
 		this.max = this.data.size();
 		setUp();
 		if(isSingleScript) {
-			insuranceData = new LoadData();
-			insuranceData.GetData(insuranceData.getList());
 			String[] products = ProductScripts.ALL;
 			product = (String) JOptionPane.showInputDialog(new JFrame(), "Select which product", "Products:", JOptionPane.QUESTION_MESSAGE, null, products, products[0]);
 			if(product==null)
@@ -93,6 +92,7 @@ public class FaxClientFrame extends JFrame {
 			else
 				new CheckDNF().start();
 		}		
+		this.script = script;
 	}
 	private void setUp() {
 		bar = new JProgressBar(0, max);
@@ -138,7 +138,7 @@ public class FaxClientFrame extends JFrame {
 					incrementProgressBar();
 					recordToGetStatus++;
 				}
-				else if(record.getState().equalsIgnoreCase("OR")) {
+				else if(record.getState().equalsIgnoreCase("OR") || record.getDrState().equalsIgnoreCase("OR")) {
 					record.setMessageStatus(MessageStatus.ON_HOLD);
 					incrementProgressBar();
 					recordToGetStatus++;
@@ -169,7 +169,7 @@ public class FaxClientFrame extends JFrame {
 						recordToGetStatus++;
 						continue;
 					}
-					SetScript(record);
+					Script script = SetScript(record);
 					response = client.SendFax(record,script);
 					switch (response) {
 						case RingCentralClient.Errors.INVALID_URL:
@@ -226,7 +226,6 @@ public class FaxClientFrame extends JFrame {
 				} 
 			}
 			fallAsleep(1000, this);
-			script.close();
 			System.out.println("SEND FAXES THREAD COMPLETE");
 			new GetMessages().start();
 		}
@@ -344,13 +343,16 @@ public class FaxClientFrame extends JFrame {
 	private boolean isQueued(Record record) {
 		return record.getMessageStatus().equalsIgnoreCase(MessageStatus.QUEUED);
 	}
-	private void SetScript(Record record) throws Exception {
+	private Script SetScript(Record record) throws Exception {
+		Script script = new Script(fax,singleProductFax);
 		//DME
 		if(fax.getPharmacy().equalsIgnoreCase(fax.getDMEScript())) {
+			script.LoadNewScript(fax.getDMEScript());
 			script.PopulateDME(record);
 		}
 		//Single Product Script
 		else if(fax.getPharmacy().equalsIgnoreCase(fax.getSingleProductScript())) {
+			script.LoadNewScript(fax.getSingleProductScript());
 			script.setCategory(product);
 			Drug drug = null;
 			switch(product) {
@@ -362,7 +364,7 @@ public class FaxClientFrame extends JFrame {
 					break;
 				case ProductScripts.ANTI_FUNGAL_SCRIPT:
 					script.LoadNewScript(fax.getAntiFungalScript());
-					script.PopulateScript(record);
+					script.PopulateScript(record,0);
 					break;
 				case ProductScripts.MIGRAINE_SCRIPT:
 					drug = Drug.DihydroergotamineSpray;
@@ -372,60 +374,26 @@ public class FaxClientFrame extends JFrame {
 					break;
 			}
 			script.SetDrug(drug);
-			script.PopulateScript(record);
+			script.PopulateScript(record,0);
+		}
+		//CUSTOM SCRIPT
+		else if(fax.getPharmacy().equalsIgnoreCase(fax.getCustomScript())) {
+			script = this.script;
+			script.LoadNewScript(fax.getCustomScript());
+			script.PopulateScript(record,0);
 		}
 		//PBM
 		else if(fax.getPharmacy().equalsIgnoreCase(fax.getPbmScript())) {
 			int type = InsuranceFilter.GetInsuranceType(record);
-			if(record.getPharmacy().equalsIgnoreCase("All_Pharmacy")) {
-				script.LoadNewScript(fax.getCustomScript());
-				if(record.getCarrier().equalsIgnoreCase("Humana")) {
-					script.SetDrug(Drug.Diflorasone180);
-					script.PopulateScript(record);
-					if(record.getAge()>=60)
-						script.AddScript(Drug.Methocarbamol750, null);
-					else
-						script.AddScript(Drug.Cyclobenzaprine5mg, null);
-					script.AddScript(Drug.LidoPrilo240, null);
-					script.AddScript(Drug.OmegaEthylEster, null);
+			if(type==InsuranceType.Type.PRIVATE_INSURANCE || type==InsuranceType.Type.MEDICAID_INSURANCE)  {
+				if(record.getCarrier().equalsIgnoreCase("Caremark") || record.getCarrier().equalsIgnoreCase("Anthem") || record.getCarrier().equalsIgnoreCase("Aetna")) {
+					script.LoadNewScript(fax.getPbmScript()+"\\"+PBMScript.CAREMARK);
+					script.PopulateScript(record,0);
 				}
-				else if(record.getCarrier().equalsIgnoreCase("Cigna")) {
-					if(type==InsuranceType.Type.PRIVATE_INSURANCE) {
-						//Private Insurance
-						script.SetDrug(Drug.Diflorasone180);
-						script.PopulateScript(record);
-						script.AddScript(Drug.Fenoprofen400,null);
-						script.AddScript(Drug.Chlorzoxazone250,null);
-						script.AddScript(Drug.Cyclobenzaprine7_5mg, null);
-					}
-					else {
-						script.SetDrug(Drug.Diflorasone180);
-						script.PopulateScript(record);
-						script.AddScript(Drug.Naproxen375, null);
-						script.AddScript(Drug.OmegaEthylEster, null);
-					}
+				else {
+					script.LoadNewScript(fax.getDrChaseScript());
+					script.PopulateScript(record,0);
 				}
-				else if(record.getCarrier().equalsIgnoreCase("Express Scripts")) {
-					if(type==InsuranceType.Type.PRIVATE_INSURANCE) {
-						script.SetDrug(Drug.Diflorasone180);
-						script.PopulateScript(record);
-						script.AddScript(Drug.Ketoprofen240,null);
-						script.AddScript(Drug.Chlorzoxazone250,null);
-						script.AddScript(Drug.Lidocaine250,null);
-					} 
-					else {
-						script.SetDrug(Drug.Diflorasone180);
-						script.PopulateScript(record);
-						script.AddScript(Drug.Ketoprofen180,null);
-						script.AddScript(Drug.Chlorzoxazone250,null);
-						script.AddScript(Drug.Lidocaine250,null);
-					}
-					
-				}
-			}
-			else if(type==InsuranceType.Type.PRIVATE_INSURANCE || type==InsuranceType.Type.MEDICAID_INSURANCE)  {
-				script.LoadNewScript(fax.getDrChaseScript());
-				script.PopulateScript(record);
 			}
 			else if(type==InsuranceType.Type.MEDICARE_INSURANCE) {
 				String pbmScript = GetPBMScript(fax,record);
@@ -433,30 +401,36 @@ public class FaxClientFrame extends JFrame {
 					script.LoadNewScript(fax.getDrChaseScript());
 				else
 					script.LoadNewScript(pbmScript);
-				script.PopulateScript(record);
+				script.PopulateScript(record,0);
 			}
 			else {
 				script.LoadNewScript(fax.getDrChaseScript());
-				script.PopulateScript(record);
+				script.PopulateScript(record,0);
 			}
 			boolean fungal = false;
 			if(record.getProducts()!=null)
 			for(String product: record.getProducts()) {
 				switch(product.trim()) {
 					case "Migraines":
-						script.AddScript(Drug.GetMigraineScript(record), null);
+						script.AddScript(Drug.GetMigraineScript(record), null,"Patient suffers from Migraines");
 						break;
 					case "Anti-Fungal":
 						if(!fungal) {
-							script.AddScript(Drug.GetAntiFungal(record), null);
+							script.AddScript(Drug.GetAntiFungal(record), null,"Patient suffers from skin infections or flaky skin");
 							fungal = true;
 						}
 						break;
 					case "Podiatry":
 						if(!fungal) {
-							script.AddScript(Drug.GetFootSoak(record), Drug.GetAntiFungal(record));
+							script.AddScript(Drug.GetFootSoak(record), Drug.GetAntiFungal(record),"Patient suffers from foot fungus or infections on the feet");
 							fungal = true;
 						}
+						break;
+					case "Acid Reflux":
+						script.AddScript(Drug.Omeprazole, null,"Patient suffers from chronic Acid Reflux or Gerd");
+						break;
+					case "Dermatitis":
+						script.AddScript(Drug.GetDermatitis(record), null,"Patient suffers from Psoriasis, Eczema, Dermatitis or Dry/Irritated skin.");
 						break;
 				}
 			}
@@ -465,7 +439,82 @@ public class FaxClientFrame extends JFrame {
 		//Anti fungal
 		else if(fax.getPharmacy().equalsIgnoreCase(fax.getAntiFungalScript())) {
 			script.LoadNewScript(fax.getAntiFungalScript());
-			script.PopulateScript(record);
+			script.PopulateScript(record,0);
+		}
+		//Rxplus Scripts
+		else if(fax.getPharmacy().equalsIgnoreCase(fax.getRxPlusScript())) {
+			script.LoadNewScript(fax.getRxPlusScript()+"\\Cover.pdf");
+			script.PopulateScript(record,record.getProducts().length+1);
+			for(String product: record.getProducts()) {
+				switch(product) {
+					case "Pain":
+						script.AddScript(fax.getRxPlusScript()+"\\Pain.pdf");
+						break;
+					case "Migraines":
+						script.AddScript(fax.getRxPlusScript()+"\\Migraines.pdf");
+						break;
+					case "Dermatitis":
+						script.AddScript(fax.getRxPlusScript()+"\\Dermatitis.pdf");
+						break;
+					case "Scar":
+						script.AddScript(fax.getRxPlusScript()+"\\Scar.pdf");
+						break;
+					default:
+						System.out.println(product);
+						throw new Exception("UNKOWN PRODUCT EXCEPTION");
+				}
+					
+			}
+		}
+		//Rxplus Scripts 2
+		else if(fax.getPharmacy().equalsIgnoreCase(fax.getRxPlusScript2())) {
+			script.LoadNewScript(fax.getRxPlusScript2()+"\\Cover.pdf");
+			script.PopulateScript(record,record.getProducts().length+1);
+			for(String product: record.getProducts()) {
+				switch(product) {
+					case "Pain":
+						script.AddScript(fax.getRxPlusScript2()+"\\Pain.pdf");
+						break;
+					case "Migraines":
+						script.AddScript(fax.getRxPlusScript2()+"\\Migraines.pdf");
+						break;
+					case "Dermatitis":
+						script.AddScript(fax.getRxPlusScript2()+"\\Dermatitis.pdf");
+						break;
+					case "Scar":
+						script.AddScript(fax.getRxPlusScript2()+"\\Scar.pdf");
+						break;
+					default:
+						System.out.println(product);
+						throw new Exception("UNKOWN PRODUCT EXCEPTION");
+				}
+					
+			}
+		}
+		//Rxplus Scripts Caremark
+		else if(fax.getPharmacy().equalsIgnoreCase(fax.getRxPlusCaremark())) {
+			script.LoadNewScript(fax.getRxPlusCaremark()+"\\Cover.pdf");
+			script.PopulateScript(record,record.getProducts().length+1);
+			for(String product: record.getProducts()) {
+				switch(product) {
+					case "Pain":
+						script.AddScript(fax.getRxPlusCaremark()+"\\Pain.pdf");
+						break;
+					case "Migraines":
+						script.AddScript(fax.getRxPlusCaremark()+"\\Migraines.pdf");
+						break;
+					case "Dermatitis":
+						script.AddScript(fax.getRxPlusCaremark()+"\\Dermatitis.pdf");
+						break;
+					case "Scar":
+						script.AddScript(fax.getRxPlusCaremark()+"\\Scar.pdf");
+						break;
+					default:
+						System.out.println(product);
+						throw new Exception("UNKOWN PRODUCT EXCEPTION");
+				}
+							
+			}
 		}
 		//Covered Item
 		else if(fax.getPharmacy().equalsIgnoreCase(fax.getCoveredScript())) {
@@ -484,12 +533,12 @@ public class FaxClientFrame extends JFrame {
 						if(med.equalsIgnoreCase(drug.getName()+" "+drug.getQty()) && i==0) {
 							System.out.println("FOUND: "+drug.getName());
 							script.SetDrug(drug);
-							script.PopulateScript(record);
+							script.PopulateScript(record,0);
 							continue list;
 						}
 						else if(med.equalsIgnoreCase(drug.getName()+" "+drug.getQty())) {
 							System.out.println("FOUND: "+drug.getName());
-							script.AddScript(drug, null);
+							script.AddScript(drug, null,"");
 							continue list;
 						}
 					}
@@ -498,14 +547,30 @@ public class FaxClientFrame extends JFrame {
 		}
 		else  {
 			script.LoadNewScript(fax.getPharmacy());
-			script.PopulateScript(record);
+			script.PopulateScript(record,0);
 		}
+		script.close();
+		return script;
 	}
-	
 	private String GetPBMScript(Fax fax,Record record) {
 		String folder = fax.getPbmScript();
 		if(record.getBin()==null)
 			return folder+"\\"+PBMScript.CASCADE;
+		if(record.getPharmacy().equalsIgnoreCase("MedRex")) {
+			switch(record.getCarrier()) {
+				case "Anthem":
+				case "SilverScripts/Wellcare":
+					return folder+"\\"+PBMScript.CAREMARK_MED_RX_CLOBETASOL;
+				case "Aetna":
+					return folder+"\\"+PBMScript.CAREMARK_MED_RX_DIFLORASONE;
+				case "Caremark":
+					if(record.getPcn().equalsIgnoreCase("ADV"))
+						return folder+"\\"+PBMScript.CAREMARK_MED_RX_DIFLORASONE;
+					else
+						return folder+"\\"+PBMScript.CAREMARK_MED_RX_CLOBETASOL;
+					
+			}
+		}
 		switch(record.getBin()) {
 			case "004336":
 			{
@@ -519,7 +584,7 @@ public class FaxClientFrame extends JFrame {
 					return folder+"\\"+PBMScript.CAREMARK;
 			}
 			case "610239":
-				return null;
+				return folder+"\\"+PBMScript.CAREMARK_FEDERAL;
 			case "610591":
 				return folder+"\\"+PBMScript.CAREMARK;
 			case "610502":
@@ -530,14 +595,12 @@ public class FaxClientFrame extends JFrame {
 			case "015581":
 			case "015599":
 			case "610649":
-				return folder+"\\"+PBMScript.HUMANA;
-			case "610097":
 				if(record.getPharmacy().equalsIgnoreCase("All_Pharmacy"))
-					return folder+"\\"+PBMScript.OPTUM_RX_ALL_FAMILY;
-				if(record.getGrp().equalsIgnoreCase("SHCA"))
-					return folder+"\\"+PBMScript.OPTUM_RX_SHCA;
-				else
-					return folder+"\\"+PBMScript.OPTUM_RX;
+					return folder+"\\"+PBMScript.HUMANA_ALL_FAMILY_PHARMACY;
+				else 
+					return folder+"\\"+PBMScript.HUMANA;
+			case "610097":
+				return folder+"\\"+PBMScript.OPTUM_RX;
 			case "610014":
 			case "400023":
 				return folder+"\\"+PBMScript.ESI;
@@ -551,7 +614,9 @@ public class FaxClientFrame extends JFrame {
 	}
 	private class PBMScript {
 		public static final String HUMANA = "Humana.pdf";
+		public static final String HUMANA_ALL_FAMILY_PHARMACY = "Humana - All Family Pharmacy.pdf";
 		public static final String CAREMARK = "Caremark.pdf";
+		public static final String CAREMARK_FEDERAL = "Caremark Federal.pdf";
 		public static final String AETNA = "Aetna.pdf";
 		public static final String INGENIO_RX = "IngenioRx.pdf";
 		public static final String OPTUM_RX = "OptumRx.pdf";
@@ -564,6 +629,8 @@ public class FaxClientFrame extends JFrame {
 		public static final String SILVER_SCRIPTS = "Silverscripts.pdf";
 		public static final String RX_6270 = "RX6270.pdf";
 		public static final String RX_8120 = "RX8120.pdf";
+		public static final String CAREMARK_MED_RX_DIFLORASONE = "Caremark - MedRx - Diflorasone";
+		public static final String CAREMARK_MED_RX_CLOBETASOL = "Caremark - MedRx - Clobetasol.pdf";
 	}
 	public class ConnectionDisruptedFrame extends JFrame {
 		public ConnectionDisruptedFrame() {

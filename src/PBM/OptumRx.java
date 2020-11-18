@@ -36,6 +36,7 @@ public class OptumRx {
 			case "AMNJ":
 			case "NAESRX":
 			case "MIMEDICAID":
+			case "HCHCP":
 				return InsuranceType.OUT_OF_NETWORK;
 			case "BRUNRX":
 			case "FRB":

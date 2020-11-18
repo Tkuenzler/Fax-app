@@ -146,7 +146,7 @@ public class EmdeonClient {
 			switch(name.getName()) {
 			case EmdeonParameters.SERVICE_TYPE:
 				if(record.getSsn().length()==4)
-					newParameters.add(new NameValuePair(EmdeonParameters.SERVICE_TYPE,EmdeonParameters.COMMERCIAL_AND_MEDICARE));
+					newParameters.add(new NameValuePair(EmdeonParameters.SERVICE_TYPE,EmdeonParameters.MEDICARE_PART_D));
 				else
 					newParameters.add(new NameValuePair(EmdeonParameters.SERVICE_TYPE,EmdeonParameters.COMMERCIAL));
 				break;
@@ -248,6 +248,99 @@ public class EmdeonClient {
 		}
 	}
 	private InsuranceInfo getPrivateCellData(HtmlTable table,InsuranceInfo info,Record record) {
+		for(HtmlTableRow row: table.getRows()) {
+			System.out.println(row.asText());
+			for(HtmlTableCell cell: row.getCells()) {
+				String cellData = cell.asText();
+				switch(cellData) {
+				case FieldNames.COVERAGE_TYPE:
+					info.privatePrimary = new Insurance("Primary Private");
+					info.setStatus(EmdeonStatus.FOUND);
+					break;
+				case FieldNames.PAYER_HELP_DESK:
+					break;
+				case FieldNames.POLICY_ID:
+					if(cell.getIndex()==1)
+						info.privatePrimary.setPolicyId(cell.getNextElementSibling().asText());
+					else 
+						info.privatePrimary.setPolicyId(cell.getPreviousElementSibling().asText());
+					break;
+				case FieldNames.BIN:
+					if(cell.getIndex()==1)
+						info.privatePrimary.setBin(cell.getNextElementSibling().asText());
+					else 
+						info.privatePrimary.setBin(cell.getPreviousElementSibling().asText());
+					info.privatePrimary.setCarrier(InsuranceFilter.GetPBMFromBin(record));
+					break;
+				case FieldNames.PCN:
+					if(cell.getIndex()==1)
+						info.privatePrimary.setPcn(cell.getNextElementSibling().asText());
+					else 
+						info.privatePrimary.setPcn(cell.getPreviousElementSibling().asText());
+					break;
+				case FieldNames.GROUP:
+					if(cell.getIndex()==1)
+						info.privatePrimary.setGrp(cell.getNextElementSibling().asText());
+					else 
+						info.privatePrimary.setGrp(cell.getPreviousElementSibling().asText());
+					break;
+				case FieldNames.ADDITIONAL_COVERAGE:
+					if(cell.getIndex()==1)
+						info.privatePrimary.setInfo(cell.getNextElementSibling().asText());
+					else 
+						info.privatePrimary.setInfo(cell.getPreviousElementSibling().asText());
+					return info;
+				case ErrorNames.NO_DATA:
+					info.setStatus(ErrorNames.NO_DATA);
+					System.out.println(cardFinderPage.asText());
+					return info;
+				case ErrorNames.PATIENT_NOT_COVERED: 
+					info.setStatus(EmdeonStatus.NOT_COVERED);
+					break;
+				case ErrorNames.WRONG_FIRST_NAME:
+					info.setStatus(EmdeonStatus.WRONG_FIRST_NAME);
+					return info;
+				case ErrorNames.LAST_NAME_TOO_LONG: 
+					info.setStatus(EmdeonStatus.LAST_NAME_TOO_LONG);
+					break;
+				case ErrorNames.FIRST_NAME_TOO_LONG:
+					info.setStatus(EmdeonStatus.FIRST_NAME_TOO_LONG);
+					break;
+				case ErrorNames.INVALID_DOB: 
+				case ErrorNames.INVALID_DOB2:
+					info.setStatus(EmdeonStatus.INVALID_DOB);
+					break;
+				case ErrorNames.PATIENT_PRIVATE_NOT_FOUND3:
+				case ErrorNames.PATIENT_PRIVATE_NOT_FOUND2:
+				case ErrorNames.PATIENT_PRIVATE_NOT_FOUND: 
+					info.setStatus(EmdeonStatus.NOT_FOUND);
+					break;
+				case ErrorNames.PBM_NOT_PARTICIPATE: 
+				case ErrorNames.PBM_NOT_PARTICIPATE2:
+					info.setStatus(EmdeonStatus.PBM_NOT_PARTICIPATE);
+					break;
+				case ErrorNames.NOT_ACTIVE: 
+					info.setStatus(EmdeonStatus.NOT_ACTIVE);
+					break;
+				case ErrorNames.TIMED_OUT:
+					info.setStatus(EmdeonStatus.TIMED_OUT);
+					break;
+				case ErrorNames.CONNECTION_ISSUES:
+				case ErrorNames.CONNECTION_ISSUES2:
+					info.setStatus(EmdeonStatus.CONNECTION_ISSUES);
+					break;
+				case ErrorNames.EMDEON_DOWN:
+					info.setStatus(EmdeonStatus.PAYOR_DOWN);
+					break;
+				case ErrorNames.REJECT_UNKNOWN:
+					info.setStatus("Reject Unknown");
+					break;
+				}
+			}
+		}
+		return info;
+	}
+	private InsuranceInfo getMedicreData(HtmlTable table,InsuranceInfo info,Record record) {
 		for(HtmlTableRow row: table.getRows()) {
 			System.out.println(row.asText());
 			for(HtmlTableCell cell: row.getCells()) {
@@ -493,11 +586,10 @@ public class EmdeonClient {
 		//Service Types
 		public static final String COMMERCIAL = "Commercial Only";
 		public static final String MEDICARE_PART_D = "Medicare Part D Only";
-		public static final String COMMERCIAL_AND_MEDICARE = "Commercial and Medicare Part A/B/D";
 
 		//Service Type Values
 		public static final String COMMERCIAL_VALUE = "ELIG";
-		public static final String COMMERCIAL_PART_D = "SuperE1";
+		public static final String COMMERCIAL_PART_D = "TROOPELIG";
 		
 		public static int getGenderValue(Record record) {
 			if(record.getGender()==null)

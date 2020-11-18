@@ -66,7 +66,7 @@ public class RingCentralClient {
 	}
 	private class URLS {
 		public static final String URL = "https://platform.ringcentral.com";
-	    //public static final String URL = "https://platform.devtest.ringcentral.com";
+		//public static final String URL = "https://platform.devtest.ringcentral.com";
 		public static final String AUTHORIZE = "/restapi/oauth/token";
 		public static final String REVOKE = "/restapi/oauth/revoke";
 		public static final String CALL_LOG = "/restapi/v1.0/account/~/extension/~/call-log";

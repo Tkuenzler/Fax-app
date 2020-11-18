@@ -21,6 +21,8 @@ import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.json.JSONException;
 import com.mysql.jdbc.CommunicationsException;
+
+import Database.Columns.LeadColumns;
 import Fax.EmdeonStatus;
 import Fax.FaxStatus;
 import Fax.MessageStatus;
@@ -1927,13 +1929,12 @@ public class DatabaseClient {
 		String message_status = ProductScripts.GetProductMessageStatus(product);
 		String fax_sent_date = ProductScripts.GetProductFaxDate(product);
 		String fax_disposition = ProductScripts.GetProductFaxDispositionColumn(product);
-		String sql = "SELECT * FROM `Leads` INNER JOIN `Alternate_Scripts` ON `Leads`.`_id` = `Alternate_Scripts`.`_id` WHERE "
+		String sql = "SELECT * FROM `Leads` INNER JOIN `Alternate_Scripts` ON `Leads`.`_id` = `Alternate_Scripts`.`_id` WHERE `"+LeadColumns.PRODUCTS+"` LIKE '%"+product.replace(" Script", "")+"%' AND "
 				+ "(`FAX_DISPOSITION` <> '"+FaxStatus.WRONG_DOCTOR+"' AND `FAX_DISPOSITION` <> '"+FaxStatus.ESCRIBE+"' AND `FAX_DISPOSITION` <> '"+FaxStatus.DECEASED+"' AND `FAX_DISPOSITION` <> '"+FaxStatus.NOT_INTERESTED+"') AND"+pharmacyQuery+" AND "
 				+"`"+Columns.FAX_DISPOSITION_DATE+"` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY) AND "
 				+"(`Alternate_Scripts`.`"+fax_disposition+"` = '' "
 				+"AND (`Alternate_Scripts`.`"+message_status+"` = 'SendingFailed' OR `Alternate_Scripts`.`"+fax_sent_date+"` = '0000-00-00' "
-				+"OR `Alternate_Scripts`.`"+fax_sent_date+"` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY))) AND "
-				+ ProductScripts.NotFaxedInDays(5);
+				+"OR `Alternate_Scripts`.`"+fax_sent_date+"` < DATE_ADD(CURDATE(), INTERVAL - 5 DAY)))";
 		System.out.println(sql);
 		Statement stmt = null;
 		ResultSet set = null;

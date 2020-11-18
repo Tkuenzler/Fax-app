@@ -11,6 +11,7 @@ public class MessageStatus {
 	public static final String SENDING_FAILED = "SendingFailed";
 	public static final String ILLEGAL_ARGUMENT = "Illegal Argument";
 	public static final String ON_HOLD = "On Hold";
+	public static final String NO_BRACE_LISTED = "NO BRACE LISTED";
 	
 	public static final String[] MESSAGE_STATUS = {BLANK,DNF,RECEIVED,SENT,QUEUED,BAD_FAX_NUMBER,SENDING_FAILED,ON_HOLD};
 

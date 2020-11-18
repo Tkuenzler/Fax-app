@@ -6,7 +6,7 @@
 			"number": "15615608499",
 			"password": "Kuenzler5726",
 			"ext": "101",
-			"name": "Lake Ida 1",
+			"name": "DONT USE",
 			"SECRET": "wjmI17MhTD25GR17MT7QCwcMlZI_mKTWasKFwnfXCllQ",
 			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
 		},
@@ -14,23 +14,23 @@
 			"number": "19194468308",
 			"password": "Kuenzler5726",
 			"ext": "102",
-			"name": "Hershey Pharmacy",
+			"name": "Hershey Dr Chase",
 			"SECRET": "wjmI17MhTD25GR17MT7QCwcMlZI_mKTWasKFwnfXCllQ",
 			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
 		},
 		{
-			"number": "16152570569",
+			"number": "18176627717",
 			"password": "Kuenzler5726",
 			"ext": "103",
-			"name": "Millennium Fax Blast",
+			"name": "Be Well Dr Chase",
 			"SECRET": "wjmI17MhTD25GR17MT7QCwcMlZI_mKTWasKFwnfXCllQ",
 			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
 		},
 		{
-			"number": "16303393005",
+			"number": "16143336236",
 			"password": "Kuenzler5726",
 			"ext": "104",
-			"name": "Jewel Fax Blast",
+			"name": "Franklington Dr Chase",
 			"SECRET": "wjmI17MhTD25GR17MT7QCwcMlZI_mKTWasKFwnfXCllQ",
 			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
 		},
@@ -54,7 +54,7 @@
 			"number": "17573514596",
 			"password": "Kuenzler5726",
 			"ext": "103",
-			"name": "Virgina Pharmacy",
+			"name": "Eagle Dr Chase",
 			"SECRET": "jzL1Kk9jR0ypDfW5JxI6kQsxrMT3p0TEatW5UF3Pbbpw",
 			"KEY": "CnE3L5LaQkipFr1-Yw88xg"
 		},
@@ -62,7 +62,7 @@
 			"number": "13178360309",
 			"password": "Winston4503",
 			"ext": "101",
-			"name": "Tristar",
+			"name": "DONT USE #2",
 			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
 			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
 			"Pin": "572633428"
@@ -71,7 +71,7 @@
 			"number": "15612706929",
 			"password": "Winston4503",
 			"ext": "101",
-			"name": "Fusion Pharmacy",
+			"name": "Fusion Dr Chase",
 			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
 			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
 			"Pin": "572633428"
@@ -80,7 +80,7 @@
 			"number": "15612660791",
 			"password": "Winston4503",
 			"ext": "103",
-			"name": "Doctor Chase Line",
+			"name": "Default Doctor Chase Line",
 			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
 			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
 			"Pin": "572633428"
@@ -89,16 +89,16 @@
 			"number": "13252676022",
 			"password": "Winston4503",
 			"ext": "104",
-			"name": "Sterling Pharmacy",
+			"name": "Sterling Dr Chase",
 			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
 			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
 			"Pin": "572633428"
 		},
 		{
-			"number": "16152589641",
+			"number": "17579164987",
 			"password": "Winston4503",
 			"ext": "106",
-			"name": "Millennium",
+			"name": "Eagle Fax Blast",
 			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
 			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
 			"Pin": "572633428"
@@ -107,7 +107,7 @@
 			"number": "17085713340",
 			"password": "Winston4503",
 			"ext": "107",
-			"name": "Jewel",
+			"name": "Jewel Dr Chase",
 			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
 			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
 			"Pin": "572633428"
@@ -116,7 +116,7 @@
 			"number": "19254345024",
 			"password": "Winston4503",
 			"ext": "101",
-			"name": "Rheem Pharmacy",
+			"name": "Rheem Dr Chase",
 			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
 			"KEY": "93y9kwlkSge8rfugvPXTbw",
 			"Pin": "572633428"
@@ -133,7 +133,7 @@
 		{
 			"number": "19252154677",
 			"password": "Winston4503",
-			"ext": "102",
+			"ext": "103",
 			"name": "Rheem Pharmacy Requalify",
 			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
 			"KEY": "93y9kwlkSge8rfugvPXTbw",
@@ -145,7 +145,16 @@
 			"number": "15612088766",
 			"password": "Winston4503",
 			"ext": "101",
-			"name": "All Family Pharmacy",
+			"name": "All Family Dr Chase",
+			"SECRET": "2pWwHGALTqKjOM3J8CQa-wSmLoqPNBSq-UL1jppP_n3g",
+			"KEY": "2GLlQwihSBWTtWOjqU7fGg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "15612375632",
+			"password": "Winston4503",
+			"ext": "102",
+			"name": "All Family Fax Blast",
 			"SECRET": "2pWwHGALTqKjOM3J8CQa-wSmLoqPNBSq-UL1jppP_n3g",
 			"KEY": "2GLlQwihSBWTtWOjqU7fGg",
 			"Pin": "572633428"
@@ -154,23 +163,89 @@
 			"number": "18324581961",
 			"password": "Kuenzler5726",
 			"ext": "101",
-			"name": "Med Rx Texas",
+			"name": "Med Rx TX Dr Chase",
 			"SECRET": "PAXMi-8HSdGgcujvdrVbpwrVZ30H61TcOMVx-kRcysJw",
 			"KEY": "ia661QoQRh2Nqr6wD3HdYg",
 			"Pin": "572633428",
 			"email": "MTMedRx@gmail.com",
-			"email_password": "Tommy6847!"
+			"email_password": "Winston4503"
 		},
 		{
 			"number": "13182556193",
 			"password": "Kuenzler5726",
 			"ext": "102",
-			"name": "Med Rx Louisiana",
+			"name": "Med Rx LA Dr Chase",
 			"SECRET": "PAXMi-8HSdGgcujvdrVbpwrVZ30H61TcOMVx-kRcysJw",
 			"KEY": "ia661QoQRh2Nqr6wD3HdYg",
 			"Pin": "572633428",
 			"email": "MTMedRx@gmail.com",
+			"email_password": "Winston4503!"
+		},
+		{
+			"number": "19726001199",
+			"password": "Kuenzler5726",
+			"ext": "103",
+			"name": "Texas Fax Blast",
+			"SECRET": "PAXMi-8HSdGgcujvdrVbpwrVZ30H61TcOMVx-kRcysJw",
+			"KEY": "ia661QoQRh2Nqr6wD3HdYg",
+			"Pin": "572633428",
+			"email": "MTMedRx@gmail.com",
+			"email_password": "Winston4503!"
+		},
+		{
+			"number": "15614869163",
+			"password": "Winston4503",
+			"ext": "101",
+			"name": "MT Medical Supplies",
+			"SECRET": "Yxcd-HcUSRSv6iSK4_L-bwxQBLxGjyRBGlNLIwMVLnvA",
+			"KEY": "bnOz5HZfTSeivt2cYYn9hg",
+			"Pin": "572633428",
+			"email": "mtmedicalsuppliesboca@gmail.com",
 			"email_password": "Tommy6847!"
+		},
+		{
+			"number": "15612101077",
+			"password": "Winston4503",
+			"ext": "101",
+			"name": "MT Medical Supplies Requal",
+			"SECRET": "Yxcd-HcUSRSv6iSK4_L-bwxQBLxGjyRBGlNLIwMVLnvA",
+			"KEY": "bnOz5HZfTSeivt2cYYn9hg",
+			"Pin": "572633428",
+			"email": "mtmedicalsuppliesboca@gmail.com",
+			"email_password": "Tommy6847!"
+		},
+		{
+			"number": "18475658285",
+			"password": "Winston4503",
+			"ext": "101",
+			"name": "Carepoint Dr Chase",
+			"SECRET": "Y-Gc52iUSFyEe9FcO09FUg9jUDofTJTZCe9SsdQXfG1w",
+			"KEY": "54-p19O9RnKX2unwHoqzNA",
+			"Pin": "572633428",
+			"email": "mt.carepoint@gmail.com",
+			"email_password": "Tommy6847!"
+		},
+		{
+			"number": "18727103955",
+			"password": "Winston4503",
+			"ext": "102",
+			"name": "Carepoint Fax Blast",
+			"SECRET": "Y-Gc52iUSFyEe9FcO09FUg9jUDofTJTZCe9SsdQXfG1w",
+			"KEY": "54-p19O9RnKX2unwHoqzNA",
+			"Pin": "572633428",
+			"email": "mt.carepoint@gmail.com",
+			"email_password": "Tommy6847!"
+		},
+		{
+			"number": "13176691093",
+			"password": "Password123",
+			"ext": "101",
+			"name": "Rx Plus New LINE",
+			"SECRET": "IQhH5gQXQJqtmtOVY3E3xQTtqYV9D3SPa2cr301DfK7A",
+			"KEY": "mjYFXylITmGoNlFWr_BueA",
+			"Pin": "",
+			"email": "",
+			"email_password": ""
 		}
 	],
 	"DATABASE_LOGIN":

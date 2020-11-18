@@ -2,6 +2,7 @@ package Fax;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 import PBM.InsuranceFilter;
 import PBM.InsuranceType;
@@ -9,10 +10,11 @@ import objects.PharmacyMap;
 import objects.PharmacyOdds;
 import objects.RoadMap;
 import table.Record;
+
 public class Pharmacy {
 	
 	
-	public static String GetPharmacy(ArrayList<PharmacyMap> roadMap,Record record) {
+	public static String GetPharmacy(HashMap<String,PharmacyMap> roadMap,Record record) {
 		ArrayList<PharmacyMap> pharmacies_that_can_take = new ArrayList<PharmacyMap>();
 		ArrayList<PharmacyOdds> odds = new ArrayList<PharmacyOdds>();
 		int insurance_type = InsuranceFilter.GetInsuranceType(record);
@@ -20,7 +22,10 @@ public class Pharmacy {
 		/*
 		 * First we add all pharmacies that can take a particular insurance type
 		 */
-		for(PharmacyMap pharmacy: roadMap) {
+		for (String key : roadMap.keySet()) {
+			if(key.equalsIgnoreCase("Carepoint"))
+				continue;
+			PharmacyMap pharmacy = roadMap.get(key);
 			switch(insurance_type) {
 				case InsuranceType.Type.PRIVATE_INSURANCE:
 					if(pharmacy.canTakePrivate())
@@ -36,7 +41,6 @@ public class Pharmacy {
 					break;
 				case InsuranceType.Type.TRICARE_INSURANCE:
 					if(pharmacy.canTakeTricare()) {
-						System.out.println(pharmacy.getPharmacyName());
 						pharmacies_that_can_take.add(pharmacy);
 					}
 					break;
@@ -71,9 +75,12 @@ public class Pharmacy {
 		else
 			return "No Home";
 	}
+	public static boolean CanCarepointTake(PharmacyMap carepoint,Record record) {
+		int insurance_type = InsuranceFilter.GetInsuranceType(record);
+		return CheckRoadMap(record,insurance_type,carepoint);
+	}
 	private static boolean CheckRoadMap(Record record,int insurance_type,PharmacyMap pharmacy) {
 		RoadMap map = pharmacy.getRoadMap(record.getState());
-		System.out.println("Checking type:"+insurance_type+" Pharmacy: "+pharmacy);
 		if(map==null)
 			return false;
 		switch(record.getCarrier()) {
@@ -118,7 +125,6 @@ public class Pharmacy {
 				else
 					return false;
 			case RoadMap.EXPRESS_SCRIPTS:
-				System.out.println("ESI: "+map.getExpressScripts());
 				if(map.canTake(record,insurance_type,map.getExpressScripts()))
 					return true;
 				else

@@ -18,16 +18,14 @@ public class FaxProperties {
 	private final String DR_CHASE_SCRRIPT = "dr_chase_script";
 	private final String SINGLE_PRODUCT_SCRIPT = "single_product_script"; 
 	private final String CUSTOM_SCRIPT = "custom_script";
-	private final String PAIN_SCRIPT = "pain_script";
-	private final String SKIN_SCRIPT = "skin_script";
-	private final String SCAR_SCRIPT = "scar_script";
+	private final String RXPLUS_SCRIPT = "rxplus_script";
+	private final String RXPLUS_SCRIPT2 = "rxplus_script2";
+	private final String RXPLUS_CAREMARK_SCRIPT = "rxplus_caremark_script";
 	private final String ANTI_FUNGAL_SCRIPT = "anti_fungal_script";
 	private final String PBM_SCRIPT = "pbm_script";
 	private final String DME_SCRIPT = "dme_script";
 	private final String COVERED_SCRIPT = "covered_script";
 	private final String SAVE_LOCATION = "save";
-	private final String PAIN = "pain";
-	private final String DERM = "derm";
 	private final String PHARMACY = "pharmacy";
 	private String fileName = null;
 	public FaxProperties() {
@@ -69,20 +67,22 @@ public class FaxProperties {
 			else
 				prop.put(DME_SCRIPT, fax.getDMEScript());
 			
-			if(prop.containsKey(PAIN_SCRIPT))
-				prop.setProperty(PAIN_SCRIPT,fax.getPainScript());
+			if(prop.containsKey(RXPLUS_SCRIPT))
+				prop.setProperty(RXPLUS_SCRIPT,fax.getRxPlusScript());
 			else
-				prop.put(PAIN_SCRIPT, fax.getPainScript());
+				prop.put(RXPLUS_SCRIPT, fax.getRxPlusScript());
+					
+			if(prop.containsKey(RXPLUS_SCRIPT2))
+				prop.setProperty(RXPLUS_SCRIPT2,fax.getRxPlusScript2());
+			else
+				prop.put(RXPLUS_SCRIPT2, fax.getRxPlusScript2());
+				
+			if(prop.containsKey(RXPLUS_CAREMARK_SCRIPT))
+				prop.setProperty(RXPLUS_CAREMARK_SCRIPT,fax.getRxPlusCaremark());
+			else
+				prop.put(RXPLUS_CAREMARK_SCRIPT, fax.getRxPlusCaremark());
 			
-			if(prop.containsKey(SKIN_SCRIPT))
-				prop.setProperty(SKIN_SCRIPT,fax.getSkinScript());
-			else
-				prop.put(SKIN_SCRIPT, fax.getSkinScript());
 			
-			if(prop.containsKey(SCAR_SCRIPT))
-				prop.setProperty(SCAR_SCRIPT,fax.getScarScript());
-			else
-				prop.put(SCAR_SCRIPT, fax.getScarScript());
 			
 			if(prop.containsKey(ANTI_FUNGAL_SCRIPT))
 				prop.setProperty(ANTI_FUNGAL_SCRIPT,fax.getAntiFungalScript());
@@ -104,17 +104,7 @@ public class FaxProperties {
 				prop.setProperty(SAVE_LOCATION,fax.getSaveLocation());
 			else
 				prop.put(SAVE_LOCATION, fax.getSaveLocation());
-			
-			if(prop.containsKey(PAIN))
-				prop.setProperty(PAIN, ""+fax.isPain());
-			else
-				prop.put(PAIN, ""+fax.isPain());
-			
-			if(prop.containsKey(DERM))
-				prop.setProperty(DERM, ""+fax.isDerm());
-			else
-				prop.put(DERM,""+fax.isDerm());
-			
+						
 			if(prop.containsKey(PHARMACY))
 				prop.setProperty(PHARMACY, ""+fax.getPharmacy());
 			else
@@ -149,15 +139,13 @@ public class FaxProperties {
 			fax.setCustomScript(prop.getProperty(CUSTOM_SCRIPT));
 			fax.setDMEScript(prop.getProperty(DME_SCRIPT));
 			fax.setCoveredScript(prop.getProperty(COVERED_SCRIPT));
-			fax.setPainScript(prop.getProperty(PAIN_SCRIPT));
-			fax.setSkinScript(prop.getProperty(SKIN_SCRIPT));
-			fax.setScarScript(prop.getProperty(SCAR_SCRIPT));
+			fax.setRxPlusScript(prop.getProperty(RXPLUS_SCRIPT));
+			fax.setRxPlusScript2(prop.getProperty(RXPLUS_SCRIPT2));
+			fax.setRxPlusCaremark(prop.getProperty(RXPLUS_CAREMARK_SCRIPT));
 			fax.setAntiFungalScript(prop.getProperty(ANTI_FUNGAL_SCRIPT));
 			fax.setSaveLocation(prop.getProperty(SAVE_LOCATION));
 			fax.setSingleProductScript(prop.getProperty(SINGLE_PRODUCT_SCRIPT));
 			fax.setPbmScript(prop.getProperty(PBM_SCRIPT));
-			fax.setPain(Boolean.parseBoolean(prop.getProperty(PAIN)));
-			fax.setDerm(Boolean.parseBoolean(prop.getProperty(DERM)));
 			fax.setPharmacy((prop.getProperty(PHARMACY)));
 		} catch (IOException e) {
 			JOptionPane.showMessageDialog(new JFrame(),e.getMessage());

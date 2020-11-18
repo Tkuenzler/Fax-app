@@ -2,6 +2,7 @@ package Fax;
 
 import javax.swing.JOptionPane;
 
+import PBM.Insurance;
 import PBM.InsuranceFilter;
 import PBM.InsuranceType;
 import table.Record;
@@ -31,10 +32,12 @@ public enum Drug {
 	Desoximetasone360("Desoximetasone 0.05% Cream","360 Grams","Apply 2-3 grams to affected area(s) 3-4 times daily.","INFLAMMATION MANAGEMENT: STEROID",new String[] {"51672127103"}),
 	Desoximetasone120("Desoximetasone 0.05% Cream","120 Grams","Apply 1-2 grams to affected area(s) 1-2 times daily.","INFLAMMATION MANAGEMENT: STEROID",new String[] {"51672127103"}),
 	Triamcinolone("Triamcinolone Acetonide 0.147 mg/gm Topical Aerosol","400 Grams","Apply 2-3 sprays to affected area(s) 3-4 times daily (2 second spray = 1 gram)","INFLAMMATION MANAGEMENT: STEROID",new String[] {"71800015631"}),
-	CalcipotreneBetaMethasoone("Calciporene BetaMethasone","","","INFLAMMATION MANAGEMENT: STEROID",new String[] {"00781716535"}),
+	CalcipotreneBetaMethasoone("Calcipotriene BetaMethasone","","","INFLAMMATION MANAGEMENT: STEROID",new String[] {"00781716535"}),
 	//Psoriasis
-	Calcipotrene360("Calcipotriene 0.005% Topical Cream","360 Grams","Apply 2-3 gm to affected area 3-4 times daily as directed.","PSORIASIS",new String[] {"00781711783","16714076302","68462050166"}),
-	Calcipotrene240("Calcipotriene 0.005% Topical Cream","240 Grams","Apply 2-3 gm to affected area 2-3 times daily as directed.","PSORIASIS",new String[] {"00781711783","16714076302","68462050166"}),
+	CalcipotrieneOintment("Calcipotriene 0.005% Topical Ointment","360 Grams","Apply 2-3 gm to affected area 3-4 times daily as directed.","PSORIASIS",new String[] {""}),
+	CalcipotrieneFoam("Calcipotriene 0.005% Foam","360 Granms","Apply 2-3 gm to affected area 3-4 times daily as directed.","PSORIASIS",new String[] {}),
+	Calcipotriene360("Calcipotriene 0.005% Topical Cream","360 Grams","Apply 2-3 gm to affected area 3-4 times daily as directed.","PSORIASIS",new String[] {"00781711783","16714076302","68462050166"}),
+	Calcipotriene240("Calcipotriene 0.005% Topical Cream","240 Grams","Apply 2-3 gm to affected area 2-3 times daily as directed.","PSORIASIS",new String[] {"00781711783","16714076302","68462050166"}),
 	//SCAR
 	SilKPad("Sil-K Pad","4 Patches","Cut pad to fit scar with 1/4 inch beyond the scar on all sides. Apply patch and leave on for 8-12 hours per day then remove (Discard the pad and replace with a new one every 7 days)","SCAR",new String[] {"70350261501"}),
 	//NSAID
@@ -81,7 +84,9 @@ public enum Drug {
 	Lactulose("Lactulose","60 Packets","Dissolve a 10 gram packet in 4 oz of water 2 times daily.","CONSTIPATION",new String[] {"69067001015"}),
 	//Dietary
 	Xvite("Xvite Tablet","60 Tablets","Take one table by mouth twice daily.","DIETARY SUPPLEMENT",new String[] {"69067004030"}),
-	OmegaEthylEster("Omega-3 Acid Ethyl Esters","360 Capsules","Take one capsule four times a day.","DIETARY SUPPLEMENT (90 Day Supply)",new String[] {"6050531707"}),
+	OmegaEthylEster("Omega-3 Acid Ethyl Esters","360 Capsules","Take one capsule four times a day.","HEART HEALTHY SUPPLEMENT (90 Day Supply)",new String[] {"6050531707"}),
+	//ACID REFLUX
+	Omeprazole("Omeprazole and Sodium Bicarbonate Capsules 40/1100 mg","30 Capsules","Take 1 capsule daily, 1 hour before breakfast","ACID REFLUX/GERD",new String[] {}),
 	//Cleaning
 	AlcoholPad("Alcohol Pad","300"," Cleanse the skin by using 1 sterile pad on the affected area directly before applying any topical Cream / Gel / Solution","CLEANING",new String[] {"42423027101","47781015301","91237000128"});
 	String name,qty,sig,therapy;
@@ -153,6 +158,8 @@ public enum Drug {
 	}
 	public static Drug GetTopicalScript(Record record) {
 		switch(record.getBin()) {
+			case "610602":
+				return Clobetasol360;
 			case "610014":
 			case "003858":
 			case "400023":
@@ -172,6 +179,9 @@ public enum Drug {
 			}
 			//Medimpact 
 			case "015574":
+				return Diflorasone360;
+			case "003585":
+				return Clobetasol360;
 			//Optum Rx
 			case "610097": {
 				switch(record.getGrp().toUpperCase()) {
@@ -195,9 +205,10 @@ public enum Drug {
 			//Caremark	
 			case "020099":
 				return Diflorasone360;
-			case "020107":
 			case "020115":
 			case "610502":
+				return Diflorasone360;
+			case "020107":
 				return Clobetasol360;
 			case "004336": {
 					//Private Caremark
@@ -316,6 +327,37 @@ public enum Drug {
 				return  Naftifine;
 			default:
 				return Econazole;
+		}
+	}
+	public static Drug GetDermatitis(Record record) {
+		int type = InsuranceFilter.GetInsuranceType(record);
+		switch(record.getBin()) {
+			case "610279":
+				return CalcipotrieneFoam;
+			case "003858":
+			case "610014":
+				if(type==InsuranceType.Type.PRIVATE_INSURANCE)
+					return CalcipotrieneFoam;
+				else
+					return Calcipotriene360;
+			case "004336":
+			case "020015":
+			case "610502":
+			case "610591":
+				return CalcipotrieneOintment;
+			case "015581":
+			case "015599":
+			case "610649":
+				return Calcipotriene360;
+			case "610097":
+			case "610494":
+			case "610011":
+			case "017010":
+				return Calcipotriene360;
+			case "400023":
+				return  Calcipotriene360; 
+			default:
+				return Calcipotriene360;
 		}
 	}
 }

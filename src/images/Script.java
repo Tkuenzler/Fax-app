@@ -16,6 +16,8 @@ import org.apache.pdfbox.pdmodel.interactive.form.PDCheckBox;
 import org.apache.pdfbox.pdmodel.interactive.form.PDField;
 
 import Fax.Drug;
+import framelisteners.invoices.CreateAttestationLetter.Medication;
+import framelisteners.invoices.CreateAttestationLetter.PatientRecord;
 import objects.Fax;
 import table.Record;
 
@@ -33,13 +35,18 @@ public class Script {
 	public Script(Fax fax,boolean load) throws ScriptException, IOException {
 		this.fax = fax;
 		this.src = fax.getPharmacy();
-		System.out.println("FROM CON SOURCE: "+src);
-		if(load)
-			LoadNewScript(src);
 	}
 	public Script(String source) {
 		try {
 			LoadNewScript(source);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+	public Script(File file) {
+		try {
+			LoadNewScript(file);
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -105,7 +112,7 @@ public class Script {
 			}
 		}
 	}
-	public void PopulateDrugs(List<PDField> fields,Drug drug1,Drug drug2) throws IOException {
+	public void PopulateDrugs(List<PDField> fields,Drug drug1,Drug drug2,String notes) throws IOException {
 		for(PDField field: fields) {
 			switch(field.getPartialName()) {
 			case "Drug Therapy 1":
@@ -139,6 +146,9 @@ public class Script {
 			case "Drug Sig 2":
 				if(drug2!=null)
 					acroForm.getField("Drug Sig 2").setValue("Sig:  "+drug2.getSig()); 
+				break;
+			case "Notes":
+				acroForm.getField("Notes").setValue(notes);
 				break;
 			}
 		}
@@ -202,82 +212,30 @@ public class Script {
 		this.fax = fax;
 	}
 	public void LoadNewScript(String src) throws InvalidPasswordException, IOException {
+		System.out.println(src);
 		System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
 		pdfDocument = PDDocument.load(new File(src));
 		docCatalog = pdfDocument.getDocumentCatalog();
 		acroForm = docCatalog.getAcroForm();
 	}
-	public void PopulateDME(Record record)  throws ScriptException, IOException {
-		System.out.println("FROM DME SOURCE: "+src);
-		List<PDField> fields = acroForm.getFields();
-		clearFields(fields);
-		populateFields(fields,record);
-		if(record.getBrace_list().equalsIgnoreCase(""))
-			throw new ScriptException("NO BRACE LISTED");
-		checkOffDME(fields,record);
-		fileName = fax.getSaveLocation()+"\\"+fax.getLogin()+".pdf";
-		pdfDocument.save(new File(fileName));
-	}
-	public void checkOffDME(List<PDField> fields,Record record) throws IOException {
-		String[] brace_list = record.getBrace_list().split(",");
-		for(String brace: brace_list) {
-			switch(brace) {
-				case "Back Pain":
-					((PDCheckBox) acroForm.getField("Back")).check();
-					break;
-				case "Left Ankle Pain":
-					((PDCheckBox) acroForm.getField("Ankle")).check();
-					break;
-				case "Right Ankle Pain":
-					((PDCheckBox) acroForm.getField("Ankle")).check();
-					break;
-				case "Left Wrist Pain":
-					((PDCheckBox) acroForm.getField("Wrist")).check();
-					break;
-				case "Right Wrist Pain":
-					((PDCheckBox) acroForm.getField("Wrist")).check();
-					break;
-				case "Left Knee Pain":
-					((PDCheckBox) acroForm.getField("Knee")).check();
-					break;
-				case "Right Knee Pain":
-					((PDCheckBox) acroForm.getField("Knee")).check();
-					break;
-				case "Left Shoulder Pain":
-					((PDCheckBox) acroForm.getField("Shoulder")).check();
-					break;
-				case "Right Shoulder Pain":
-					((PDCheckBox) acroForm.getField("Shoulder")).check();
-					break;
-				case "Left Elbow Pain":
-					((PDCheckBox) acroForm.getField("Elbow")).check();
-					break;
-				case "Right Elbow Pain":
-					((PDCheckBox) acroForm.getField("Elbow")).check();
-					break;
-				/*
-				case "Neck Pain":
-					((PDCheckBox) acroForm.getField("Neck")).check();
-					break;
-				case "Hip Pain":
-					((PDCheckBox) acroForm.getField("Hip")).check();
-					break;
-				*/
-			}
-		}
-	}
-	public void AddScript(Drug drug1, Drug drug2) throws InvalidPasswordException, IOException, ScriptException {
-		System.out.println("ADDING: "+drug1.getName());
-		pdfMerger = new PDFMergerUtility();
-		pdfDocument = PDDocument.load(new File(fax.getCustomScript()));
+	public void LoadNewScript(File file) throws InvalidPasswordException, IOException {
+		System.out.println(src);
+		System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");System.setProperty("sun.java2d.cmm", "sun.java2d.cmm.kcms.KcmsServiceProvider");
+		pdfDocument = PDDocument.load(file);
 		docCatalog = pdfDocument.getDocumentCatalog();
 		acroForm = docCatalog.getAcroForm();
+	}
+	public void AddScript(String src) throws InvalidPasswordException, IOException, ScriptException {
+		System.out.println("ADDING: "+src);
+		pdfMerger = new PDFMergerUtility();
+		pdfDocument = PDDocument.load(new File(src));
+		docCatalog = pdfDocument.getDocumentCatalog();
+		acroForm = docCatalog.getAcroForm();
+
 		try {
 			//COVER PAGE
 			List<PDField> fields = acroForm.getFields();
-			populateFields(fields,record);
-			if(drug1!=null || drug2!=null)
-				PopulateDrugs(fields,drug1,drug2);
+			populateFields(fields,record,0);
 			File file1 = new File(fileName);
 			File file2 = new File(fax.getSaveLocation()+"\\"+fax.getLogin()+"2.pdf");
 			pdfDocument.save(file2);
@@ -297,34 +255,161 @@ public class Script {
 			
 		}
 	}
-	public void PopulateScript(Record record) throws ScriptException {
+	public void PopulateDME(Record record)  throws ScriptException, IOException {
+		System.out.println("FROM DME SOURCE: "+src);
+		List<PDField> fields = acroForm.getFields();
+		clearFields(fields);
+		populateFields(fields,record,0);
+		if(record.getBrace_list().equalsIgnoreCase(""))
+			throw new ScriptException("NO BRACE LISTED");
+		uncheckDME(fields);
+		checkOffDME(fields,record);
+		fileName = fax.getSaveLocation()+"\\"+fax.getLogin()+".pdf";
+		pdfDocument.save(new File(fileName));
+	}
+	public void uncheckDME(List<PDField> field) throws IOException {
+		((PDCheckBox) acroForm.getField("Back")).unCheck();
+		((PDCheckBox) acroForm.getField("Ankle")).unCheck();
+		((PDCheckBox) acroForm.getField("Wrist")).unCheck();
+		((PDCheckBox) acroForm.getField("Knee")).unCheck();
+		((PDCheckBox) acroForm.getField("Shoulder")).unCheck();
+		((PDCheckBox) acroForm.getField("Elbow")).unCheck();
+		((PDCheckBox) acroForm.getField("Hip")).unCheck();
+		
+	}
+	public void checkOffDME(List<PDField> fields,Record record) throws IOException {
+		String[] brace_list = record.getBrace_list().split(",");
+		StringBuilder sb = new StringBuilder();
+		for(String brace: brace_list) {
+			sb = new StringBuilder();
+			System.out.println("BRACE FOUND: "+brace); 
+			switch(brace.trim()) {
+				case "Back":
+					((PDCheckBox) acroForm.getField("Back")).check();
+					break;
+				//Ankle
+				case "Ankle":
+					((PDCheckBox) acroForm.getField("Ankle")).check();
+					break;
+				case "Right Ankle":
+					((PDCheckBox) acroForm.getField("Ankle")).check();
+					sb.append(acroForm.getField("Ankle Modifier").getValueAsString()+" RT");
+					acroForm.getField("Ankle Modifier").setValue(sb.toString());
+					break;
+				case "Left Ankle":
+					((PDCheckBox) acroForm.getField("Ankle")).check();
+					sb.append(acroForm.getField("Ankle Modifier").getValueAsString()+" LT");
+					acroForm.getField("Ankle Modifier").setValue(sb.toString());
+					break;
+				//Wrist
+				case "Wrist":
+					((PDCheckBox) acroForm.getField("Wrist")).check();
+					break;
+				case "Right Wrist":
+					((PDCheckBox) acroForm.getField("Wrist")).check();
+					sb.append(acroForm.getField("Wrist Modifier").getValueAsString()+" RT");
+					acroForm.getField("Wrist Modifier").setValue(sb.toString());
+					break;
+				case "Left Wrist":
+					((PDCheckBox) acroForm.getField("Wrist")).check();
+					sb.append(acroForm.getField("Wrist Modifier").getValueAsString()+" LT");
+					acroForm.getField("Wrist Modifier").setValue(sb.toString());
+					break;
+				//Knees
+				case "Knee":
+				case "Knees":
+					((PDCheckBox) acroForm.getField("Knee")).check();
+					break;
+				case "Right Knee":
+					((PDCheckBox) acroForm.getField("Knee")).check();
+					sb.append(acroForm.getField("Knee Modifier").getValueAsString()+" RT");
+					acroForm.getField("Knee Modifier").setValue(sb.toString());
+					break;
+				case "Left Knee":
+					((PDCheckBox) acroForm.getField("Knee")).check();
+					sb.append(acroForm.getField("Knee Modifier").getValueAsString()+" LT");
+					acroForm.getField("Knee Modifier").setValue(sb.toString());
+					break;
+				//SHOULDER
+				case "Shoulder":
+					((PDCheckBox) acroForm.getField("Shoulder")).check();
+					break;
+				case "Right Shoulder":
+					((PDCheckBox) acroForm.getField("Shoulder")).check();
+					sb.append(acroForm.getField("Shoulder Modifier").getValueAsString()+" RT");
+					acroForm.getField("Shoulder Modifier").setValue(sb.toString());
+					break;
+				case "Left Shoulder":
+					((PDCheckBox) acroForm.getField("Shoulder")).check();
+					sb.append(acroForm.getField("Shoulder Modifier").getValueAsString()+" LT");
+					acroForm.getField("Shoulder Modifier").setValue(sb.toString());
+					break;
+				
+				//ELBOW
+				case "Elbow":
+					((PDCheckBox) acroForm.getField("Elbow")).check();
+					break;
+				case "Right Elbow":
+					((PDCheckBox) acroForm.getField("Elbow")).check();
+					sb.append(acroForm.getField("Elbow").getValueAsString()+" RT");
+					acroForm.getField("Elbow Modifier").setValue(sb.toString());
+					break;
+				case "Left Elbow":
+					((PDCheckBox) acroForm.getField("Elbow")).check();
+					sb.append(acroForm.getField("Elbow").getValueAsString()+" LT");
+					acroForm.getField("Elbow Modifier").setValue(sb.toString());
+					break;
+				//HIP
+				case "Hip":
+				case "Hips":
+					((PDCheckBox) acroForm.getField("Hip")).check();
+					break;
+			}
+		}
+	}
+	public void AddScript(Drug drug1, Drug drug2,String notes) throws InvalidPasswordException, IOException, ScriptException {
+		System.out.println("ADDING: "+drug1.getName());
+		pdfMerger = new PDFMergerUtility();
+		pdfDocument = PDDocument.load(new File(fax.getCustomScript()));
+		docCatalog = pdfDocument.getDocumentCatalog();
+		acroForm = docCatalog.getAcroForm();
+		try {
+			//COVER PAGE
+			List<PDField> fields = acroForm.getFields();
+			populateFields(fields,record,0);
+			if(drug1!=null || drug2!=null)
+				PopulateDrugs(fields,drug1,drug2,notes);
+			File file1 = new File(fileName);
+			File file2 = new File(fax.getSaveLocation()+"\\"+fax.getLogin()+"2.pdf");
+			pdfDocument.save(file2);
+	        pdfMerger.addSource(file1);
+	        pdfMerger.addSource(file2);
+	        pdfMerger.setDestinationFileName(fileName);
+	        pdfMerger.mergeDocuments(null);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			//JOptionPane.showMessageDialog(new JFrame(), e.getMessage());
+		}  catch (IllegalArgumentException e2) {
+			System.out.println(e2.getMessage());
+			e2.printStackTrace();
+			throw new ScriptException("Illegal Argument");
+		}  finally {
+			
+		}
+	}
+	public void PopulateScript(Record record,int pages) throws ScriptException {
 		System.out.println("FAX LINE: "+fax.getLogin());
 		this.record = record;
 		try {
 			//COVER PAGE
 			List<PDField> fields = acroForm.getFields();
-			clearFields(fields);
-			populateFields(fields,record);
+			//clearFields(fields);
+			populateFields(fields,record,pages);
 			if(drugs!=null)
 				PopulateDrugArray(fields);
 			if(drug1!=null || drug2!=null)
 				PopulateDrugs(fields);
-			PDCheckBox pain = (PDCheckBox) acroForm.getField("Pain");
-			PDCheckBox derm = (PDCheckBox) acroForm.getField("Dermatitis");
-			PDCheckBox vitamins = (PDCheckBox) acroForm.getField("Vitamins");
-			PDCheckBox acid = (PDCheckBox) acroForm.getField("Acid");
-			if(pain!=null)
-				if(fax.isPain())
-					pain.check();
-			if(derm!=null)
-				if(fax.isDerm())
-					derm.check();
-			if(vitamins!=null)
-				if(fax.isVitamins())
-					vitamins.check();
-			if(acid!=null)
-				if(fax.isAcid())
-					acid.check();
 			this.fileName = fax.getSaveLocation()+"\\"+fax.getLogin()+".pdf";
 			pdfDocument.save(new File(fileName));
 		} catch (IOException e) {
@@ -339,12 +424,25 @@ public class Script {
 			
 		}
 	}
-	private void populateFields(List<PDField> fields,Record record) throws IOException {
+	private void populateFields(List<PDField> fields,Record record,int pages) throws IOException {
 		String number = null;
 		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
 		Date date = new Date();
+		String name = record.getFirstName()+" "+record.getLastName();
+		String dr_name = record.getDrFirst()+" "+record.getDrLast();
 		for(PDField field: fields) {
 			switch(field.getPartialName()) {
+			case "Cover 1":
+				
+				acroForm.getField("Cover 1").setValue("Your Patient "+name+" has requested Home Delivery services for their medications. Patient "+name+" "
+						+ "has identified you, Dr "+dr_name+" as their treating physician and requested we contact you you regarding approval for their "
+						+ "Home Delivery services. Please review the accompanying request represented in this document.");
+				break;
+			case "Cover 2":
+				acroForm.getField("Cover 2").setValue("Your patient, "+name+" is waiting for their order.");
+				break;
+			case "Pages":
+				acroForm.getField("Pages").setValue(""+pages); break;
 			case "Date":
 				acroForm.getField("Date").setValue(dateFormat.format(date).toUpperCase()); break;
 			case "Notes":
@@ -422,6 +520,68 @@ public class Script {
 			}
 		}
 	}
+	public void populateAttestationMedication(Medication medication,int count) throws IOException {
+		Date date = new Date();
+		DateFormat dateFormat = new SimpleDateFormat("MM/dd/yyyy");
+		acroForm.getField("Medication "+count).setValue("Prescription: "+medication.getName());
+		acroForm.getField("Rx Number "+count).setValue("Rx Number: "+medication.getRxNumber());
+		acroForm.getField("Day Supply "+count).setValue("Day Supply: "+medication.getDaySupply());
+		acroForm.getField("Quantity "+count).setValue("Quantity: "+medication.getQuantity());
+		acroForm.getField("Date").setValue(dateFormat.format(date).toUpperCase());
+		String firstFill = medication.getEarlistFillDate();
+		acroForm.getField("First Fill "+count).setValue("First Fill Date: "+firstFill);
+		StringBuilder sb = new StringBuilder();
+		SimpleDateFormat sdf = new SimpleDateFormat("MM/dd/yyyy");
+		for(Date refill: medication.getFillDates()) {
+			String fill = sdf.format(refill);
+			if(fill.equalsIgnoreCase(firstFill))
+				continue;
+			sb.append(fill+",");
+		}
+		if(sb.length()>0)
+			sb.setLength(sb.length() - 1);
+		acroForm.getField("Refill Dates "+count).setValue("Refill Dates: "+sb.toString());
+	}
+	public void populateAttestationPDF(PatientRecord record) throws IOException {
+		List<PDField> fields = acroForm.getFields();
+		for(PDField field: fields) {
+			switch(field.getPartialName()) {
+				case "Doctor Name":
+					acroForm.getField(field.getPartialName()).setValue(record.getDr_first()+" "+record.getDr_last());
+					break;
+				case "Patient Name":
+					acroForm.getField(field.getPartialName()).setValue(record.getFirstName()+" "+record.getLastName());
+					break;
+				case "DOB":
+					acroForm.getField(field.getPartialName()).setValue(record.getDob());
+					break;
+				case "Doctor Address":
+					acroForm.getField(field.getPartialName()).setValue(record.getDr_addres());
+					break;
+				case "Doctor City/State/Zip":
+					acroForm.getField(field.getPartialName()).setValue(record.getDr_city()+" "+record.getDr_state()+" "+record.getDr_zip());
+					break;
+				case "Doctor Phone":
+					acroForm.getField(field.getPartialName()).setValue(record.getDr_phone());
+					break;
+				case "Doctor Fax":
+					acroForm.getField(field.getPartialName()).setValue(record.getDr_fax());
+					break;
+				case "NPI":
+					acroForm.getField(field.getPartialName()).setValue(record.getNpi());
+			}
+		}
+	}
+	public void saveAttestationPDF(String name) {
+		this.fileName = name+".pdf";
+		try {
+			pdfDocument.save(new File(fileName));
+			close();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} 
+	}
 	public void saveScript(String folder) {
 		this.fileName = folder+"\\"+record.getFirstName()+" "+record.getLastName()+".pdf";
 		try {
@@ -431,10 +591,18 @@ public class Script {
 			e.printStackTrace();
 		} 
 	}
-	public void clearFields(List<PDField> fields) throws IOException {
-		for(PDField field: fields) {
-			if(field.getFieldType().equalsIgnoreCase("Tx"))
-				acroForm.getField(field.getPartialName()).setValue("");
+	public void clearFields(List<PDField> fields)  {
+		String f = null;
+		try {
+			for(PDField field: fields) {
+				f = field.getPartialName();
+				if(field.getFieldType().equalsIgnoreCase("Tx")) { 
+					acroForm.getField(field.getPartialName()).setValue("");
+				}
+			}
+		} catch(IOException ex) {
+			System.out.println("ERROR ON: "+f);
+			ex.printStackTrace();
 		}
 	}
 	public void close() {

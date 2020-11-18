@@ -22,8 +22,12 @@ import table.Record;
 public class ExportExcel implements ActionListener {
 	WritableWorkbook workBook = null;
 	WritableSheet excelSheet = null;
+	boolean multiple = false;
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
+		int confirm = JOptionPane.showConfirmDialog(null, "Do you want to export a row for each product?","Export with Multiple Rows",JOptionPane.YES_NO_OPTION);
+		if(confirm==JOptionPane.YES_OPTION)
+			multiple = true;
 		File file = FileChooser.SaveXlsFile();
         try {
         	workBook = Workbook.createWorkbook(file);
@@ -31,9 +35,20 @@ public class ExportExcel implements ActionListener {
         	AddHeaders();
         	for(int row = 0;row<CSVFrame.model.getRowCount();row++) {
         		Record record = CSVFrame.model.getRowAt(row);
-        		for(int column = 0;column<MyTableModel.COLUMN_HEADERS.length;column++) {
-        			AddLabel(record,row,column);
-        		}
+        		if(multiple) { 
+					if(record.getProducts().length>0) {
+						int count = 0;
+						for(String product: record.getProducts()) {
+							AddRow(record,row,count,product);
+							count++;
+						}
+					}
+					else {
+						AddRow(record,row,0,"");
+					}
+				}
+				else
+					AddRow(record,row,0,"");
         	}
         	workBook.write();
         } catch (IOException e) {
@@ -63,13 +78,19 @@ public class ExportExcel implements ActionListener {
 			Label label = new Label(column,0,header);
 			excelSheet.addCell(label);	
 		}
+		if(multiple)
+			excelSheet.addCell(new Label(MyTableModel.COLUMN_HEADERS.length,0,"PRODUCTS"));
 	}
-	private void AddLabel(Record record,int row,int column) throws RowsExceededException, WriteException {
-		String value = CSVFrame.model.getValueAt(row, column);
-		if(value==null)
-			value = "";
-		Label label = new Label(column,row+1,value.toUpperCase());
-		excelSheet.addCell(label);		
+	private void AddRow(Record record,int row,int count,String product) throws RowsExceededException, WriteException {
+		for(int column = 0;column<MyTableModel.COLUMN_HEADERS.length;column++) {
+			String value = CSVFrame.model.getValueAt(row, column);
+			if(value==null)
+				value = "";
+			Label label = new Label(column,row+1+count,value.toUpperCase());
+			excelSheet.addCell(label);
+		}
+		if(multiple)
+			excelSheet.addCell(new Label(MyTableModel.COLUMN_HEADERS.length,row+1+count,product));
 	}
 	private void SheetAutoFitColumns(WritableSheet sheet) {
 	    for (int i = 0; i < sheet.getColumns(); i++) {

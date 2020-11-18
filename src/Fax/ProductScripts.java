@@ -114,7 +114,7 @@ public class ProductScripts {
 		StringBuilder sb = new StringBuilder();
 		sb.append("( `FAX_SENT_DATE` < DATE_ADD(CURDATE(), INTERVAL - "+x+" DAY) AND ");
 		for(String s: ALL) {
-			String fax_sent =  GetProductFaxDate(s);
+			String fax_sent = GetProductFaxDate(s);
 			sb.append("`Alternate_Scripts`.`"+fax_sent+"` < DATE_ADD(CURDATE(), INTERVAL - "+x+" DAY) AND ");
 		}
 		sb.delete(sb.length()-4, sb.length()-1);

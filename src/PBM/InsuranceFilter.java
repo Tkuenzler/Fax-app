@@ -70,6 +70,8 @@ public class InsuranceFilter {
 				return "Navitus";
 			case "017043":
 				return "ProCare Rx";
+			case "610241":
+				return "MeridianRx";
 			default:
 				return record.getBin();
 		}
@@ -106,7 +108,7 @@ public class InsuranceFilter {
 				insurance =  InsuranceType.MEDICAID;
 				break;
 			case "020107":
-				insurance =  InsuranceType.MEDICARE_COMMERCIAL;
+				insurance =  Caremark.Filter(record);
 				break;
 			case "610239":
 				insurance =  InsuranceType.MEDICARE_COMMERCIAL;
@@ -209,7 +211,7 @@ public class InsuranceFilter {
 				insurance =  "";
 				break;
 			//Meridan
-			case "610241":
+			case "610241":	
 				insurance = Meridan.Filter(record);
 			case "017142":
 				return InsuranceType.MEDICAID;

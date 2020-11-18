@@ -3,6 +3,8 @@ package framelisteners.edit.pharmacy;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
+
 import Clients.RoadMapClient;
 import Fax.Pharmacy;
 import objects.PharmacyMap;
@@ -10,8 +12,8 @@ import source.CSVFrame;
 import table.Record;
 
 public class SetPharmacy implements ActionListener {
-	ArrayList<PharmacyMap> roadMap = new ArrayList<PharmacyMap>();
-	
+	HashMap<String,PharmacyMap> roadMap = new HashMap<String,PharmacyMap>();
+	RoadMapClient client = null;
 	@Override
 	public void actionPerformed(ActionEvent arg0) {
 		// TODO Auto-generated method stub
@@ -20,12 +22,21 @@ public class SetPharmacy implements ActionListener {
 			/*
 			 * Check if a pharmacy is located as same state as patient
 			 */
-			record.setPharmacy(Pharmacy.GetPharmacy(roadMap, record));
+			String pharmacy = Pharmacy.GetPharmacy(roadMap, record);
+			System.out.println(pharmacy);
+			if(pharmacy.equalsIgnoreCase("No Home") && client.getTable().equalsIgnoreCase("TELMED_ROADMAP")) {
+				if(Pharmacy.CanCarepointTake(roadMap.get("Carepoint"),record))
+					record.setPharmacy("Carepoint");
+				else
+					record.setPharmacy("No Home");
+			}
+			else
+				record.setPharmacy(pharmacy);
 	
 		}
 	}
 	public void LoadRoadMap() {
-		RoadMapClient client = new RoadMapClient();
+		client = new RoadMapClient();
 		/*
 		 * Get all pharmacy names
 		 */
@@ -38,7 +49,7 @@ public class SetPharmacy implements ActionListener {
 			if(map==null)
 				continue;
 			client.LoadAllStates(map);
-			roadMap.add(map);
+			roadMap.put(map.getPharmacyName(),map);
 		}
 		client.close();
 	}

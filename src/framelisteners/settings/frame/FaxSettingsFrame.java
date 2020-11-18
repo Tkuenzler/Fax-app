@@ -15,9 +15,9 @@ import subframes.FileChooser;
 
 public class FaxSettingsFrame extends JFrame  {
 	JTextField drChaseLocation = new JTextField(50);
-	JTextField painScriptLocation = new JTextField(50);
-	JTextField scarScriptLocation = new JTextField(50);
-	JTextField skinScriptLocation = new JTextField(50);
+	JTextField rxScriptLocation = new JTextField(50);
+	JTextField rxScript2Location = new JTextField(50);
+	JTextField rxPlusCaremarkLocation = new JTextField(50);
 	JTextField antiFungalScriptLocation = new JTextField(50);
 	JTextField singleProductScriptLocation = new JTextField(50);
 	JTextField pbmScriptLocation = new JTextField(50);
@@ -29,12 +29,12 @@ public class FaxSettingsFrame extends JFrame  {
 	JTextField savedLocation = new JTextField(50);
 	JTextField company = new JTextField(50);
 	JButton browseDrChaseLocation = new JButton("Load Dr Chase Script");
-	JButton browsePainLocation = new JButton("Load Pain Script");
-	JButton browseScarLocation = new JButton("Load Scar Script");
-	JButton browseSkinLocation = new JButton("Load Skin Script");
+	JButton browseRxPlusLocation = new JButton("Load Rx Plus Scripts");
+	JButton browseRxPlus2Location = new JButton("Load Rx Plus2 Scripts");
+	JButton browseRxPlusCaremarkLocation = new JButton("Load Rx Plus Caremark Scripts");
 	JButton browseAntiFungalLocation = new JButton("Load Anti-Fungal Script");
 	JButton browseSingleProductScriptLocation = new JButton("Load Sinlge Product Script");
-	JButton browsePbmScriptLocation = new JButton("Load PBM Script");
+	JButton browsePbmScriptLocation = new JButton("Load PBM Scripts");
 	JButton browseCoveredScriptLocation = new JButton("Load Covered Script");
 	JButton browseCustomScriptLocation = new JButton("Load Custom Script");
 	JButton browseDMEScriptLocation = new JButton("Load DME Script");
@@ -48,9 +48,9 @@ public class FaxSettingsFrame extends JFrame  {
 		setTitle("Fax Settings");
 		drChaseLocation.setEditable(false);
 		singleProductScriptLocation.setEditable(false);
-		painScriptLocation.setEditable(false);
-		scarScriptLocation.setEditable(false);
-		skinScriptLocation.setEditable(false);
+		rxScriptLocation.setEditable(false);
+		rxScript2Location.setEditable(false);
+		rxPlusCaremarkLocation.setEditable(false);
 		antiFungalScriptLocation.setEditable(false);
 		pbmScriptLocation.setEditable(false);
 		customScriptLocation.setEditable(false);
@@ -62,9 +62,9 @@ public class FaxSettingsFrame extends JFrame  {
 		browseDrChaseLocation.addActionListener(new BrowseDrChase());
 		browseSavedLocation.addActionListener(new BrowseSaved());
 		browsePbmScriptLocation.addActionListener(new BrowsePBMScript());
-		browsePainLocation.addActionListener(new BrowsePain());
-		browseSkinLocation.addActionListener(new BrowseSkin());
-		browseScarLocation.addActionListener(new BrowseScar());
+		browseRxPlusLocation.addActionListener(new BrowseRxPlus());
+		browseRxPlus2Location.addActionListener(new BrowseRxPlus2());
+		browseRxPlusCaremarkLocation.addActionListener(new BrowseRxPlusCaremark());
 		browseAntiFungalLocation.addActionListener(new BrowseAntiFungal());
 		browseCustomScriptLocation.addActionListener(new BrowseCustomScript());
 		browseDMEScriptLocation.addActionListener(new BrowseDMEScript());
@@ -76,9 +76,9 @@ public class FaxSettingsFrame extends JFrame  {
 		FaxProperties properties  = new FaxProperties();
 		fax = properties.getFaxProperties();
 		drChaseLocation.setText(fax.getDrChaseScript());
-		painScriptLocation.setText(fax.getPainScript());
-		scarScriptLocation.setText(fax.getScarScript());
-		skinScriptLocation.setText(fax.getSkinScript());
+		rxScriptLocation.setText(fax.getRxPlusScript());
+		rxScript2Location.setText(fax.getRxPlusScript2());
+		rxPlusCaremarkLocation.setText(fax.getRxPlusCaremark());
 		coveredScriptLocation.setText(fax.getCoveredScript());
 		antiFungalScriptLocation.setText(fax.getAntiFungalScript());
 		pbmScriptLocation.setText(fax.getPbmScript());
@@ -106,14 +106,15 @@ public class FaxSettingsFrame extends JFrame  {
 	    panel2.add(browseSingleProductScriptLocation,"gaptop 10px, gapleft 10px");
 	    panel2.add(singleProductScriptLocation,"gaptop 10px, gapleft 5px, wrap");
 	    
-	    panel2.add(browsePainLocation,"gaptop 10px, gapleft 10px");
-	    panel2.add(painScriptLocation,"gaptop 10px, gapleft 5px, wrap");
+	    panel2.add(browseRxPlusLocation,"gaptop 10px, gapleft 10px");
+	    panel2.add(rxScriptLocation,"gaptop 10px, gapleft 5px, wrap");
 	    
-	    panel2.add(browseScarLocation,"gaptop 10px, gapleft 10px");
-	    panel2.add(scarScriptLocation,"gaptop 10px, gapleft 5px, wrap");
+	    panel2.add(browseRxPlus2Location,"gaptop 10px, gapleft 10px");
+	    panel2.add(rxScript2Location,"gaptop 10px, gapleft 5px, wrap");
 	    
-	    panel2.add(browseSkinLocation,"gaptop 10px, gapleft 10px");
-	    panel2.add(skinScriptLocation,"gaptop 10px, gapleft 5px, wrap");
+	    panel2.add(browseRxPlusCaremarkLocation,"gaptop 10px, gapleft 10px");
+	    panel2.add(rxPlusCaremarkLocation,"gaptop 10px, gapleft 5px, wrap");
+	    
 	    
 	    panel2.add(browseAntiFungalLocation,"gaptop 10px, gapleft 10px");
 	    panel2.add(antiFungalScriptLocation,"gaptop 10px, gapleft 5px, wrap");
@@ -147,9 +148,9 @@ public class FaxSettingsFrame extends JFrame  {
 			// TODO Auto-generated method stub
 			Fax fax = new Fax();
 			fax.setDrChaseScript(drChaseLocation.getText());
-			fax.setPainScript(painScriptLocation.getText());
-			fax.setScarScript(scarScriptLocation.getText());
-			fax.setSkinScript(skinScriptLocation.getText());
+			fax.setRxPlusScript(rxScriptLocation.getText());
+			fax.setRxPlusScript2(rxScript2Location.getText());
+			fax.setRxPlusCaremark(rxPlusCaremarkLocation.getText());
 			fax.setAntiFungalScript(antiFungalScriptLocation.getText());
 			fax.setSingleProductScript(singleProductScriptLocation.getText());
 			fax.setPbmScript(pbmScriptLocation.getText());
@@ -210,28 +211,28 @@ public class FaxSettingsFrame extends JFrame  {
 				drChaseLocation.setText(pdf);	
 		}
 	}
-	private class BrowsePain implements ActionListener {
+	private class BrowseRxPlus implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String pdf = FileChooser.OpenPdfFile("Open Pain Script");
-			if(pdf!=null) 
-				painScriptLocation.setText(pdf);	
+			String folder = FileChooser.OpenFolder("Open Rx Plus Script");
+			if(folder!=null) 
+				rxScriptLocation.setText(folder);	
 		}
 	}
-	private class BrowseScar implements ActionListener {
+	private class BrowseRxPlus2 implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String pdf = FileChooser.OpenPdfFile("Open Scar Script");
-			if(pdf!=null) 
-				scarScriptLocation.setText(pdf);	
+			String folder = FileChooser.OpenFolder("Open Rx Plus2 Script");
+			if(folder!=null) 
+				rxScript2Location.setText(folder);	
 		}
 	}
-	private class BrowseSkin implements ActionListener {
+	private class BrowseRxPlusCaremark implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
-			String pdf = FileChooser.OpenPdfFile("Open Skin Script");
-			if(pdf!=null) 
-				skinScriptLocation.setText(pdf);	
+			String folder = FileChooser.OpenFolder("Open Rx Plus Caremark Script");
+			if(folder!=null) 
+				rxPlusCaremarkLocation.setText(folder);	
 		}
 	}
 	private class BrowseAntiFungal implements ActionListener {

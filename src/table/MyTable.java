@@ -17,7 +17,9 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Vector;
 
 import javax.swing.JFrame;
@@ -30,11 +32,17 @@ import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
+import org.apache.commons.lang3.text.WordUtils;
 import org.apache.http.client.utils.URIBuilder;
 
+import Clients.CarepointApi;
 import Clients.DatabaseClient;
 import Clients.EmdeonClient;
 import Clients.RoadMapClient;
+import Database.Database;
+import Database.Columns.DMEColumns;
+import Database.Columns.LeadColumns;
+import Database.Tables.Tables;
 import Doctor.Doctor;
 import Fax.Drug;
 import Fax.FaxStatus;
@@ -43,6 +51,10 @@ import Fax.Pharmacy;
 import PBM.InsuranceFilter;
 import Properties.EmdeonProperties;
 import framelisteners.fax.frames.FaxChooserFrame;
+import framelisteners.file.export.ExportCSV;
+import framelisteners.file.export.ExportExcel;
+import jxl.Cell;
+import jxl.CellView;
 import jxl.Workbook;
 import jxl.write.Label;
 import jxl.write.WritableSheet;
@@ -121,6 +133,9 @@ public class MyTable extends JTable	{
 		item = new JMenuItem("Add Records");
 		item.addActionListener(new AddRecords());
 		add.add(item);
+		item = new JMenuItem("Add DME Records");
+		item.addActionListener(new AddDMERecords());
+		add.add(item);
 		remedy.add(add);
 		item = new JMenuItem("Delete Records");
 		item.addActionListener(new DeleteRecords());
@@ -139,7 +154,7 @@ public class MyTable extends JTable	{
 		item.addActionListener(new ExportCSV());
 		export.add(item);
 		item = new JMenuItem("Export XLS");
-		item.addActionListener(new ExportXLS());
+		item.addActionListener(new ExportExcel());
 		export.add(item);
 		item = new JMenuItem("Set Pharmacy");
 		item.addActionListener(new SetPharmacy());
@@ -192,6 +207,9 @@ public class MyTable extends JTable	{
 		popupMenu.add(item);
 		item = new JMenuItem("Set Covered Items");
 		item.addActionListener(new SetCoveredItems());
+		popupMenu.add(item);
+		item = new JMenuItem("Send to Carepoint");
+		item.addActionListener(new SendToCarepoint());
 		popupMenu.add(item);
 		this.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
 		setComponentPopupMenu(popupMenu);
@@ -489,9 +507,11 @@ public class MyTable extends JTable	{
 	private class AddRecords implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
+			
 			String AFID = JOptionPane.showInputDialog("AFID?");
 			if(AFID==null)
 				return;
+			
 			DatabaseClient client = new DatabaseClient(false);
 			int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to load records to "+client.getTableName(),"Upload Records",JOptionPane.YES_NO_OPTION);
 			if(confirm!=JOptionPane.YES_OPTION)
@@ -520,6 +540,33 @@ public class MyTable extends JTable	{
 			client.close();
 			if(badRecords>0)
 				JOptionPane.showMessageDialog(null, "There were "+badRecords+" Bad Records");
+		}
+	}
+	private class AddDMERecords implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			int[] rows = getSelectedRows();
+			int count = 0;
+			Database database = new Database();
+			try {
+				if(!database.loginAndChooseDatabase()) {
+					JOptionPane.showMessageDialog(null, "Login Failed");
+					return;
+				}
+				database.setTable();
+				for(int row: rows) {
+					Record record = CSVFrame.model.getRowAt(row);
+					if(database.select(Tables.DME, null, DMEColumns.PHONE+" = ?", new String[] {record.getPhone()}).next())
+						continue;
+					int insert = database.insert(Tables.DME, DMEColumns.ALL_COLUMNS, DMEColumns.ToStringArray(record));
+					if(insert==1)
+						count++;
+				}
+			} catch(SQLException ex) {
+				JOptionPane.showMessageDialog(null, ex.getMessage());
+			}
+			JOptionPane.showMessageDialog(null,count+" out of "+rows.length+" added to database");
+			
 		}
 	}
 	private class AddSetPharmacyRecords implements ActionListener {
@@ -642,6 +689,179 @@ public class MyTable extends JTable	{
 			}
 		}
 	}
+	public class ExportExcel implements ActionListener {
+		WritableWorkbook workBook = null;
+		WritableSheet excelSheet = null;
+		boolean multiple = false;
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			int confirm = JOptionPane.showConfirmDialog(null, "Do you want to export a row for each product?","Export with Multiple Rows",JOptionPane.YES_NO_OPTION);
+			if(confirm==JOptionPane.YES_OPTION)
+				multiple = true;
+			int[] rows = getSelectedRows();
+			File file = FileChooser.SaveXlsFile();
+	        try {
+	        	workBook = Workbook.createWorkbook(file);
+	        	excelSheet = workBook.createSheet("Leads", 0);
+	        	AddHeaders();
+	        	for(int row: rows) {
+	        		Record record = CSVFrame.model.getRowAt(row);
+	        		if(multiple) { 
+						if(record.getProducts().length>0) {
+							int count = 0;
+							for(String product: record.getProducts()) {
+								AddRow(record,row,count,product);
+								count++;
+							}
+						}
+						else {
+							AddRow(record,row,0,"");
+						}
+					}
+					else
+						AddRow(record,row,0,"");
+	        	}
+	        	workBook.write();
+	        } catch (IOException e) {
+	            e.printStackTrace();
+	        } catch (RowsExceededException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} catch (WriteException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} finally {
+	            if (workBook != null) {
+	                try {
+	                    workBook.close();
+	                    JOptionPane.showMessageDialog(null, "Succesfully exported XLS file");
+	                } catch (IOException e) {
+	                    e.printStackTrace();
+	                } catch (WriteException e) {
+	                    e.printStackTrace();
+	                }
+	            }
+	        }
+		}
+		private void AddHeaders() throws RowsExceededException, WriteException {
+			for(int column = 0;column<MyTableModel.COLUMN_HEADERS.length;column++) {
+				String header = MyTableModel.COLUMN_HEADERS[column];
+				Label label = new Label(column,0,header);
+				excelSheet.addCell(label);	
+			}
+			if(multiple)
+				excelSheet.addCell(new Label(MyTableModel.COLUMN_HEADERS.length,0,"PRODUCTS"));
+		}
+		private void AddRow(Record record,int row,int count,String product) throws RowsExceededException, WriteException {
+			for(int column = 0;column<MyTableModel.COLUMN_HEADERS.length;column++) {
+				String value = CSVFrame.model.getValueAt(row, column);
+				if(value==null)
+					value = "";
+				Label label = new Label(column,row+1+count,value.toUpperCase());
+				excelSheet.addCell(label);
+			}
+			if(multiple)
+				excelSheet.addCell(new Label(MyTableModel.COLUMN_HEADERS.length,row+1+count,product));
+		}
+		private void SheetAutoFitColumns(WritableSheet sheet) {
+		    for (int i = 0; i < sheet.getColumns(); i++) {
+		        Cell[] cells = sheet.getColumn(i);
+		        int longestStrLen = -1;
+
+		        if (cells.length == 0)
+		            continue;
+
+		        /* Find the widest cell in the column. */
+		        for (int j = 0; j < cells.length; j++) {
+		            if ( cells[j].getContents().length() > longestStrLen ) {
+		                String str = cells[j].getContents();
+		                if (str == null || str.isEmpty())
+		                    continue;
+		                longestStrLen = str.trim().length();
+		            }
+		        }
+
+		        /* If not found, skip the column. */
+		        if (longestStrLen == -1) 
+		            continue;
+
+		        /* If wider than the max width, crop width */
+		        if (longestStrLen > 255)
+		            longestStrLen = 255;
+
+		        CellView cv = sheet.getColumnView(i);
+		        cv.setSize(longestStrLen * 256 + 100); /* Every character is 256 units wide, so scale it. */
+		        sheet.setColumnView(i, cv);
+		    }
+		}
+	}
+	private class ExportCSV implements ActionListener {
+		boolean multiple = false;
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			int confirm = JOptionPane.showConfirmDialog(null, "Do you want to export a row for each product?","Export with Multiple Rows",JOptionPane.YES_NO_OPTION);
+			if(confirm==JOptionPane.YES_OPTION)
+				multiple = true;
+			File file = FileChooser.SaveCsvFile();
+			if(file==null)
+				return;
+			int[] rows = getSelectedRows();
+			BufferedWriter bw = null;
+				try {
+					bw = new BufferedWriter(new FileWriter(file));
+					for(int i = 0;i<MyTableModel.COLUMN_HEADERS.length;i++) {
+						if(i<MyTableModel.COLUMN_HEADERS.length-1)
+							bw.write(MyTableModel.COLUMN_HEADERS[i]+",");
+						else
+							bw.write(MyTableModel.COLUMN_HEADERS[i]+"");
+					}
+					if(multiple)
+						bw.write(",PRODUCT");
+					bw.newLine();
+					for(int row: rows) {
+						Record record = CSVFrame.model.getRowAt(row);
+						if(multiple) { 
+							if(record.getProducts().length>0) {
+								for(String product: record.getProducts()) {
+									AddRow(bw,product,row);
+								}
+							}
+							else {
+								AddRow(bw,"",row);
+							}
+						}
+						else
+							AddRow(bw,"",row);
+					}
+				} catch(IOException e) {
+					JOptionPane.showMessageDialog(new JFrame(),e.getMessage());
+				}
+				finally {
+					try {
+						bw.close();
+					} catch (IOException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+				}
+				JOptionPane.showMessageDialog(null,"Sucessfully Saved");
+		}
+		private void AddRow(BufferedWriter bw,String product,int row) throws IOException {
+			for(int column = 0;column<MyTableModel.COLUMN_HEADERS.length;column++) {
+				String value = (String)CSVFrame.table.getValueAt(row, column);
+				if(value==null)
+					value = "";
+				value = WordUtils.capitalize(value.trim());
+				if(column<MyTableModel.COLUMN_HEADERS.length-1)
+					bw.write(value+",");
+				else
+					bw.write(value);
+			}
+			if(multiple)
+				bw.write(","+product);
+			bw.newLine();
+		}
+	}
 	private class Append implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent e) {
@@ -717,105 +937,7 @@ public class MyTable extends JTable	{
 			return value;
 		}
 	}
-	private class ExportCSV implements ActionListener {
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			//get the rows to export
-			int[] rows = getSelectedRows();
-			//Get file to save to
-			File file = FileChooser.SaveCsvFile();
-			if(file==null)
-				return;
-			BufferedWriter bw = null;
-				try {
-					//Write the column headers
-					bw = new BufferedWriter(new FileWriter(file));
-					for(int i = 0;i<MyTableModel.COLUMN_HEADERS.length;i++) {
-						if(i<MyTableModel.COLUMN_HEADERS.length-1)
-							bw.write(MyTableModel.COLUMN_HEADERS[i]+",");
-						else
-							bw.write(MyTableModel.COLUMN_HEADERS[i]+"");
-					}
-					bw.newLine();
-					//Writes the data from table
-					for(int row: rows) {
-						for(int column = 0;column<MyTableModel.COLUMN_HEADERS.length;column++) {
-							String value = (String) CSVFrame.table.getValueAt(row, column);
-							System.out.println(value);
-							if(value==null)
-								value = "";
-							if(column<MyTableModel.COLUMN_HEADERS.length-1)
-								bw.write(value+",");
-							else
-								bw.write(value);
-						}
-						bw.newLine();
-					}
-					bw.close();
-					JOptionPane.showMessageDialog(null, "Sucessfully exported file");
-				} catch(IOException e) {
-					e.printStackTrace();
-				}
-		}
-	}
-	private class ExportXLS implements ActionListener {
-		WritableWorkbook workBook = null;
-		WritableSheet excelSheet = null;
-		@Override
-		public void actionPerformed(ActionEvent arg0) {
-			File file = FileChooser.SaveXlsFile();
-			if(file==null)
-				return;
-			try {
-	        	workBook = Workbook.createWorkbook(file);
-	        	excelSheet = workBook.createSheet("Leads", 0);
-	        	AddHeaders();
-	        	int[] rows = getSelectedRows();
-	        	int count = 0;
-	        	for(int row: rows) {
-	        		Record record = CSVFrame.model.getRowAt(row);
-	        		for(int column = 0;column<MyTableModel.COLUMN_HEADERS.length;column++) {
-	        			AddLabel(record,count,row,column);
-	        		}
-	        		count++;
-	        	}
-	        	workBook.write();
-	        } catch (IOException e) {
-	            e.printStackTrace();
-	        } catch (RowsExceededException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} catch (WriteException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			} finally {
-	            if (workBook != null) {
-	                try {
-	                    workBook.close();
-	                    JOptionPane.showMessageDialog(null, "Succesfully exported XLS file");
-	                } catch (IOException e) {
-	                    e.printStackTrace();
-	                } catch (WriteException e) {
-	                    e.printStackTrace();
-	                }
-	            }
-	        }
-		}
-		private void AddHeaders() throws RowsExceededException, WriteException {
-			for(int column = 0;column<MyTableModel.COLUMN_HEADERS.length;column++) {
-				String header = MyTableModel.COLUMN_HEADERS[column];
-				Label label = new Label(column,0,header);
-				excelSheet.addCell(label);	
-			}
-		}
-		private void AddLabel(Record record,int count,int row,int column) throws RowsExceededException, WriteException {
-			String value = CSVFrame.model.getValueAt(row, column);
-			if(value==null)
-				value = "";
-			Label label = new Label(column,count+1,value.toUpperCase());
-			excelSheet.addCell(label);		
-		}
-	}
+	
 	private class DeleteRecords implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
@@ -852,109 +974,27 @@ public class MyTable extends JTable	{
 	private class UpdateRecord implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			String column = (String) JOptionPane.showInputDialog(new JFrame(), "Choose a column", "Columns", JOptionPane.QUESTION_MESSAGE, null, DatabaseClient.Columns.HEADERS, DatabaseClient.Columns.HEADERS[0]);
-			if(column==null)
-				return;
-			String value = null;
 			int[] rows = getSelectedRows();
 			int count = 0;
-			DatabaseClient db = new DatabaseClient(false);
-			ArrayList<String> errors = new ArrayList<String>();
-			for(int row: rows) {
-				Record record = CSVFrame.model.getRowAt(row);
-				switch(column) {
-					case Columns.ALL:
-						count += db.updateRecord(record);
-						continue;
-					case Columns.FIRST_NAME:
-						value = record.getFirstName();
-						break;
-					case Columns.LAST_NAME:
-						value = record.getLastName();
-						break;
-					case Columns.DOB:
-						value = record.getDob();
-						break;
-					case Columns.PHONE_NUMBER:
-						value = record.getPhone();
-						break;
-					case Columns.ADDRESS:
-						value = record.getAddress();
-						break;
-					case Columns.CITY:
-						value = record.getCity();
-						break;
-					case Columns.STATE:
-						value = record.getState();
-						break;
-					case Columns.ZIPCODE:
-						value = record.getZip();
-						break;
-					case Columns.CARRIER:
-						value = record.getCarrier();
-						break;
-					case Columns.POLICY_ID:
-						value = record.getPolicyId();
-						break;
-					case Columns.BIN:
-						value = record.getBin();
-						break;
-					case Columns.GROUP:
-						value = record.getGrp();
-						break;
-					case Columns.PCN:
-						value = record.getPcn();
-						break;
-					case Columns.NPI:
-						value = record.getNpi();
-						break;
-					case Columns.DR_FIRST:
-						value = record.getDrFirst();
-						break;
-					case Columns.DR_LAST:
-						value = record.getDrLast();
-						break;
-					case Columns.DR_ADDRESS1:
-						value = record.getDrAddress1();
-						break;
-					case Columns.DR_CITY:
-						value = record.getDrCity();
-						break;
-					case Columns.DR_STATE:
-						value = record.getDrState();
-						break;
-					case Columns.DR_ZIP:
-						value = record.getDrZip();
-						break;
-					case Columns.DR_PHONE:
-						value = record.getDrPhone();
-						break;
-					case Columns.DR_FAX:
-						value = record.getDrFax();
-						break;
-					case Columns.SSN:
-						value = record.getSsn();
-						break;
-					case Columns.GENDER:
-						value = record.getGender();
-						break;	
+			String[] types = {"DME Leads","Regular Leads"};
+			String type = (String) JOptionPane.showInputDialog(new JFrame(), "Select a Lead Type", "Types:", JOptionPane.QUESTION_MESSAGE, null, types, types[0]);
+			Database database = new Database();
+			try {
+				if(!database.loginAndChooseDatabase()) {
+					JOptionPane.showMessageDialog(null, "Login Failed");
+					return;
 				}
-				int updated = db.updateRecord(column, value,record);
-				if(updated>0)
-					record.setRowColor(Color.GREEN);
-				if(updated<=0) {
-					System.out.println("Failed: "+updated);
-					record.setRowColor(Color.RED);
-					errors.add(record.getFirstName()+" "+record.getLastName()+" "+record.getPhone());
+				database.setTable();
+				for(int row: rows) {
+					Record record = CSVFrame.model.getRowAt(row);
+					switch(type) {
+						case "DME Leads":	if(database.update(database.getTable(), DMEColumns.ALL_COLUMNS, DMEColumns.ToStringArray(record), DMEColumns.ID+" = '"+record.getId()+"'")==1) count++; break;
+						case "Regular Leads":	if(database.update(database.getTable(), LeadColumns.ALL_COLUMNS, LeadColumns.ToStringArray(record), LeadColumns.ID+" = '"+record.getId()+"'")==1) count++; break;
+					}
 				}
-				count += updated;
-			}
-			db.close();
-			JOptionPane.showMessageDialog(null, count+" out of "+rows.length+" updated");
-			if(!errors.isEmpty()) {
-				//JOptionPane.showMessageDialog(null, errors.toArray(new String[errors.size()]));
-				String[] error = errors.toArray(new String[errors.size()]);
-				JOptionPane.showMessageDialog(null, new JScrollPane(new JList<String>(error)));
+				JOptionPane.showMessageDialog(null, count+" out of "+rows.length+" updated");
+			} catch(SQLException ex) {
+				ex.printStackTrace();
 			}
 		}
 	}
@@ -1008,7 +1048,7 @@ public class MyTable extends JTable	{
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
 			int[] rows = getSelectedRows();
-			ArrayList<PharmacyMap> roadMap = new ArrayList<PharmacyMap>();
+			HashMap<String,PharmacyMap> roadMap = new HashMap<String,PharmacyMap>();
 			RoadMapClient client = new RoadMapClient();
 			/*
 			 * Get all pharmacy names
@@ -1020,7 +1060,7 @@ public class MyTable extends JTable	{
 			for(String pharmacy: pharmacies) {
 				PharmacyMap map = client.getPharmacy(pharmacy);
 				client.LoadAllStates(map);
-				roadMap.add(map);
+				roadMap.put(map.getPharmacyName(),map);
 			}
 			client.close();
 			for(int row: rows) {
@@ -1045,6 +1085,23 @@ public class MyTable extends JTable	{
 			}
 			client.close();
 			JOptionPane.showMessageDialog(null, "Succesfully updated "+count+" medications");
+		}
+	}
+	private class SendToCarepoint implements ActionListener {
+		@Override
+		public void actionPerformed(ActionEvent arg0) {
+			String password = JOptionPane.showInputDialog("What is the Password");
+			if(!password.equalsIgnoreCase("Winston4503"))
+				return;
+			int[] rows = getSelectedRows();
+			int count = 0;
+			for(int row: rows) {
+				Record record = CSVFrame.model.getRowAt(row);
+				if(CarepointApi.RegisterPatient(record))
+					count++;
+			}
+			JOptionPane.showMessageDialog(null, count+" of "+rows.length+" registered to carepoint");
+			
 		}
 	}
 	private class EmdeonRecord implements ActionListener {

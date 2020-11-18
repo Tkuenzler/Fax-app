@@ -3,9 +3,8 @@ package objects;
 public class Fax {
 	String saveLocation,notes;
 	String drChaseScript,customScript;
-	String painScript,skinScript,scarScript;
+	String rxPlusScript,rxPlusScript2,rxPlusCaremark;
 	String pbmScript,dmeScript,singleProductScript,antiFungalScript,coveredScript;
-	boolean pain,derm,acid,vitamins;
 	String pharmacy;
 	String login,password,company;
 	
@@ -86,42 +85,45 @@ public class Fax {
 		else
 			this.singleProductScript = singleProductScript;
 	}
-	public String getPainScript() {
-		if(painScript==null)
+	public String getRxPlusScript2() {
+		if(rxPlusScript2==null)
 			return "";
 		else
-			return painScript;
+			return rxPlusScript2;
 	}
-	public void setPainScript(String painScript) {
-		if(painScript==null)
-			this.painScript = "";
+	public void setRxPlusScript2(String rxPlusScript2) {
+		if(rxPlusScript2==null)
+			this.rxPlusScript2 = "";
 		else
-			this.painScript = painScript;
+			this.rxPlusScript2 = rxPlusScript2;
 	}
-	public String getSkinScript() {
-		if(skinScript==null)
+	
+	public String getRxPlusCaremark() {
+		if(rxPlusCaremark==null)
 			return "";
 		else
-			return skinScript;
+			return rxPlusCaremark;
 	}
-	public void setSkinScript(String skinScript) {
-		if(skinScript==null)
-			this.skinScript =  "";
+	public void setRxPlusCaremark(String rxPlusCaremark) {
+		if(rxPlusCaremark==null)
+			this.rxPlusCaremark = "";
 		else
-			this.skinScript = skinScript;
+			this.rxPlusCaremark = rxPlusCaremark;
 	}
-	public String getScarScript() {
-		if(scarScript==null)
+	
+	public String getRxPlusScript() {
+		if(rxPlusScript==null)
 			return "";
 		else
-			return scarScript;
+			return rxPlusScript;
 	}
-	public void setScarScript(String scarScript) {
-		if(scarScript==null)
-			this.scarScript = "";
+	public void setRxPlusScript(String rxPlusScript) {
+		if(rxPlusScript==null)
+			this.rxPlusScript = "";
 		else
-			this.scarScript = scarScript;
+			this.rxPlusScript = rxPlusScript;
 	}
+	
 	public String getDrChaseScript() {
 		if(drChaseScript==null) 
 			return "";
@@ -165,30 +167,6 @@ public class Fax {
 		if(saveLocation==null)
 			this.saveLocation = "";
 		this.saveLocation = saveLocation;
-	}
-	public boolean isPain() {
-		return pain;
-	}
-	public void setPain(boolean pain) {
-		this.pain = pain;
-	}
-	public boolean isDerm() {
-		return derm;
-	}
-	public void setDerm(boolean derm) {
-		this.derm = derm;
-	}
-	public boolean isAcid() {
-		return acid;
-	}
-	public void setAcid(boolean acid) {
-		this.acid = acid;
-	}
-	public boolean isVitamins() {
-		return vitamins;
-	}
-	public void setVitamins(boolean vitamins) {
-		this.vitamins = vitamins;
 	}
 	public String getPharmacy() {
 		if(this.pharmacy==null) 

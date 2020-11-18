@@ -18,7 +18,7 @@ public class SearchByColumnFrame extends JFrame implements ActionListener {
 	private  JTextField valueField = new JTextField();
 	private JComboBox<String> columns = null;
 	private JComboBox<String> tables;
-	private JComboBox<String> operands = new JComboBox<String>(new String[] {"=",">","<",">=","<="});
+	private JComboBox<String> operands = new JComboBox<String>(new String[] {"=",">","<",">=","<=","LIKE"});
 	String database;
 	DatabaseClient db;
 	/**
@@ -52,13 +52,24 @@ public class SearchByColumnFrame extends JFrame implements ActionListener {
 		String column = columns.getItemAt(columns.getSelectedIndex());
 		String table = tables.getItemAt(tables.getSelectedIndex());
 		String operand = operands.getItemAt(operands.getSelectedIndex());
-		String value = valueField.getText();
+		String value = null;
+		if(operand.equalsIgnoreCase("LIKE"))
+			value = "%"+valueField.getText()+"%";
+		else 
+			value = valueField.getText();
 		DatabaseClient client = new DatabaseClient(database,table);
 		String query = "SELECT * FROM `"+table+"` WHERE `"+column+"` "+operand+" '"+value+"'";
 		ResultSet set = client.customQuery(query);
 		try {
 			while(set.next()) {
-				CSVFrame.model.addRow(new Record(set,client.getDatabaseName(),client.getTableName()));
+				Record record = null;
+				if(table.contains("DME")) {
+					record = new Record();
+					record.setDME(set);
+				}
+				else 
+					record = new Record(set,client.getDatabaseName(),client.getTableName());
+				CSVFrame.model.addRow(record);
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block

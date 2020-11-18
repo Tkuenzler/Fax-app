@@ -42,6 +42,7 @@ public class EZScriptRxClient {
 		webClient.getOptions().setCssEnabled(false);
 		webClient.getOptions().setUseInsecureSSL(false);
 		webClient.getOptions().setThrowExceptionOnFailingStatusCode(false);
+		webClient.getOptions().setThrowExceptionOnScriptError(false);
 		webClient.setAjaxController(new AjaxController(){
 			@Override
 		    public boolean processSynchron(HtmlPage page, WebRequest request, boolean async) {
@@ -57,6 +58,7 @@ public class EZScriptRxClient {
 		HtmlPage page1;
 		try {
 			page1 = webClient.getPage("https://login.ezscriptrx.com/wp-login.php");
+			System.out.println(page1.asText());
 			HtmlForm form = page1.getFormByName(ElementIds.LOGIN_FORM);
 						
 			HtmlTextInput user_name = form.getInputByName(ElementIds.USERNAME_INPUT);
@@ -69,6 +71,7 @@ public class EZScriptRxClient {
 			lookUpPage = button.click();
 			
 			System.out.println(lookUpPage.asXml());
+			//System.out.println(lookUpPage.asText());
 			System.out.println("LOGGED IN");
 			return true;
 			

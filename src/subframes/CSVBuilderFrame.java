@@ -7,8 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
 
 import javax.swing.JButton;
 import javax.swing.JCheckBox;
@@ -31,10 +30,10 @@ public class CSVBuilderFrame extends JFrame {
 	private String fileName,file;
 	private JPanel contentPane;
 	private JTextField fileNameTextField;
-	private JCheckBox multipleFiles;
+	private JCheckBox multipleFiles,combineRows;
 	private File[] files;
 	//ROW1
-	JComboBox<String> firstNameBox,lastNameBox,addressBox,dobBox,ssnBox,genderBox,emailBox;
+	JComboBox<String> firstNameBox,lastNameBox,addressBox,dobBox;
 	//ROW2
 	JComboBox<String> cityBox,stateBox,zipBox,phoneBox;
 	//Row3
@@ -44,9 +43,10 @@ public class CSVBuilderFrame extends JFrame {
 	//Row5
 	JComboBox<String> drAddress1Box,drCityBox,drStateBox;
 	//Row6
-	JComboBox<String> drZipBox, drFaxBox, drPhoneBox;
-	JComboBox<String> typeBox, statusBox;
-	JComboBox<String> pharmacyBox;
+	JComboBox<String> drZipBox, drFaxBox, drPhoneBox,ssnBox;
+	//Row 7
+	JComboBox<String> genderBox,emailBox, typeBox, statusBox;
+	JComboBox<String> pharmacyBox,productsBox;
 	
 	String[] blank = {"                           "};
 	StringBuilder errors = new StringBuilder();
@@ -79,6 +79,10 @@ public class CSVBuilderFrame extends JFrame {
 		multipleFiles = new JCheckBox("Multiple Files");
 		multipleFiles.setSelected(false);
 		fileSelectPanel.add(multipleFiles);
+		
+		combineRows = new JCheckBox("Combine Patients with different products");
+		combineRows.setSelected(false);
+		fileSelectPanel.add(combineRows);
 		
 		contentPane.add(fileSelectPanel);
 		setUpHeaderPanel();
@@ -254,9 +258,16 @@ public class CSVBuilderFrame extends JFrame {
 		typeBox = new JComboBox<String>(blank);
 		headerPanel.add(typeBox,"gapright 5px, gaptop 10px");
 		
+		
+		//Status
 		headerPanel.add(new JLabel("Status"),"gapright 5px, gaptop 10px");
 		statusBox = new JComboBox<String>(blank);
 		headerPanel.add(statusBox,"wrap");
+
+		//Status
+		headerPanel.add(new JLabel("Products Box"),"gapright 5px, gaptop 10px");
+		productsBox = new JComboBox<String>(blank);
+		headerPanel.add(productsBox,"wrap");
 		
 		//Submit
 		JButton submit = new JButton("Submit");
@@ -303,6 +314,7 @@ public class CSVBuilderFrame extends JFrame {
 				emailBox.addItem(headers[i]);
 				typeBox.addItem(headers[i]);
 				statusBox.addItem(headers[i]);
+				productsBox.addItem(headers[i]);
 			}
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
@@ -348,6 +360,7 @@ public class CSVBuilderFrame extends JFrame {
 		emailBox.removeAllItems();
 		typeBox.removeAllItems();
 		statusBox.removeAllItems();
+		productsBox.removeAllItems();
 	}
 	private void loadInfo(int rowToStartAt,String fileToWorkOn) {
 		int FIRST_NAME = firstNameBox.getSelectedIndex();
@@ -378,8 +391,10 @@ public class CSVBuilderFrame extends JFrame {
 		int EMAIL = emailBox.getSelectedIndex();
 		int STATUS = statusBox.getSelectedIndex();
 		int TYPE = typeBox.getSelectedIndex();
+		int PRODUCTS = productsBox.getSelectedIndex();
 		LineNumberReader lr = null;
 		String currentFile = null;
+		HashMap<String, Record> map = new HashMap<String, Record>();
 		for(int i = 0;i<files.length;i++) {
 			File file = files[i];
 			int rowCount = 0;
@@ -407,7 +422,7 @@ public class CSVBuilderFrame extends JFrame {
 					columnData[MyTableModel.CITY] = data[CITY].trim();
 					columnData[MyTableModel.STATE] = data[STATE].trim();
 					columnData[MyTableModel.ZIP] = data[ZIP].trim();
-					columnData[MyTableModel.PHONE] = data[PHONE].trim();
+					columnData[MyTableModel.PHONE] = data[PHONE].trim().replaceAll("^\"|\"$", "");
 					columnData[MyTableModel.CARRIER] = data[INSURANCE];
 					columnData[MyTableModel.POLICY_ID] = data[POLICY_ID];
 					columnData[MyTableModel.BIN] = editRxBin(data[BIN]);
@@ -429,9 +444,23 @@ public class CSVBuilderFrame extends JFrame {
 					columnData[MyTableModel.STATUS] = data[STATUS];
 					columnData[MyTableModel.TYPE] = data[TYPE];
 					Record record = new Record(columnData);
-					CSVFrame.model.addRow(record);
-					rowCount++;
-					rowsAdded++;
+					if(combineRows.isSelected()) {
+						if(map.containsKey(record.getId())) {
+							map.get(record.getId()).addProduct(data[PRODUCTS]);
+						}
+						else  {
+							record.addProduct(data[PRODUCTS]);
+							map.put(record.getId(), record);
+							CSVFrame.model.addRow(record);
+							rowCount++;
+							rowsAdded++;
+						}
+					}
+					else {
+						CSVFrame.model.addRow(record);
+						rowCount++;
+						rowsAdded++;
+					}
 				}			
 			} catch (FileNotFoundException e) {
 				// TODO Auto-generated catch block
@@ -450,6 +479,11 @@ public class CSVBuilderFrame extends JFrame {
 					e.printStackTrace();
 				}	
 		    }
+		}
+		for(Record record: CSVFrame.model.data) {
+			record.printRecord();
+			for(String p: record.getProducts())
+				System.out.println(p);
 		}
 		System.out.println(errors.toString());
 	}
@@ -616,6 +650,8 @@ public class CSVBuilderFrame extends JFrame {
 					actual = StringSimilarity.similarity(header.replace("Dr", "Physician"), value);
 				else if(value.contains("MD") && header.contains("Dr")) 
 					actual = StringSimilarity.similarity(header.replace("Dr", "MD"), value);
+				else if(value.contains("Doctor") && header.contains("Dr")) 
+					actual = StringSimilarity.similarity(header.replace("Dr", "Doctor"), value);
 				else if(header.contains("Insurance") && value.contains("Insurance")) 
 					actual = .99;
 				else if(header.contains("Policy") && value.contains("Policy"))
