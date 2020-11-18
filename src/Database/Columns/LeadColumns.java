@@ -1,4 +1,6 @@
-package Tests;
+package Database.Columns;
+
+import table.Record;
 
 public class LeadColumns {
 	public static final String FIRST_NAME = "first_name";
@@ -28,7 +30,7 @@ public class LeadColumns {
 	public static final String DR_TYPE = "dr_type";
 	public static final String DR_FIRST = "dr_first_name";
 	public static final String DR_LAST = "dr_last_name";
-	public static final String DR_ADDRESS1 = "dr_address1";
+	public static final String DR_ADDRESS = "dr_address1";
 	public static final String DR_CITY = "dr_city";
 	public static final String DR_STATE = "dr_state";
 	public static final String DR_ZIP = "dr_zip";
@@ -44,6 +46,7 @@ public class LeadColumns {
 	public static final String FAX_SENT_DATE = "FAX_SENT_DATE";
 	public static final String RECEIVED_DATE = "RECEIVED_DATE";
 	public static final String RECEIVED  = "RECEIVED";
+	public static final String DOCTOR_ANSWER = "DOCTOR_ANSWER";
 	public static final String MESSAGE_STATUS = "MESSAGE_STATUS";
 	public static final String USED = "USED";
 	public static final String AFID = "AFID";
@@ -60,9 +63,43 @@ public class LeadColumns {
 	public static final String LAST_CHASE_DATE = "LAST_CHASE_DATE";
 	public static final String SOURCE = "SOURCE";
 	public static final String PRODUCTS = "PRODUCTS";
-	public static final String DOCTOR_ANSWER = "DOCTOR_ANSWER";
+	public static final String SCRIPT = "SCRIPT";
 	
-	public static final String[] FAX_CHASE = {NPI,DR_FIRST,DR_LAST,DR_ADDRESS1,DR_CITY,DR_STATE,DR_ZIP,DR_PHONE,DR_FAX,NOTES,USED,DR_CHASE_AGENT,LAST_CHASE_DATE,CHASE_COUNT,MESSAGE_ID,FAX_DISPOSITION,CONFIRM_DOCTOR,RECEIVED,RECEIVED_DATE};
-	
-	
+	public static final String[] FAX_CHASE = {NPI,DR_FIRST,DR_LAST,DR_ADDRESS,DR_CITY,DR_STATE,DR_ZIP,DR_PHONE,DR_FAX,NOTES,USED,DR_CHASE_AGENT,LAST_CHASE_DATE,CHASE_COUNT,FAX_DISPOSITION,CONFIRM_DOCTOR,RECEIVED,RECEIVED_DATE,CONFIRM_DOCTOR,DOCTOR_ANSWER};
+	public static final String[] ALL_COLUMNS = {FIRST_NAME,LAST_NAME,DOB,ADDRESS,CITY,STATE,ZIP,GENDER,PHONE_NUMBER,PHARMACY,
+			CARRIER,POLICY_ID,BIN,GROUP,PCN,
+			NPI,DR_FIRST,DR_LAST,DR_ADDRESS,DR_CITY,DR_STATE,DR_ZIP,DR_PHONE,DR_FAX}; 
+	public static String[] ToStringArray(Record record) {
+		String[] array = new String[ALL_COLUMNS.length];
+		for(int i = 0;i < array.length;i++) {
+			String value = ALL_COLUMNS[i];
+			switch(value) {
+				case FIRST_NAME: array[i] = record.getFirstName(); break;
+				case LAST_NAME: array[i] = record.getLastName(); break;
+				case DOB: array[i] = record.getDob(); break;
+				case PHONE_NUMBER: array[i] = record.getPhone(); break;
+				case ADDRESS: array[i] = record.getAddress(); break;
+				case CITY: array[i] = record.getCity(); break;
+				case STATE:  array[i] = record.getState(); break;
+				case ZIP: array[i] = record.getZip(); break;
+				case GENDER:  array[i] = record.getGender(); break;
+				case PHARMACY:  array[i] = record.getPharmacy(); break;
+				case CARRIER: array[i] = record.getCarrier(); break;
+				case POLICY_ID: array[i] = record.getPolicyId(); break;
+				case BIN: array[i] = record.getBin(); break;
+				case GROUP: array[i] = record.getGrp(); break;
+				case PCN: array[i] = record.getPcn(); break;
+				case NPI: array[i] = record.getNpi(); break;
+				case DR_FIRST: array[i] = record.getDrFirst(); break;
+				case DR_LAST: array[i] = record.getDrLast(); break;
+				case DR_ADDRESS: array[i] = record.getDrAddress1(); break;
+				case DR_CITY: array[i] = record.getDrCity(); break;
+				case DR_STATE: array[i] = record.getDrState(); break;
+				case DR_ZIP: array[i] = record.getDrZip(); break;
+				case DR_PHONE: array[i] = record.getDrPhone(); break;
+				case DR_FAX: array[i] = record.getDrFax(); break;
+			}
+		}
+		return array;
+	}
 }

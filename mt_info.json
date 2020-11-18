@@ -1,0 +1,210 @@
+{
+	"APP_NAME": "MT_MARKETING",
+	"FAX_NUMBERS": 
+	[ 
+		{
+			"number": "15615608499",
+			"password": "Kuenzler5726",
+			"ext": "101",
+			"name": "Lake Ida 1",
+			"SECRET": "wjmI17MhTD25GR17MT7QCwcMlZI_mKTWasKFwnfXCllQ",
+			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
+		},
+		{
+			"number": "19194468308",
+			"password": "Kuenzler5726",
+			"ext": "102",
+			"name": "Hershey Pharmacy",
+			"SECRET": "wjmI17MhTD25GR17MT7QCwcMlZI_mKTWasKFwnfXCllQ",
+			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
+		},
+		{
+			"number": "16152570569",
+			"password": "Kuenzler5726",
+			"ext": "103",
+			"name": "Millennium Fax Blast",
+			"SECRET": "wjmI17MhTD25GR17MT7QCwcMlZI_mKTWasKFwnfXCllQ",
+			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
+		},
+		{
+			"number": "16303393005",
+			"password": "Kuenzler5726",
+			"ext": "104",
+			"name": "Jewel Fax Blast",
+			"SECRET": "wjmI17MhTD25GR17MT7QCwcMlZI_mKTWasKFwnfXCllQ",
+			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
+		},
+		{
+			"number": "15612888575",
+			"password": "Kuenzler5726",
+			"ext": "101",
+			"name": "MOM FAX LINE",
+			"SECRET": "jzL1Kk9jR0ypDfW5JxI6kQsxrMT3p0TEatW5UF3Pbbpw",
+			"KEY": "CnE3L5LaQkipFr1-Yw88xg"
+		},
+		{
+			"number": "18138223569",
+			"password": "Kuenzler5726",
+			"ext": "102",
+			"name": "Fusion Fax Blast",
+			"SECRET": "jzL1Kk9jR0ypDfW5JxI6kQsxrMT3p0TEatW5UF3Pbbpw",
+			"KEY": "CnE3L5LaQkipFr1-Yw88xg"
+		},
+		{
+			"number": "17573514596",
+			"password": "Kuenzler5726",
+			"ext": "103",
+			"name": "Virgina Pharmacy",
+			"SECRET": "jzL1Kk9jR0ypDfW5JxI6kQsxrMT3p0TEatW5UF3Pbbpw",
+			"KEY": "CnE3L5LaQkipFr1-Yw88xg"
+		},
+		{
+			"number": "13178360309",
+			"password": "Winston4503",
+			"ext": "101",
+			"name": "Tristar",
+			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
+			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "15612706929",
+			"password": "Winston4503",
+			"ext": "101",
+			"name": "Fusion Pharmacy",
+			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
+			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "15612660791",
+			"password": "Winston4503",
+			"ext": "103",
+			"name": "Doctor Chase Line",
+			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
+			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "13252676022",
+			"password": "Winston4503",
+			"ext": "104",
+			"name": "Sterling Pharmacy",
+			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
+			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "16152589641",
+			"password": "Winston4503",
+			"ext": "106",
+			"name": "Millennium",
+			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
+			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "17085713340",
+			"password": "Winston4503",
+			"ext": "107",
+			"name": "Jewel",
+			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
+			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "19254345024",
+			"password": "Winston4503",
+			"ext": "101",
+			"name": "Rheem Pharmacy",
+			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
+			"KEY": "93y9kwlkSge8rfugvPXTbw",
+			"Pin": "572633428"
+		},
+		{
+			"number": "19253095204",
+			"password": "Winston4503",
+			"ext": "102",
+			"name": "Rheem Pharmacy Fax Blast",
+			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
+			"KEY": "93y9kwlkSge8rfugvPXTbw",
+			"Pin": "572633428"
+		},	
+		{
+			"number": "19252154677",
+			"password": "Winston4503",
+			"ext": "102",
+			"name": "Rheem Pharmacy Requalify",
+			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
+			"KEY": "93y9kwlkSge8rfugvPXTbw",
+			"Pin": "572633428",
+			"email": "mtrheem@gmail.com",
+			"email_password": "Tommy6847!"
+		},
+		{
+			"number": "15612088766",
+			"password": "Winston4503",
+			"ext": "101",
+			"name": "All Family Pharmacy",
+			"SECRET": "2pWwHGALTqKjOM3J8CQa-wSmLoqPNBSq-UL1jppP_n3g",
+			"KEY": "2GLlQwihSBWTtWOjqU7fGg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "18324581961",
+			"password": "Kuenzler5726",
+			"ext": "101",
+			"name": "Med Rx Texas",
+			"SECRET": "PAXMi-8HSdGgcujvdrVbpwrVZ30H61TcOMVx-kRcysJw",
+			"KEY": "ia661QoQRh2Nqr6wD3HdYg",
+			"Pin": "572633428",
+			"email": "MTMedRx@gmail.com",
+			"email_password": "Tommy6847!"
+		},
+		{
+			"number": "13182556193",
+			"password": "Kuenzler5726",
+			"ext": "102",
+			"name": "Med Rx Louisiana",
+			"SECRET": "PAXMi-8HSdGgcujvdrVbpwrVZ30H61TcOMVx-kRcysJw",
+			"KEY": "ia661QoQRh2Nqr6wD3HdYg",
+			"Pin": "572633428",
+			"email": "MTMedRx@gmail.com",
+			"email_password": "Tommy6847!"
+		},
+		{
+			"number": "12107290706",
+			"password": "Winston4503",
+			"ext": "101",
+			"name": "Mt Medical Supplies",
+			"SECRET": "jKycgF5_Q1qq6kA68QDH3AvkR9WlqQQkqqiza-M63yLg",
+			"KEY": "eMgBo-JeTs6dn5gDmcOl-w",
+			"Pin": "572633428",
+			"email": "mtmedicalsuppliesboca@gmail.com",
+			"email_password": "Tommy6847!"
+		}
+	],
+	"DATABASE_LOGIN":
+	{
+		"USER_NAME": "tkuenzler",
+		"PASSWORD": "Tommy6847",
+		"PORT": 3306,
+		"LOCAL_HOST": "ltf5469.tam.us.siteprotect.com"
+	},
+	"ROAD_MAP":
+	{
+		"NAME": "TELMED_ROADMAP"
+	},
+	"NDC_VERIFY":
+	{
+		"USER_NAME": "mikekuenzler88@gmail.com",
+		"PASSWORD": "Mtkmarketing321!",
+		"NPI": "1700128972"
+	},
+	"VICI_CLIENT":
+	{
+		"SERVER": "https://mtkmarketing.vicihost.com",
+		"ADMIN": "6666",
+		"PASS": "tk6847"
+	}
+}

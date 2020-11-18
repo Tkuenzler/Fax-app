@@ -1,4 +1,4 @@
-package Tests;
+package Database.Query;
 
 public class Query {
 	public class Order {
@@ -28,6 +28,28 @@ public class Query {
     	query.append(" WHERE ");
         query.append(requirement);
         return this;
+    }
+    /**
+    *
+    * @param table
+    * @return
+    */
+    public Query show(String show) {
+    	query = new StringBuilder();
+    	query.append("SHOW ");
+    	query.append(show);
+    	return this;
+    }
+    
+    /**
+    *
+    * @param table
+    * @return
+    */
+    public Query in(String in) {
+    	query.append(" IN ");
+    	query.append(in);
+    	return this;
     }
 
    /**
@@ -152,6 +174,16 @@ public class Query {
 
         return this;
     }
+    /**
+    *
+    * @param columnName
+    * @return
+    */
+    public Query as(String columnName) {
+    	query.append(" AS "+columnName);
+    	return this;
+    }
+    
     public String getQuery() {
     	return query.toString();
     }
