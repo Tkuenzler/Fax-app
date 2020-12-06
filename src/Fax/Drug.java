@@ -38,6 +38,8 @@ public enum Drug {
 	CalcipotrieneFoam("Calcipotriene 0.005% Foam","360 Granms","Apply 2-3 gm to affected area 3-4 times daily as directed.","PSORIASIS",new String[] {}),
 	Calcipotriene360("Calcipotriene 0.005% Topical Cream","360 Grams","Apply 2-3 gm to affected area 3-4 times daily as directed.","PSORIASIS",new String[] {"00781711783","16714076302","68462050166"}),
 	Calcipotriene240("Calcipotriene 0.005% Topical Cream","240 Grams","Apply 2-3 gm to affected area 2-3 times daily as directed.","PSORIASIS",new String[] {"00781711783","16714076302","68462050166"}),
+	Desonide360("Desonide Ointment 0.05%","360 Grams","Apply 2-3 gm to affected area(s) 3-4 times daily as directed.","DERMATITIS/PSORIASIS",new String[] {"51672-1280-03"}),
+	Desonide180("Desonide Ointment 0.05%","180 Grams","Apply 1-2 grams to affected area(s) 3-4 times daily as directed.","DERMATITIS/PSORIASIS",new String[] {"51672-1280-03"}),
 	//SCAR
 	SilKPad("Sil-K Pad","4 Patches","Cut pad to fit scar with 1/4 inch beyond the scar on all sides. Apply patch and leave on for 8-12 hours per day then remove (Discard the pad and replace with a new one every 7 days)","SCAR",new String[] {"70350261501"}),
 	//NSAID
@@ -68,9 +70,11 @@ public enum Drug {
 
 	//Fungal
 	Econazole("Econazole Nitrate 1% Cream","340 Grams","Apply 3-6 grams to affected area(s) 3 times daily (1 gm=1 dime size)","ANTI-FUNGAL",new String[] {"52565002285"}),
-	Mupirocin("Mupirocin 2% Cream","360 Grams","Apply 2-3 grams to the affected area(s) 3-4 times daily.","ANTI-FUNGAL",new String[] {"68462056435"}),
 	Naftifine("Naftifine HCL 2% Cream","340 Grams","Apply 2 grams to the affected area(s) 4 times daily.","ANTI-FUNGAL",new String[] {""}),
 	Ketoconazole("Ketoconazole 2% Cream","300 Grams","Apply 2-3 grams to the affected area(s) 3 times daily.","ANTI-FUNGAL",new String[] {""}),
+	
+	//Anti Bacterial
+	Mupirocin("Mupirocin 2% Cream","360 Grams","Apply 2-3 grams to the affected area(s) 3-4 times daily.","ANTI-BACTERIAL",new String[] {"68462056435"}),
 	
 	//FOOT SOAKS
 	Cubicin("Cubicin 500mg Intravenous solution","30 Vials","Add 1 bottle to footbath and soak for 10 minutes","FOOTSOAK",new String[] {""}),
@@ -158,14 +162,18 @@ public enum Drug {
 	}
 	public static Drug GetTopicalScript(Record record) {
 		switch(record.getBin()) {
+			case "015581":
+			case "015599":
+			case "610649":
+				return Diflorasone180;
 			case "610602":
 				return Clobetasol360;
 			case "610014":
 			case "003858":
 			case "400023":
-				return Diflorasone360;
+				return Diflorasone180;
 			case "017010":
-				return Diflorasone360;
+				return Diflorasone180;
 			//Argus
 			case "600428":
 			{
@@ -183,31 +191,21 @@ public enum Drug {
 			case "003585":
 				return Clobetasol360;
 			//Optum Rx
-			case "610097": {
-				switch(record.getGrp().toUpperCase()) {
-					case "SHCA":
-						return Clobetasol360;
-					default:
-						return Diflorasone360;
-				}
-			}
+			case "610097": 
 			case "610494":
-				return Diflorasone360;
 			case "610011":
 				return Diflorasone360;
 			//Prime Therapeutics
+			case "011552":
 			case "610455":
-				return Diflorasone360;
-			case "011552":{
-				if(record.getPcn().equalsIgnoreCase("BCTX") || record.getPcn().equalsIgnoreCase("ILDR"))
-					return null; //Prime Private
-			}
+				return Diflorasone180;
+			case "012833":
+				return Clobetasol360;
 			//Caremark	
 			case "020099":
-				return Diflorasone360;
 			case "020115":
 			case "610502":
-				return Diflorasone360;
+				return Diflorasone180;
 			case "020107":
 				return Clobetasol360;
 			case "004336": {
@@ -226,7 +224,7 @@ public enum Drug {
 						switch(record.getGrp().toUpperCase()) {
 							case "RX6270":
 							case "FCHP":
-								return Diflorasone360;
+								return Diflorasone180;
 							default:
 								return Clobetasol360;
 						}
@@ -237,7 +235,7 @@ public enum Drug {
 			}
 			default: 
 				System.out.println("DEFAULT: "+record.getBin()+" "+record.getGrp()+" "+record.getPcn());
-				return Drug.Diflorasone360;
+				return Drug.Diflorasone180;
 		}
 	}
 	public static Drug GetOralScript(Record record) {
@@ -320,7 +318,7 @@ public enum Drug {
 			case "610494":
 			case "610011":
 			case "017010":
-				return Mupirocin;
+				return Econazole;
 			case "610014":
 			case "003858":
 			case "400023":
@@ -328,6 +326,9 @@ public enum Drug {
 			default:
 				return Econazole;
 		}
+	}
+	public static Drug GetAntiBacterial(Record record) {
+		return Mupirocin;
 	}
 	public static Drug GetDermatitis(Record record) {
 		int type = InsuranceFilter.GetInsuranceType(record);

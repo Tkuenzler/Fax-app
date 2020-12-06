@@ -208,7 +208,7 @@ public class FaxClientFrame extends JFrame {
 				}catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-					record.setMessageStatus("CONNECTION ERROR");
+					record.setMessageStatus(e.getMessage());
 					record.setRowColor(Color.GRAY);
 					ConnectionDisruptedFrame frame = new ConnectionDisruptedFrame();
 					while (!frame.isConnected()) {
@@ -556,21 +556,6 @@ public class FaxClientFrame extends JFrame {
 		String folder = fax.getPbmScript();
 		if(record.getBin()==null)
 			return folder+"\\"+PBMScript.CASCADE;
-		if(record.getPharmacy().equalsIgnoreCase("MedRex")) {
-			switch(record.getCarrier()) {
-				case "Anthem":
-				case "SilverScripts/Wellcare":
-					return folder+"\\"+PBMScript.CAREMARK_MED_RX_CLOBETASOL;
-				case "Aetna":
-					return folder+"\\"+PBMScript.CAREMARK_MED_RX_DIFLORASONE;
-				case "Caremark":
-					if(record.getPcn().equalsIgnoreCase("ADV"))
-						return folder+"\\"+PBMScript.CAREMARK_MED_RX_DIFLORASONE;
-					else
-						return folder+"\\"+PBMScript.CAREMARK_MED_RX_CLOBETASOL;
-					
-			}
-		}
 		switch(record.getBin()) {
 			case "004336":
 			{
@@ -620,8 +605,6 @@ public class FaxClientFrame extends JFrame {
 		public static final String AETNA = "Aetna.pdf";
 		public static final String INGENIO_RX = "IngenioRx.pdf";
 		public static final String OPTUM_RX = "OptumRx.pdf";
-		public static final String OPTUM_RX_SHCA = "OptumRx - SHCA.pdf";
-		public static final String OPTUM_RX_ALL_FAMILY = "Optum Rx - FL.pdf";
 		public static final String CASCADE = "Cascade.pdf";
 		public static final String ESI = "ESI.pdf";
 		public static final String MEDIMPACT = "Medimpact.pdf";

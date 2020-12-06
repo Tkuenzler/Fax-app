@@ -149,6 +149,7 @@ public class MyTable extends JTable	{
 			setRowColor.add(item);
 		}
 		popupMenu.add(setRowColor);
+		
 		JMenu export = new JMenu("Export");
 		item = new JMenuItem("Export CSV");
 		item.addActionListener(new ExportCSV());
@@ -156,6 +157,16 @@ public class MyTable extends JTable	{
 		item = new JMenuItem("Export XLS");
 		item.addActionListener(new ExportExcel());
 		export.add(item);
+		
+		/*
+		 * DME MENU
+		 */
+		JMenu dmeMenu = new JMenu("DME");
+		item = new JMenuItem("Set DME Type");
+		item.addActionListener(new DMEType());
+		dmeMenu.add(item);
+		popupMenu.add(dmeMenu);
+		
 		item = new JMenuItem("Set Pharmacy");
 		item.addActionListener(new SetPharmacy());
 		popupMenu.add(item);
@@ -185,7 +196,7 @@ public class MyTable extends JTable	{
 		item.addActionListener(new ClearColumn());
 		popupMenu.add(item);
 		item = new JMenuItem("Set Column");
-		
+	
 		item.addActionListener(new SetColumn());
 		popupMenu.add(item);
 		JMenu confirmDoctor = new JMenu("Confirm Doctor");
@@ -196,9 +207,6 @@ public class MyTable extends JTable	{
 		item.addActionListener(new ConfirmDoctor());
 		confirmDoctor.add(item);
 		popupMenu.add(confirmDoctor);
-		item = new JMenuItem("Emdeon");
-		item.addActionListener(new EmdeonRecord());
-		popupMenu.add(item);
 		item = new JMenuItem("Check Insurance");
 		item.addActionListener(new CheckInsurance());
 		popupMenu.add(item);
@@ -1104,46 +1112,39 @@ public class MyTable extends JTable	{
 			
 		}
 	}
-	private class EmdeonRecord implements ActionListener {
+	private class DMEType implements ActionListener {
 		@Override
 		public void actionPerformed(ActionEvent arg0) {
-			int confirm = JOptionPane.showConfirmDialog(null, "Are you sure you want to emdeon these records?","Emdeon Records?",JOptionPane.YES_NO_OPTION);
-			if(confirm!=JOptionPane.YES_OPTION)
+			int[] rows = getSelectedRows();
+			if(rows.length==0) {
+				JOptionPane.showMessageDialog(null, "Please select rows");
 				return;
-			new Thread(new Runnable() {
-			    @Override
-				public void run() {
-			    	EmdeonClient emdeon = new EmdeonClient();
-					if(!emdeon.login()) {
-						JOptionPane.showMessageDialog(null, "Login Failed");
-						return;
-					}
-					EmdeonProperties properties = new EmdeonProperties();
-					Emdeon emd = properties.getEmdeonProperties();
-					int[] rows = getSelectedRows();
-			    	for(int row: rows) {
-						Record record = CSVFrame.model.getRowAt(row);
-						InsuranceInfo info = emdeon.fillOutForm(record,emd.getPause()*1000);
-						info.setInsuranceType();
-						if(info.isCommercial) 
-							updateInsurance(info.privatePrimary,row);
-						else if(info.isMedicare) 
-							updateInsurance(info.medicarePrimary,row);
-						else
-							CSVFrame.model.updateValue(info.status, row, MyTableModel.STATUS);
-					}
-			    }
-			}).start();	
-		}
-		private void updateInsurance(Insurance insurance, int i) {
-			CSVFrame.model.updateValue("FOUND", i, MyTableModel.STATUS);
-			CSVFrame.model.updateValue(insurance.getType(), i, MyTableModel.TYPE);
-			CSVFrame.model.updateValue(insurance.getCarrier(), i, MyTableModel.CARRIER);
-			CSVFrame.model.updateValue(insurance.getPolicyId(), i, MyTableModel.POLICY_ID);
-			CSVFrame.model.updateValue(insurance.getBin(), i, MyTableModel.BIN);
-			CSVFrame.model.updateValue(insurance.getGrp(), i, MyTableModel.GROUP);
-			CSVFrame.model.updateValue(insurance.getPcn(), i, MyTableModel.PCN);
-			CSVFrame.model.updateValue(insurance.getInfo(), i, MyTableModel.EMAIL);
+			}
+			String[] types = {"PPO","HMO","MEDICARE","PRIVATE","MEDICAID"};
+			String type = (String) JOptionPane.showInputDialog(new JFrame(), "Select a Insurance Type", "Types:", JOptionPane.QUESTION_MESSAGE, null, types, types[0]);
+			if(type==null)
+				return;
+			Database client = new Database("MT_MARKETING");
+			try {
+				if(!client.login())
+					return;
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				return;
+			}
+			int count = 0;
+			for(int row: rows) {
+				Record record = CSVFrame.model.getRowAt(row);
+				try {
+					
+					int update = client.update(Tables.DME, new String[] {DMEColumns.TYPE}, new String[] {type}, DMEColumns.PHONE+" = '"+record.getPhone()+"'");
+					if(update==1)
+						count++;		
+				} catch(SQLException ex) {
+					JOptionPane.showMessageDialog(null, ex.getMessage());
+				}
+			}
+			JOptionPane.showMessageDialog(null, "Updated "+count+" of "+rows.length);		
 		}
 	}
 	private class UpdateDoctor implements ActionListener {

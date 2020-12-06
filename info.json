@@ -19,10 +19,10 @@
 			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
 		},
 		{
-			"number": "18176627717",
+			"number": "15612994816",
 			"password": "Kuenzler5726",
 			"ext": "103",
-			"name": "Be Well Dr Chase",
+			"name": "Healthcare",
 			"SECRET": "wjmI17MhTD25GR17MT7QCwcMlZI_mKTWasKFwnfXCllQ",
 			"KEY": "5D_GKWGNTYKjpeqQxo8-Ww"
 		},
@@ -40,7 +40,8 @@
 			"ext": "101",
 			"name": "MOM FAX LINE",
 			"SECRET": "jzL1Kk9jR0ypDfW5JxI6kQsxrMT3p0TEatW5UF3Pbbpw",
-			"KEY": "CnE3L5LaQkipFr1-Yw88xg"
+			"KEY": "CnE3L5LaQkipFr1-Yw88xg",
+			"Pin": "572633428"
 		},
 		{
 			"number": "18138223569",
@@ -48,7 +49,8 @@
 			"ext": "102",
 			"name": "Fusion Fax Blast",
 			"SECRET": "jzL1Kk9jR0ypDfW5JxI6kQsxrMT3p0TEatW5UF3Pbbpw",
-			"KEY": "CnE3L5LaQkipFr1-Yw88xg"
+			"KEY": "CnE3L5LaQkipFr1-Yw88xg",
+			"Pin": "572633428"
 		},
 		{
 			"number": "17573514596",
@@ -56,7 +58,26 @@
 			"ext": "103",
 			"name": "Eagle Dr Chase",
 			"SECRET": "jzL1Kk9jR0ypDfW5JxI6kQsxrMT3p0TEatW5UF3Pbbpw",
-			"KEY": "CnE3L5LaQkipFr1-Yw88xg"
+			"KEY": "CnE3L5LaQkipFr1-Yw88xg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "14693121017",
+			"password": "Kuenzler5726",
+			"ext": "104",
+			"name": "OneSource",
+			"SECRET": "jzL1Kk9jR0ypDfW5JxI6kQsxrMT3p0TEatW5UF3Pbbpw",
+			"KEY": "CnE3L5LaQkipFr1-Yw88xg",
+			"Pin": "572633428"
+		},
+		{
+			"number": "16026100955",
+			"password": "Kuenzler5726",
+			"ext": "105",
+			"name": "OneSource",
+			"SECRET": "jzL1Kk9jR0ypDfW5JxI6kQsxrMT3p0TEatW5UF3Pbbpw",
+			"KEY": "CnE3L5LaQkipFr1-Yw88xg",
+			"Pin": "572633428"
 		},
 		{
 			"number": "13178360309",
@@ -89,7 +110,7 @@
 			"number": "13252676022",
 			"password": "Winston4503",
 			"ext": "104",
-			"name": "Sterling Dr Chase",
+			"name": "West Plano Dr Chase",
 			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
 			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
 			"Pin": "572633428"
@@ -104,10 +125,10 @@
 			"Pin": "572633428"
 		},
 		{
-			"number": "17085713340",
+			"number": "16023138120",
 			"password": "Winston4503",
-			"ext": "107",
-			"name": "Jewel Dr Chase",
+			"ext": "108",
+			"name": "On The Go Pharmacy",
 			"SECRET": "8FGD3qd_TLS_wIH_AmrOaQOvHnqKegS6K1TH-NEqo3qw",
 			"KEY": "YHkGqwbYRCSrR12MLGGlNg",
 			"Pin": "572633428"
@@ -116,7 +137,7 @@
 			"number": "19254345024",
 			"password": "Winston4503",
 			"ext": "101",
-			"name": "Rheem Dr Chase",
+			"name": "Golden State Dr Chase",
 			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
 			"KEY": "93y9kwlkSge8rfugvPXTbw",
 			"Pin": "572633428"
@@ -125,16 +146,27 @@
 			"number": "19253095204",
 			"password": "Winston4503",
 			"ext": "102",
-			"name": "Rheem Pharmacy Fax Blast",
+			"name": "Golden State Fax Blast",
 			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
 			"KEY": "93y9kwlkSge8rfugvPXTbw",
 			"Pin": "572633428"
 		},	
 		{
-			"number": "19252154677",
+			"number": "12566669009",
 			"password": "Winston4503",
 			"ext": "103",
-			"name": "Rheem Pharmacy Requalify",
+			"name": "WatsonRx Dr Chase",
+			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
+			"KEY": "93y9kwlkSge8rfugvPXTbw",
+			"Pin": "572633428",
+			"email": "mtrheem@gmail.com",
+			"email_password": "Tommy6847!"
+		},
+		{
+			"number": "12566920653",
+			"password": "Winston4503",
+			"ext": "104",
+			"name": "WatsonRx Fax Blast",
 			"SECRET": "xoKao-qQT1iuGsF6yPk_5gnyR8VYLGT12JtZRwN2-Pzg",
 			"KEY": "93y9kwlkSge8rfugvPXTbw",
 			"Pin": "572633428",
@@ -235,17 +267,6 @@
 			"Pin": "572633428",
 			"email": "mt.carepoint@gmail.com",
 			"email_password": "Tommy6847!"
-		},
-		{
-			"number": "13176691093",
-			"password": "Password123",
-			"ext": "101",
-			"name": "Rx Plus New LINE",
-			"SECRET": "IQhH5gQXQJqtmtOVY3E3xQTtqYV9D3SPa2cr301DfK7A",
-			"KEY": "mjYFXylITmGoNlFWr_BueA",
-			"Pin": "",
-			"email": "",
-			"email_password": ""
 		}
 	],
 	"DATABASE_LOGIN":
@@ -269,6 +290,6 @@
 	{
 		"SERVER": "https://mtkmarketing.vicihost.com",
 		"ADMIN": "6666",
-		"PASS": "tk6847"
+		"PASS": "Tommy6847"
 	}
 }

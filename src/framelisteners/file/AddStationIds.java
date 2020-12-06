@@ -23,6 +23,8 @@ public class AddStationIds implements ActionListener {
 		if(!password.equalsIgnoreCase("Winston4503"))
 			return;
 		File file = FileChooser.OpenTxtFile("Station Id File");
+		if(file==null)
+			return;
 		Database client = new Database("Info_Table");
 		BufferedReader br = null;
 		try {
@@ -38,6 +40,7 @@ public class AddStationIds implements ActionListener {
 						if(set.next())
 							continue;
 						System.out.println(client.insert(Tables.AGENTS, AgentsColumns.ADD_COLUMNS, new Object[] {"","","MT_MARKETING",id.trim(),0,"0000-00-00",0,"0000-00-00"}));
+						set.close();
 					}
 				}
 			}

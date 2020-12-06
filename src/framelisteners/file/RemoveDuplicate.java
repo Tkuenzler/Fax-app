@@ -30,7 +30,11 @@ public class RemoveDuplicate implements ActionListener {
 			}
 		};
 		File load = FileChooser.OpenCsvFile("Single Column File");	
+		if(load==null)
+			return;
 		File save = FileChooser.SaveCsvFile();
+		if(save==null)
+			return;
 		BufferedWriter bw = null;
 		BufferedReader br = null;
 		try {

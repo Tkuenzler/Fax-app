@@ -1,4 +1,7 @@
 /Clients/
+/DME/
+/Database/
+/DateObject/
 /Doctor/
 /Fax/
 /Info/
@@ -7,15 +10,9 @@
 /PaidReport/
 /PivotTable/
 /Properties/
-/Tests/
 /framelisteners/
 /images/
 /objects/
 /source/
 /subframes/
 /table/
-/DME/
-/Database/
-/JSONParameters/
-/Date/
-/DateObject/

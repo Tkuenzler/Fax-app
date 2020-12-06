@@ -185,7 +185,10 @@ public class Record implements Cloneable{
 	}
 	public void addProduct(String product) {
 		if(products!=null) {
-			
+			for(String p: products) {
+				if(product.equalsIgnoreCase(p))
+					return;
+			}
 		}
 		String p = null;
 		if(product.toUpperCase().contains("PAIN"))
@@ -196,6 +199,8 @@ public class Record implements Cloneable{
 			p = "Scar";
 		else if(product.toUpperCase().contains("MIGRAIN"))
 			p = "Migraines";
+		else
+			p = "Pain";
 		if(this.products==null)
 			this.products = new String[] {p};
 		else {
@@ -689,7 +694,10 @@ public class Record implements Cloneable{
 		System.out.println(this.getFirstName()+" "+this.getLastName());
 	}
 	public String getEmail() {
-		return email;
+		if(this.email==null)
+			return "";
+		else
+			return email;
 	}
 	public void setEmail(String email) {
 		this.email = email.trim();

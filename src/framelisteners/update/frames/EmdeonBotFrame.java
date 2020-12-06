@@ -13,6 +13,7 @@ import javax.swing.border.Border;
 
 import Clients.EmdeonClient;
 import Clients.InfoDatabase;
+import Fax.EmdeonStatus;
 import PBM.InsuranceFilter;
 import Properties.EmdeonProperties;
 import objects.Emdeon;
@@ -108,25 +109,35 @@ public class EmdeonBotFrame extends JFrame {
 		this.dispose();
 	}
 	private void loadInsuranceFromEmdeon(EmdeonClient emdeon,Record record,int i) throws CloneNotSupportedException {
-		InsuranceInfo info = emdeon.fillOutForm(record,emd.getPause()*1000);
-		info.setInsuranceType();
-		if(info.isCommercial) 
-			updateInsurance(info.privatePrimary,i,record);
-		else if(info.isMedicare) 
-			updateInsurance(info.medicarePrimary,i,record);
-		else
-			model.updateValue(info.status, i, MyTableModel.STATUS);
+		String status = null;
+		String type = null;
+		if(record.getSsn().length()==4) {
+			status = emdeon.fillOutFormMedicare(record);
+			if(status.equalsIgnoreCase("FOUND"))
+				type = "Medicare";
+			else
+				type = "";
+			if(status.equalsIgnoreCase(EmdeonStatus.NOT_FOUND)) {
+				status = new String(emdeon.fillOutFormPrivate(record));
+				if(status.equalsIgnoreCase("FOUND"))
+					type = "Commercial";
+				else 
+					type = "";
+			}
+		}
+		else {
+			status = emdeon.fillOutFormPrivate(record);
+			if(status.equalsIgnoreCase("FOUND"))
+				type = "Commercial";
+			else
+				type = "";
+			
+		}
+		updateInsurance(record,type,status,i);
 	}
-	
-	private void updateInsurance(Insurance insurance, int i,Record record) {
-		record.setPolicyId(insurance.getPolicyId());
-		record.setBin(insurance.getBin());
-		record.setGrp(insurance.getGrp());
-		record.setPcn(insurance.getPcn());
-		record.setEmail(insurance.getInfo());
-		record.setCarrier(InsuranceFilter.GetPBMFromBin(record));
-		model.updateValue("FOUND", i, MyTableModel.STATUS);
-		model.updateValue(insurance.getType(), i, MyTableModel.TYPE);
+	private void updateInsurance(Record record,String type,String status,int i) {
+		model.updateValue(status, i, MyTableModel.STATUS);
+		model.updateValue(type, i, MyTableModel.TYPE);
 		model.updateValue(record.getCarrier(), i, MyTableModel.CARRIER);
 		model.updateValue(record.getPolicyId(), i, MyTableModel.POLICY_ID);
 		model.updateValue(record.getBin(), i, MyTableModel.BIN);

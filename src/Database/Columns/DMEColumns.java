@@ -14,8 +14,6 @@ public class DMEColumns {
 	public static final String ZIP = "zip";
 	public static final String PHONE = "phonenumber";
 	public static final String GENDER = "gender";
-	public static final String CARRIER = "carrier";
-	public static final String POLICY_ID = "policy_id";
 	public static final String AGENT = "agent";
 	public static final String SOURCE = "SOURCE";
 	public static final String DATE_ADDED = "DATE_ADDED";
@@ -27,6 +25,11 @@ public class DMEColumns {
 	public static final String USED = "USED";
 	public static final String CONFIRM_DOCTOR = "CONFIRM_DOCTOR";
 	public static final String RECEIVED = "RECEIVED";
+
+	//Insurance columns
+	public static final String CARRIER = "carrier";
+	public static final String POLICY_ID = "policy_id";
+	public static final String TYPE = "TYPE";
 	
 	//Doctor Columns
 	public static final String NPI = "npi";

@@ -23,7 +23,6 @@ public class SetPharmacy implements ActionListener {
 			 * Check if a pharmacy is located as same state as patient
 			 */
 			String pharmacy = Pharmacy.GetPharmacy(roadMap, record);
-			System.out.println(pharmacy);
 			if(pharmacy.equalsIgnoreCase("No Home") && client.getTable().equalsIgnoreCase("TELMED_ROADMAP")) {
 				if(Pharmacy.CanCarepointTake(roadMap.get("Carepoint"),record))
 					record.setPharmacy("Carepoint");

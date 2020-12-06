@@ -457,6 +457,7 @@ public class CSVBuilderFrame extends JFrame {
 						}
 					}
 					else {
+						record.addProduct(data[PRODUCTS]);
 						CSVFrame.model.addRow(record);
 						rowCount++;
 						rowsAdded++;

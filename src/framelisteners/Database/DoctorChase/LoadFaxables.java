@@ -34,6 +34,8 @@ public class LoadFaxables implements ActionListener {
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+		} finally {
+			client.close();
 		}
 	}
 }

@@ -63,17 +63,19 @@ public class AddToRequalifyCampagin implements ActionListener {
 	private boolean CheckCategories() {
 		for(Record record: CSVFrame.model.data) {
 			String[] categories = record.getEmail().split(",");
-			switch(record.getEmail().trim().toUpperCase()) {
-					case "PAIN":
-					case "CONSTIPATION":
-					case "ANTIFUNGAL":
-					case "DERMATITIS":
-					case "MIGRAINE":
-					case "VITAMIN":
-						continue;
-					default:
-						JOptionPane.showMessageDialog(null, record.getFirstName()+" "+record.getLastName()+" "+record.getEmail()+" not valid drug category"); 
-						return false;
+			for(String category: categories) {
+				switch(category.trim().toUpperCase()) {
+						case "PAIN":
+						case "CONSTIPATION":
+						case "ANTIFUNGAL":
+						case "DERMATITIS":
+						case "MIGRAINE":
+						case "VITAMIN":
+							continue;
+						default:
+							JOptionPane.showMessageDialog(null, record.getFirstName()+" "+record.getLastName()+" "+category+" not valid drug category"); 
+							return false;
+				}
 			}
 		}
 		return true;

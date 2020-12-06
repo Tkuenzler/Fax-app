@@ -279,9 +279,7 @@ public class Script {
 	}
 	public void checkOffDME(List<PDField> fields,Record record) throws IOException {
 		String[] brace_list = record.getBrace_list().split(",");
-		StringBuilder sb = new StringBuilder();
 		for(String brace: brace_list) {
-			sb = new StringBuilder();
 			System.out.println("BRACE FOUND: "+brace); 
 			switch(brace.trim()) {
 				case "Back":
@@ -289,17 +287,15 @@ public class Script {
 					break;
 				//Ankle
 				case "Ankle":
-					((PDCheckBox) acroForm.getField("Ankle")).check();
+					((PDCheckBox) acroForm.getField("Ankle")).check();	
 					break;
 				case "Right Ankle":
-					((PDCheckBox) acroForm.getField("Ankle")).check();
-					sb.append(acroForm.getField("Ankle Modifier").getValueAsString()+" RT");
-					acroForm.getField("Ankle Modifier").setValue(sb.toString());
+					((PDCheckBox) acroForm.getField("Ankle")).check();	
+					acroForm.getField("Right Ankle").setValue("RT");
 					break;
 				case "Left Ankle":
-					((PDCheckBox) acroForm.getField("Ankle")).check();
-					sb.append(acroForm.getField("Ankle Modifier").getValueAsString()+" LT");
-					acroForm.getField("Ankle Modifier").setValue(sb.toString());
+					((PDCheckBox) acroForm.getField("Ankle")).check();	
+					acroForm.getField("Left Ankle").setValue("LT");
 					break;
 				//Wrist
 				case "Wrist":
@@ -307,13 +303,11 @@ public class Script {
 					break;
 				case "Right Wrist":
 					((PDCheckBox) acroForm.getField("Wrist")).check();
-					sb.append(acroForm.getField("Wrist Modifier").getValueAsString()+" RT");
-					acroForm.getField("Wrist Modifier").setValue(sb.toString());
+					acroForm.getField("Right Wrist").setValue("RT");
 					break;
 				case "Left Wrist":
 					((PDCheckBox) acroForm.getField("Wrist")).check();
-					sb.append(acroForm.getField("Wrist Modifier").getValueAsString()+" LT");
-					acroForm.getField("Wrist Modifier").setValue(sb.toString());
+					acroForm.getField("Left Wrist").setValue("LT");
 					break;
 				//Knees
 				case "Knee":
@@ -322,13 +316,11 @@ public class Script {
 					break;
 				case "Right Knee":
 					((PDCheckBox) acroForm.getField("Knee")).check();
-					sb.append(acroForm.getField("Knee Modifier").getValueAsString()+" RT");
-					acroForm.getField("Knee Modifier").setValue(sb.toString());
+					acroForm.getField("Right Knee").setValue("RT");
 					break;
 				case "Left Knee":
 					((PDCheckBox) acroForm.getField("Knee")).check();
-					sb.append(acroForm.getField("Knee Modifier").getValueAsString()+" LT");
-					acroForm.getField("Knee Modifier").setValue(sb.toString());
+					acroForm.getField("Left Knee").setValue("LT");
 					break;
 				//SHOULDER
 				case "Shoulder":
@@ -336,28 +328,23 @@ public class Script {
 					break;
 				case "Right Shoulder":
 					((PDCheckBox) acroForm.getField("Shoulder")).check();
-					sb.append(acroForm.getField("Shoulder Modifier").getValueAsString()+" RT");
-					acroForm.getField("Shoulder Modifier").setValue(sb.toString());
+					acroForm.getField("Right Shoulder").setValue("RT");
 					break;
 				case "Left Shoulder":
 					((PDCheckBox) acroForm.getField("Shoulder")).check();
-					sb.append(acroForm.getField("Shoulder Modifier").getValueAsString()+" LT");
-					acroForm.getField("Shoulder Modifier").setValue(sb.toString());
+					acroForm.getField("Left Shoulder").setValue("LT");
 					break;
-				
 				//ELBOW
 				case "Elbow":
 					((PDCheckBox) acroForm.getField("Elbow")).check();
 					break;
 				case "Right Elbow":
 					((PDCheckBox) acroForm.getField("Elbow")).check();
-					sb.append(acroForm.getField("Elbow").getValueAsString()+" RT");
-					acroForm.getField("Elbow Modifier").setValue(sb.toString());
+					acroForm.getField("Right Elbow").setValue("RT");
 					break;
 				case "Left Elbow":
 					((PDCheckBox) acroForm.getField("Elbow")).check();
-					sb.append(acroForm.getField("Elbow").getValueAsString()+" LT");
-					acroForm.getField("Elbow Modifier").setValue(sb.toString());
+					acroForm.getField("Left Elbow").setValue("LT");
 					break;
 				//HIP
 				case "Hip":

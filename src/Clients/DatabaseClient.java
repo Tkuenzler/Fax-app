@@ -1346,7 +1346,7 @@ public class DatabaseClient {
 	}
 	public ResultSet loadFaxableLeads(String pharmacy) {
 		String pharmacyQuery = GetPharmacyQuery(pharmacy);
-		String FAX_SENT = "(`FAXES_SENT` < 12)";
+		String FAX_SENT = "(`FAXES_SENT` < 20)";
 		String NEW_LEADS = "(`FAX_DISPOSITION` = '' AND `MESSAGE_STATUS` = '' AND `MESSAGE_ID` = '')";
 		String SEVEN_DAYS_OLD = "(`FAX_DISPOSITION` = '' AND `MESSAGE_STATUS` <> 'SendingFailed' AND (`FAX_SENT_DATE` < DATE_ADD(CURDATE(), INTERVAL -5 DAY) OR `FAX_SENT_DATE` = '0000-00-00'))";
 		String SENDING_FAILED = "(`FAX_DISPOSITION` = '' AND `MESSAGE_STATUS` = 'SendingFailed' AND `FAX_ATTEMPTS` <= 3)";
